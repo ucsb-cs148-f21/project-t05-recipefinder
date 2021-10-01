@@ -1,0 +1,1 @@
+Hi, I'm Royce Nguyen. I am the product owner and my vision for the project is to create an app that allows the user to input ingredients they have in their pantry/refrigerator and have the app show the user recipes that they can follow. There are also ideas for price comparision at local grocery stores as well as creating your own grocery list and others.
