@@ -4,7 +4,7 @@ Meeting Time: lect02
 
 Type of meeting: scrum meeting
 
-Present: Ana, Sara, Royce, Leon
+Team: Ana[X], Sara[X], RoyceX[], Leon[X], Richard[], Wyatt[]
 
 Scribed Disc.
 
