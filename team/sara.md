@@ -1,0 +1,1 @@
+Hi, I'm Sara and I'm a third year.  My idea for this project is that it will allow users to enter a list of their grocery items and return recipes that only use those items.  The recipes can then be filtered by ratings/reviews and cooking time.
