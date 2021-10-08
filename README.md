@@ -17,4 +17,13 @@ Royce Nguyen @rlicoder
 Wyatt Spivak @wyatthspivak
 
 # Tech Stack
-React Native 
+We plan on using React Native to create this app
+
+## Project Plan
+
+The purpose of the app is to provide recipe suuggestions according to the ingredients the user inputs or searches. 
+
+
+## User Roles
+1. Users that look up recipes based on their ingredients/product input
+2. Admins that can upload new recipes to the system
