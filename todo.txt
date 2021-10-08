@@ -1,0 +1,12 @@
+TO DO
+
+-the user to be able to add, remove, modify ingredients
+
+-search engine for recipes
+	-filter by ingredients
+
+-show the recipes
+
+
+ROYCE - scraping recipes from websites and formatting the data
+WYATT/ANA - inputting ingredients.
