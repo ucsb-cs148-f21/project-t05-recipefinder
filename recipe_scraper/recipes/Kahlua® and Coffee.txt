@@ -1,0 +1,1 @@
+{"name:": "Kahlua\u00ae and Coffee", "Servings:": "1", "Yield:": "1 serving", "ingredients:": ["2 fluid ounces Kahlua", "4 fluid ounces hot coffee"], "steps:": ["Pour Kahlua and hot coffee into a heated mug."], "nutrition facts": "198 calories; carbohydrates 24.8g; fat 0.2g; sodium 3.6mg"}
