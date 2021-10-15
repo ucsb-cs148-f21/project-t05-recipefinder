@@ -1,89 +1,108 @@
-from selenium import webdriver
-from webdriver_manager.firefox import GeckoDriverManager
 import json
 from time import sleep
-
-bot = webdriver.Firefox()
+import requests
+from bs4 import BeautifulSoup
+import lxml
+from threading import Thread
+import math
+import os
 
 base_url = 'https://www.allrecipes.com/recipe/'
 
-rmin = 220137
-#rmax = 22
-rmax = 225000
+rmin = 220000
+rmax = 260000
+threads = 25
+inc = math.floor((rmax - rmin) / threads)
 
-recipes = []
+files = os.listdir(os.getcwd() + '/recipes_bs4')
+files.sort()
 
-for i in range(rmin, rmax):
-    print(str(i) + " of " + str(rmax))
-    new_url = base_url + str(i)
+def getRecipe(rmin, rmax):
+    for i in range(rmin, rmax):
+        print(str(i) + " of " + str(rmax))
+        new_url = base_url + str(i)
 
-    #driver get
-    bot.get(new_url)
+        page = requests.get(new_url)
+        html = page.content
 
-    #name, total time, servings, ingredients, directions, nutrition facts
-    recipe_info = {}
+        soup = BeautifulSoup(html, 'lxml')
 
-    #name element
-    try:
-        name_element = bot.find_element_by_xpath('/html/body/div[1]/div/main/div[1]/div[2]/div[1]/div[1]/div[1]/div/h1')
-    except Exception as e:
-        continue
-    name = name_element.text
-    recipe_info.update({"name:": name})
+        #name, total time, servings, ingredients, directions, nutrition facts
+        recipe_info = {}
 
-    #prep, cook, additional, total, servings, yield
-    try:
-        table_of_info_headers = bot.find_elements_by_class_name('recipe-meta-item-header')
-    except Exception as e:
-        continue
-    try:
-        table_of_info = bot.find_elements_by_class_name('recipe-meta-item-body')
-    except Exception as e:
-        continue
-    for i in range(0, len(table_of_info)):
-        recipe_info.update({table_of_info_headers[i].text: table_of_info[i].text})
-        #print(table_of_info_headers[i].text)
-        #print(table_of_info[i].text)
+        #name element
+        try:
+            names = soup.find_all('h1')
+            name = str(names[0].string)
+            if (name == "Bummer."):
+                continue
+            if (name in files):
+                continue
+            recipe_info.update({"name": str(name)})
+        except Exception as e:
+            continue;
 
-    list_ingre = []
-    try:
-        ingredients = bot.find_elements_by_class_name('ingredients-item')
-    except Exception as e:
-        continue
-    for i in ingredients:
-        list_ingre.append(i.text)
-        #print(i.text)
-    recipe_info.update({"ingredients:": list_ingre})
+        #prep, cook, additional, total, servings, yield
+        try:
+            headers = soup.find_all(class_="recipe-meta-item-header")
+            info = soup.find_all(class_="recipe-meta-item-body")
+            for i in range(0, len(headers)):
+                recipe_info.update({str(headers[i].string).lower().replace(':', ''): str(info[i].string).lower().strip()})
 
-    try:
-        steps = bot.find_elements_by_class_name('section-body')
-    except Exception as e:
-        continue
-    #last item in the list is the nutrition facts
-    list_steps = []
-    for i in range(0, len(steps)-1):
-        list_steps.append(steps[i].text)
-        #print(i.text)
-
-    try:
-        recipe_info.update({"steps:": list_steps})
-    except Exception as e:
-        continue
-    
-    try:
-        recipe_info.update({"nutrition facts": steps[-1].text.replace('. Full Nutrition', '')})
-    except Exception as e:
-        continue
-    recipes.append(recipe_info)
-
-    #export as json
-    #keep ingredients separate for wyatt/richard
-    jsonList = json.dumps(recipe_info)
-    f = open("recipes/" + str(name) + ".txt", "w")
-    f.write(jsonList)
-    f.close()
+        except Exception as e:
+            continue
 
 
-f.close()
+        try:
+            ingredients = soup.find_all(class_="ingredients-item-name")
+            ingre_list = []
+            for i in ingredients:
+                ingre_list.append(str(i.string).strip())
+            recipe_info.update({"ingredients": ingre_list})
+        except Exception as e:
+            continue
+
+        try:
+            steps = soup.find_all('p')
+            steps_list = []
+            for i in steps:
+                if (i.string is None):
+                    continue
+                steps_list.append(str(i.string).strip())
+            recipe_info.update({"steps": steps_list})
+        except Exception as e:
+            continue
+
+        try:
+            facts = str(soup.find_all(class_="partial recipe-nutrition-section")[0].get_text()).replace(" Per Serving: ", "").replace(". Full Nutrition  ", "").strip()
+            recipe_info.update({"nutrition facts": facts})
+        except Exception as e:
+            continue
+
+        #export as json
+        #keep ingredients separate for wyatt/richard
+        #print(recipe_info)
+        jsonList = json.dumps(recipe_info)
+        f = open("recipes_bs4/" + str(name) + ".txt", "w")
+        f.write(jsonList)
+        f.close()
+
+t = []
+
+def startThread(sargs):
+    x = Thread(target=getRecipe, args=sargs)
+    t.append(x)
+    x.start()
+
+for i in range(0, threads):
+    if (i == threads - 1):
+        startThread([rmin, rmax])
+    else:
+        startThread([rmin, rmin + inc])
+        rmin += inc
+
+for i in t:
+    i.join()
+
 
 #check the min and max of the recipes database
