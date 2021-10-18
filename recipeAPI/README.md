@@ -1,4 +1,5 @@
-STEP1: download Express JS, nodemon, NODE JS, and other packages and library listed in the beginning of api_handler.js or you can check the dependency list in package.json.
+STEP1: download Express JS, nodemon, NODE JS, and other packages and library listed in the beginning of api_handler.js
+or you can check the dependency list in package.json.
 
 STEP2: run the following command "nodemon api_handler.js" to start API.
 
