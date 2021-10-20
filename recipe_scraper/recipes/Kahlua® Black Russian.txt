@@ -1,1 +1,0 @@
-{"name:": "Kahlua\u00ae Black Russian", "Servings:": "1", "Yield:": "1 serving", "ingredients:": ["1\u2009\u00bd fluid ounces Kahlua", "1 fluid ounce ABSOLUT\u00ae Vodka"], "steps:": ["Fill a rocks glass with ice. Add Kahlua and vodka and stir."], "nutrition facts": "213 calories; carbohydrates 18.6g; fat 0.1g; sodium 3mg"}

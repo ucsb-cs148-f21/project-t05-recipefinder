@@ -1,1 +1,0 @@
-{"name": "Cherry Lime Ricky", "servings": "1", "yield": "1 serving", "ingredients": ["\u00bd cup tart cherry juice", "Juice of 1 lime", "1 packet Sweet'N Low granulated sugar substitute", "Club soda", "1 Lime wedge, for garnish"], "nutrition facts": "81 calories; protein 0.7g; carbohydrates 21.2g; fat 0.5g; sodium 23.4mg"}

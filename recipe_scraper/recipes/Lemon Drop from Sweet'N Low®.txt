@@ -1,1 +1,0 @@
-{"name": "Lemon Drop from Sweet'N Low\u00ae", "servings": "1", "yield": "1 serving", "ingredients": ["\u00be ounce fresh lemon juice", "1 packet Sweet'N Low granulated sugar substitute", "2 ounces lemon-flavored vodka, chilled", "1 curl lemon zest, for garnish"], "nutrition facts": "135 calories; protein 0.1g; carbohydrates 3.3g; sodium 0.9mg"}
