@@ -30,6 +30,13 @@ const AddIngredient = ({addPantryIngredient}) => {
           <Icon name="add" size={20} /> Add Ingredient
         </Text>
       </TouchableOpacity>
+      <TouchableOpacity
+        style={styles.btn}
+      >
+        <Text style={styles.btnText}>
+          <Icon name='search' size={20} /> Search
+        </Text>
+      </TouchableOpacity>
     </View>
   );
 };
