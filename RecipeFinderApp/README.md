@@ -3,10 +3,10 @@
 
 * Use command npm install -g expo-cli to install expo
 
+* Download RecipeFinderApp folder files
+
 * Go to expo project file 
 
 * Make sure to install asynchStorage library using command npm install @react-native-async-storage/async-storage or expo install @react-native-async-storage/async-storager 
-
-* Download/Clone RecipeFinderApp folder
 
 * run expo start 
