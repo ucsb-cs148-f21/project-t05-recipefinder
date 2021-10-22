@@ -1,1 +1,0 @@
-{"name": "Kahlua\u00ae and Coffee", "servings": "1", "yield": "1 serving", "ingredients": ["2 fluid ounces Kahlua", "4 fluid ounces hot coffee"], "steps": ["On a chilly evening, Kahlua and hot coffee make a great warming beverage.", "Pour Kahlua and hot coffee into a heated mug."], "nutrition facts": "198 calories; carbohydrates 24.8g; fat 0.2g; sodium 3.6mg"}
