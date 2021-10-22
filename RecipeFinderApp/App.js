@@ -1,101 +1,83 @@
-//import { StatusBar } from 'expo-status-bar';
-import React, {useState, useEffect} from 'react';
-import { StyleSheet, Text, View , TextInput, SafeAreaView, FlatList, ActivityIndicator} from 'react-native';
+import React, {useState} from 'react';
+import {View, StyleSheet, FlatList, Alert} from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useEffect } from 'react';
 
-const App = ()=> {
-  const [filterData, setfilterData] = useState([]);
-  const [masterData, setmasterData] = useState([]);
-  const [search, setsearch] = useState('');
+
+ import Header from './components/Header';
+import ListItem from './components/ListItem';
+import AddIngredient from './components/AddIngredient';
+
+const App = () => {
+  const [pantryIngredients, setPantryIngredients] = useState([]);
+  const deleteItem = id => {
+    setPantryIngredients(prevPantryIngredients => {
+      return prevPantryIngredients.filter(item => item.id !== id);
+    });
+  };
 
   useEffect(() =>{
-    fetchPost();
-    return() => {
+    getPantryIngredientsFromUserDevice();
+  }, []);
 
+  useEffect(() => {
+    savePantryIngredientsToUserDevice(pantryIngredients);
+  }, [pantryIngredients]);
+
+  const savePantryIngredientsToUserDevice = async todos => {
+    try {
+      const stringifyPantryIngredients = JSON.stringify(pantryIngredients);
+      await AsyncStorage.setItem('pantryIngredients', stringifyPantryIngredients);
+    } catch (error){
+      console.log(error);
     }
-  }, [])
+  };
 
-
-  const fetchPost = () =>{
-    const apiURL = 'https://jsonplaceholder.typicode.com/posts';
-    fetch(apiURL)
-    .then((response) => response.json())
-    .then((responseJson) => {
-      setfilterData(responseJson);
-      setmasterData(responseJson);
-    }).catch((error) => {
-      console.error(error);
-    })
-  }
-
-  const searchFilter = (text) => {
-    if (text) {
-      const newData = masterData.filter((item) =>{
-        const itemData = item.body ? item.body.toUpperCase() : ''.toUpperCase();
-        const textData = text.toUpperCase();
-        return itemData.indexOf(textData) > -1;
-      })
-      setfilterData(newData);
-      setsearch(text);
-    } else{
-      setfilterData(masterData);
-      setsearch(text);
+  const getPantryIngredientsFromUserDevice = async () => {
+    try {
+      const pantryIngredients = await AsyncStorage.getItem('pantryIngredients');
+      if(pantryIngredients != null){
+        setPantryIngredients(JSON.parse(pantryIngredients))
+      }
+    } catch (error) {
+      console.log(error);
     }
-  }
+  };
 
-  const ItemView = ({item}) => {
-    return (
-      <Text styles={styles.itemStyle}>
-        {item.id}{'.'}{item.title.toUpperCase()}
-      </Text>
-    )
-  }
 
-  const ItemSeparatorView = () =>{
-    return (
-      <View
-        style={{height: 0.5, width: '100%', backgroundColor: '#c8c8c8'}}
-      />
-    )
-  }
+  const addPantryIngredient = text => {
+    if (text == '') {
+      Alert.alert(
+        'No item entered',
+        'Please enter an ingredient when adding to your pantry list',
+      );
+    } else {
+      setPantryIngredients(prevPantryIngredients => {
+        return [{id: Math.random(), ingredient: text}, ...prevPantryIngredients];
+      });
+    }
+  };
+
+
+
 
   return (
-    <SafeAreaView style={{flex: 1}}>
-      <View style={styles.container}>
-        <TextInput
-          style={styles.textInputStyle}
-          value={search}
-          placeholder= "Search Here"
-          underlineColorAndroid="transparent"
-          onChangeText={(text) => searchFilter(text)}
-        />
-        <FlatList
-          data={filterData}
-          keyExtractor={(item,index) => index.toString()}
-          ItemSeparatorComponent={ItemSeparatorView}
-          renderItem={ItemView}
-        />
-      </View>
-    </SafeAreaView>
-  )
-}
+    <View style={styles.container}>
+      <Header title="Pantry List" />
+      <AddIngredient addPantryIngredient={addPantryIngredient} />
+      <FlatList
+        data={pantryIngredients}
+        renderItem={({item}) => <ListItem item={item} deleteItem={deleteItem}
+          />}
+      />
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: 'white',
+    flex: 1,
   },
-  itemStyle: {
-    padding: 15
-  },
-  textInputStyle:{
-    height: 60,
-    borderWidth: 1,
-    paddingLeft: 20,
-    margin: 5,
-    borderColor: '#009688',
-    backgroundColor: 'white'
-
-  }
 });
 
 export default App;
- 

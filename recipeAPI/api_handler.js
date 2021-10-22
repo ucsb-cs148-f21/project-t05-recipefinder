@@ -31,7 +31,7 @@ const mysql = require('mysql2')
 const db = mysql.createConnection({ //db configuration
     user: "root",
     host: "localhost",
-    password: "password",
+    password: "",
     database: "recipe_finder"
 })
 
