@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {View, StyleSheet, FlatList, Alert} from 'react-native';
+import {View, StyleSheet, FlatList, Alert, InteractionManager} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useEffect } from 'react';
 
@@ -7,9 +7,23 @@ import { useEffect } from 'react';
  import Header from './components/Header';
 import ListItem from './components/ListItem';
 import AddIngredient from './components/AddIngredient';
+import SearchIngredient from './components/SearchIngredient';
 
 const App = () => {
   const [pantryIngredients, setPantryIngredients] = useState([]);
+  const [filterData, setfilterData] = useState([]);
+  let ingredientsQuery = '';
+  let apiURL = '';
+  
+
+  useEffect(() =>{
+    fetchPost(ingredientsQuery);
+    return() => {
+
+    }
+  }, [])
+
+
   const deleteItem = id => {
     setPantryIngredients(prevPantryIngredients => {
       return prevPantryIngredients.filter(item => item.id !== id);
@@ -58,13 +72,38 @@ const App = () => {
     }
   };
 
+  const searchPantryIngredient = () => {
+    ingredientsQuery = '';
+    for(var i=0; i < pantryIngredients.length; i++){
+      if(i == pantryIngredients.length-1){
+      ingredientsQuery += pantryIngredients[i].ingredient;
+      }else{
+        ingredientsQuery += pantryIngredients[i].ingredient + ",";
+      }
+    }
+    fetchPost(ingredientsQuery);
+    console.log(ingredientsQuery);
+  }
 
+  const fetchPost = (ingredientsQuery) =>{
+    apiURL = 'http://localhost:19002/api/recipes/?ingredients=' + ingredientsQuery;
+    console.log(apiURL)
+    fetch(apiURL)
+    .then((response) => response.json())
+    .then((responseJson) => {
+      setfilterData(responseJson);
+      setmasterData(responseJson);
+    }).catch((error) => {
+      console.error(error);
+    })
+  }
 
 
   return (
     <View style={styles.container}>
       <Header title="Pantry List" />
       <AddIngredient addPantryIngredient={addPantryIngredient} />
+      <SearchIngredient searchPantryIngredient={searchPantryIngredient}/>
       <FlatList
         data={pantryIngredients}
         renderItem={({item}) => <ListItem item={item} deleteItem={deleteItem}

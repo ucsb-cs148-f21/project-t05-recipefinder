@@ -3,31 +3,21 @@ import {
   View,
   Text,
   StyleSheet,
-  TextInput,
   TouchableOpacity,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
-const AddIngredient = ({addPantryIngredient}) => {
-  const [text, setText] = useState('');
-  const onChange = textValue => setText(textValue);
-
+const SearchIngredient = ({searchPantryIngredient}) => {
   return (
-    <View>
-      <TextInput
-        placeholder="Add Ingredient to Pantry List..."
-        style={styles.input}
-        onChangeText={onChange}
-        value={text}
-      />
+      <View>
       <TouchableOpacity
         style={styles.btn}
         onPress={() => {
-          addPantryIngredient(text);
-          setText('');
-        }}>
+            searchPantryIngredient();
+          }}
+        >
         <Text style={styles.btnText}>
-          <Icon name="add" size={20} /> Add Ingredient
+          <Icon name="search" size={20} /> Search
         </Text>
       </TouchableOpacity>
     </View>
@@ -52,4 +42,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AddIngredient;
+export default SearchIngredient;
