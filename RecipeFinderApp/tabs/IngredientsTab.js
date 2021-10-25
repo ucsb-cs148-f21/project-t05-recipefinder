@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {View, StyleSheet, FlatList, Alert, InteractionManager} from 'react-native';
+import {View, StyleSheet, FlatList, Alert, InteractionManager, Text, TouchableOpacity} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useEffect } from 'react';
 
@@ -9,21 +9,12 @@ import ListItem from '../components/ListItem';
 import AddIngredient from '../components/AddIngredient';
 import SearchIngredient from '../components/SearchIngredient';
 
-const IngredientsTab = () => {
+const IngredientsTab = ({navigation}) => {
   const [pantryIngredients, setPantryIngredients] = useState([]);
   const [filterData, setfilterData] = useState([]);
   let ingredientsQuery = '';
   let apiURL = '';
   
-
-  useEffect(() =>{
-    fetchPost(ingredientsQuery);
-    return() => {
-
-    }
-  }, [])
-
-
   const deleteItem = id => {
     setPantryIngredients(prevPantryIngredients => {
       return prevPantryIngredients.filter(item => item.id !== id);
@@ -87,6 +78,7 @@ const IngredientsTab = () => {
 
   const fetchPost = (ingredientsQuery) =>{
     apiURL = 'http://localhost:19002/api/recipes/?ingredients=' + ingredientsQuery;
+    //apiURL = 'https://jsonplaceholder.typicode.com/users';
     console.log(apiURL)
     fetch(apiURL)
     .then((response) => response.json())
@@ -102,13 +94,22 @@ const IngredientsTab = () => {
   return (
     <View style={styles.container}>
       <Header title="Pantry List" />
-      <AddIngredient addPantryIngredient={addPantryIngredient} />
-      <SearchIngredient searchPantryIngredient={searchPantryIngredient}/>
       <FlatList
         data={pantryIngredients}
         renderItem={({item}) => <ListItem item={item} deleteItem={deleteItem}
           />}
       />
+      <AddIngredient addPantryIngredient={addPantryIngredient} />
+      <SearchIngredient searchPantryIngredient={searchPantryIngredient}/>
+      <FlatList
+      data={filterData}
+      renderItem={({item}) => (
+        <TouchableOpacity onPress={() => navigation.navigate('Recipes', item)}>
+          <Text style={styles.text}>{item.name}</Text>
+        </TouchableOpacity>
+      )}
+      >
+      </FlatList>
     </View>
   );
 };
@@ -117,6 +118,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
+  text:{
+    fontSize: 18,
+  }
 });
 
 export default IngredientsTab;
