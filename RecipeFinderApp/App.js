@@ -1,83 +1,45 @@
-import React, {useState} from 'react';
-import {View, StyleSheet, FlatList, Alert} from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useEffect } from 'react';
+import React, { Component } from 'react';
+import { NavigationContainer } from '@react-navigation/native'
+import Ionicons from 'react-native-vector-icons/Ionicons'
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 
+import IngredientsTab from '../RecipeFinderApp/tabs/IngredientsTab'
+import RecipeTab from '../RecipeFinderApp/tabs/RecipeTab'
 
- import Header from './components/Header';
-import ListItem from './components/ListItem';
-import AddIngredient from './components/AddIngredient';
+const BottomTabs = createBottomTabNavigator();
 
-const App = () => {
-  const [pantryIngredients, setPantryIngredients] = useState([]);
-  const deleteItem = id => {
-    setPantryIngredients(prevPantryIngredients => {
-      return prevPantryIngredients.filter(item => item.id !== id);
-    });
-  };
+export default class App extends Component {
+  render() {
+    return (
+      <NavigationContainer>
+        <BottomTabs.Navigator
+          screenOptions={({ route }) => ({
+            tabBarIcon: ({ focused, color, size }) => {
+              let iconName;
 
-  useEffect(() =>{
-    getPantryIngredientsFromUserDevice();
-  }, []);
-
-  useEffect(() => {
-    savePantryIngredientsToUserDevice(pantryIngredients);
-  }, [pantryIngredients]);
-
-  const savePantryIngredientsToUserDevice = async todos => {
-    try {
-      const stringifyPantryIngredients = JSON.stringify(pantryIngredients);
-      await AsyncStorage.setItem('pantryIngredients', stringifyPantryIngredients);
-    } catch (error){
-      console.log(error);
-    }
-  };
-
-  const getPantryIngredientsFromUserDevice = async () => {
-    try {
-      const pantryIngredients = await AsyncStorage.getItem('pantryIngredients');
-      if(pantryIngredients != null){
-        setPantryIngredients(JSON.parse(pantryIngredients))
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-
-  const addPantryIngredient = text => {
-    if (text == '') {
-      Alert.alert(
-        'No item entered',
-        'Please enter an ingredient when adding to your pantry list',
-      );
-    } else {
-      setPantryIngredients(prevPantryIngredients => {
-        return [{id: Math.random(), ingredient: text}, ...prevPantryIngredients];
-      });
-    }
-  };
+              if(route.name === 'Ingredients') {
+                iconName = focused 
+                 ? 'ios-nutrition' 
+                 : 'ios-nutrition-outline';
+              }else if(route.name === 'Recipes') {
+                iconName = focused ? 'ios-book' : 'ios-book-outline';
+              }
+              return  <Ionicons name={iconName} size={size} color={color} />
+            },
+          })}
+          tabBarOption={{
+            activeTintColor: 'tomato',
+            inactiveTintColor: 'gray',
+          }}
+            >
+          <BottomTabs.Screen name="Ingredients" component={IngredientsTab} />
+          <BottomTabs.Screen name="Recipes" component={RecipeTab} />
+        </BottomTabs.Navigator>
+      </NavigationContainer>
+    );
+  }
+}
 
 
 
 
-  return (
-    <View style={styles.container}>
-      <Header title="Pantry List" />
-      <AddIngredient addPantryIngredient={addPantryIngredient} />
-      <FlatList
-        data={pantryIngredients}
-        renderItem={({item}) => <ListItem item={item} deleteItem={deleteItem}
-          />}
-      />
-    </View>
-  );
-};
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-});
-
-export default App;
