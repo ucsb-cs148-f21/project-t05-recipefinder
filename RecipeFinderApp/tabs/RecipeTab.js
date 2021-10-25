@@ -1,10 +1,21 @@
 import React, { Component } from 'react';
 import { View, Text } from 'react-native';
 
-const RecipeTab = () =>
+import Header from '../components/Header';
+import SearchRecipe from '../components/SearchRecipe';
 
-  <View>
-   <Text>Recipes!</Text>
-  </View>
+const RecipeTab = () => {
+
+  const searchRecipes = () => {
+
+  };
+
+  return (
+    <View>
+      <Header title="Search for a Recipe"/>
+      <SearchRecipe searchRecipes={searchRecipes}/>
+    </View>
+  );
+};
 
 export default RecipeTab;
