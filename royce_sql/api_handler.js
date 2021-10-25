@@ -15,6 +15,11 @@ app.use(express.urlencoded({extended :true}));
 app.use(express.static('public')); //to serve static content
 app.use(logger);
 app.use(helmet()); 
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
 
 // //configuration
 console.log('Application Name: ' + config.get('name'))
@@ -59,8 +64,15 @@ app.get("/api/recipes/", async(req, res) => {
         if (err){
             console.log(err)
         }
-        console.log(result)
-        res.send(result);
+        //console.log(result)
+        let test = [];
+        for (var i = 0; i < result.length; i++)
+        {
+            //console.log(JSON.parse(result[i].recipe));
+            test.push(JSON.parse(result[i].recipe));
+        }
+        console.log(test)
+        res.send(test);
     })
 
 }); 

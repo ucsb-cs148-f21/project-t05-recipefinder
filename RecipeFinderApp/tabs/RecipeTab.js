@@ -5,8 +5,9 @@ import Icon  from 'react-native-vector-icons/MaterialIcons';
 
 const RecipeTab = ({route, navigation}) => {
   if(route.params != null){
+      console.log("NOT NULL");
     const item = route.params;
-    console.log(item);
+      console.log(item);
   return(
     <View>
       <Text style={styles.title}>{item.name}</Text>
@@ -31,6 +32,7 @@ const RecipeTab = ({route, navigation}) => {
   );
 }
  else{
+     console.log("NULL");
   return (
     <View>
       <Text>Begin Search to view Recipe Details</Text>

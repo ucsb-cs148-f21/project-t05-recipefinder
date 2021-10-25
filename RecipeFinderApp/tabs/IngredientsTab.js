@@ -83,6 +83,7 @@ const IngredientsTab = ({navigation}) => {
     fetch(apiURL)
     .then((response) => response.json())
     .then((responseJson) => {
+        console.log(responseJson)
       setfilterData(responseJson);
     }).catch((error) => {
       console.error(error);
