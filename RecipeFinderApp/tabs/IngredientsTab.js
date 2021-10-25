@@ -84,7 +84,6 @@ const IngredientsTab = ({navigation}) => {
     .then((response) => response.json())
     .then((responseJson) => {
       setfilterData(responseJson);
-      setmasterData(responseJson);
     }).catch((error) => {
       console.error(error);
     })
