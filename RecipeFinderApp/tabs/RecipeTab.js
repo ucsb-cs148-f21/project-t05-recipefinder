@@ -4,7 +4,7 @@ import { FlatList } from 'react-native-gesture-handler';
 import Icon  from 'react-native-vector-icons/MaterialIcons';
 
 const RecipeTab = ({route, navigation}) => {
-  if(route != null){
+  if(route.params != null){
     const item = route.params;
     console.log(item);
   return(
