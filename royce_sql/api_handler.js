@@ -32,7 +32,7 @@ const db = mysql.createConnection({ //db configuration
     user: "root",
     host: "localhost",
     password: "",
-    database: "recipe"
+    database: "recipe_finder"
 })
 
 //checking database connection
@@ -48,17 +48,21 @@ app.get("/api/recipes/", async(req, res) => {
     let query_params = req.query.ingredients
     let params_object = query_params.split(",")
 
-    qry = "SELECT `ingredient_id` FROM `ingredients` WHERE `ingredient` LIKE '%" + params_object[0] + "%'"
-    for (let i = 1; i < params_object.length; i++)
-    {
-        qry += " AND `ingredient` LIKE '%" + params_object[i] + "%'"
+    qry = "SELECT recipe FROM recipes INNER JOIN ingredients ON ingredients.ingredient_id = recipes.ingredient_id WHERE ingredient LIKE '%" + params_object[0] + "%'";
+    for (let i = 1; i < params_object.length; i++){
+        qry += " AND ingredient LIKE '%" + params_object[i] + "%'";
     }
+
+    console.log(qry);
+
     db.query(qry, (err, result) =>{
-    if (err){
-        console.log(err)
-    }
-    res.send(result);
+        if (err){
+            console.log(err)
+        }
+        console.log(result)
+        res.send(result);
     })
+
 }); 
 
 //validator that check the user input
