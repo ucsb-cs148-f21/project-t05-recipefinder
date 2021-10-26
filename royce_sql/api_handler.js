@@ -69,7 +69,14 @@ app.get("/api/recipes/", async(req, res) => {
         for (var i = 0; i < result.length; i++)
         {
             //console.log(JSON.parse(result[i].recipe));
-            test.push(JSON.parse(result[i].recipe));
+            try
+            {
+                test.push(JSON.parse(result[i].recipe));
+            }
+            catch (error)
+            {
+                continue;
+            }
         }
         console.log(test)
         res.send(test);

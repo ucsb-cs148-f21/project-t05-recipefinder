@@ -48,10 +48,11 @@ Install vector-icons library using command: npm install --save react-native-vect
 # Installation Steps
 
 1. Dowload Expo Go from google play store or apple store on your own mobile device
-2. Run api\_handler.js in the royce\_sql folder using nodemon api\_hander.js
-3. cd into RecipeFinderApp
-4. run expo start to recieve a QR code
-5. Open Expo Go on your own mobile device and scan the QR code to use app
+2. Generate the database using generatedb.sql and start your local database
+3. Run api\_handler.js in the royce\_sql folder using nodemon api\_hander.js
+4. cd into RecipeFinderApp
+5. run expo start to recieve a QR code
+6. Open Expo Go on your own mobile device and scan the QR code to use app
 
 
 # Functionality
