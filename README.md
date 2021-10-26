@@ -32,8 +32,11 @@ The purpose of the app is to provide recipe suuggestions according to the ingred
 ## Prerequisites
 
 User should have npm, node, git, and React Native install
+
 User should install expo, use command: npm install -g expo-cli
+
 Download/Clone repo to get access to RecipeFinderApp folder files
+
 Go to expo project folder RecipeFinderApp
  
 # Dependencies
