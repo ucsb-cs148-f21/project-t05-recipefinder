@@ -38,10 +38,15 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   listItemText: {
+    position: 'relative',
+    bottom: 12,
     alignSelf: "flex-start",
     fontSize: 18,
   },
   iconView: {
+    position: 'relative',
+    top: 5,
+    left: 20,
     flexDirection: 'row',
     alignSelf: "flex-end",
     justifyContent: 'space-evenly',
