@@ -31,7 +31,7 @@ The purpose of the app is to provide recipe suuggestions according to the ingred
 # Installation
 ## Prerequisites
 
-User should have npm, node, git, and React Native install
+User should have npm, node, nodemon, package.json in api folder, git, and React Native install
 
 User should install expo, use command: npm install -g expo-cli
 
@@ -48,9 +48,10 @@ Install vector-icons library using command: npm install --save react-native-vect
 # Installation Steps
 
 1. Dowload Expo Go from google play store or apple store on your own mobile device
-2. cd into RecipeFinderApp
-3. run expo start to recieve a QR code
-4. Open Expo Go on your own mobile device and scan the QR code to use app
+2. Run api\_handler.js in the royce\_sql folder using nodemon api\_hander.js
+3. cd into RecipeFinderApp
+4. run expo start to recieve a QR code
+5. Open Expo Go on your own mobile device and scan the QR code to use app
 
 
 # Functionality
@@ -61,7 +62,9 @@ Install vector-icons library using command: npm install --save react-native-vect
 5. Navigate between screens by pressing the apple icon to go to Ingredients/Search page and the book to go to the Recipe Details page
 
 # Known Problems
-Limited amount of recipes, inputting too many ingredients might not give you a recipe.
+inputting too many ingredients may not give you a recipe.
+
+can give you recipes that you have ingredients for, but not all
 
 # Contributing
 
