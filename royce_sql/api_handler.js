@@ -15,6 +15,11 @@ app.use(express.urlencoded({extended :true}));
 app.use(express.static('public')); //to serve static content
 app.use(logger);
 app.use(helmet()); 
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
 
 // //configuration
 console.log('Application Name: ' + config.get('name'))
@@ -32,7 +37,7 @@ const db = mysql.createConnection({ //db configuration
     user: "root",
     host: "localhost",
     password: "",
-    database: "recipe"
+    database: "recipe_finder"
 })
 
 //checking database connection
@@ -48,17 +53,35 @@ app.get("/api/recipes/", async(req, res) => {
     let query_params = req.query.ingredients
     let params_object = query_params.split(",")
 
-    qry = "SELECT `ingredient_id` FROM `ingredients` WHERE `ingredient` LIKE '%" + params_object[0] + "%'"
-    for (let i = 1; i < params_object.length; i++)
-    {
-        qry += " AND `ingredient` LIKE '%" + params_object[i] + "%'"
+    qry = "SELECT recipe FROM recipes INNER JOIN ingredients ON ingredients.ingredient_id = recipes.ingredient_id WHERE ingredient LIKE '%" + params_object[0] + "%'";
+    for (let i = 1; i < params_object.length; i++){
+        qry += " AND ingredient LIKE '%" + params_object[i] + "%'";
     }
+
+    console.log(qry);
+
     db.query(qry, (err, result) =>{
-    if (err){
-        console.log(err)
-    }
-    res.send(result);
+        if (err){
+            console.log(err)
+        }
+        //console.log(result)
+        let test = [];
+        for (var i = 0; i < result.length; i++)
+        {
+            //console.log(JSON.parse(result[i].recipe));
+            try
+            {
+                test.push(JSON.parse(result[i].recipe));
+            }
+            catch (error)
+            {
+                continue;
+            }
+        }
+        console.log(test)
+        res.send(test);
     })
+
 }); 
 
 //validator that check the user input
