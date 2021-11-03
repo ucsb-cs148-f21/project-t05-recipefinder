@@ -42,16 +42,21 @@ const db = mysql.createConnection({ //db configuration
 
 //checking database connection
 db.connect(function(err) {
-    if(err){
-        console.log(err);
-    };
+    if(err)
+    {
+        throw 'could not connect to database';
+    }
     console.log("Successfully connected to MYSQL database");
 });
 
-//right I hard code it to return all ingredients
+//https req GET 
 app.get("/api/recipes/", async(req, res) => {
     let query_params = req.query.ingredients
     let params_object = query_params.split(",")
+    if (params_object.length == 0)
+    {
+        throw 'empty pantry!';
+    }
 
     qry = "SELECT recipe FROM recipes INNER JOIN ingredients ON ingredients.ingredient_id = recipes.ingredient_id WHERE ingredient LIKE '%" + params_object[0] + "%'";
     for (let i = 1; i < params_object.length; i++){
