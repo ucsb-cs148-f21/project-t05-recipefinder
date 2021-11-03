@@ -1,10 +1,17 @@
 import json
 
-f = open("recipes.txt")
+def readJson():
+    fail = False
+    try:
+        f = open("recipes.txt")
+    except Exception as e:
+        fail = True
 
-data = json.load(f)
+    data = json.load(f)
 
-for i in data:
-    print(i)
+    for i in data:
+        print(i)
 
-f.close()
+    f.close()
+
+    return fail
