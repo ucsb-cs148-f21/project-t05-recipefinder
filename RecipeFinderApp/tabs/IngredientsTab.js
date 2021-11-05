@@ -5,7 +5,6 @@ import { useEffect } from 'react';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 
-import Header from '../components/Header';
 import ListItem from '../components/ListItem';
 import AddIngredient from '../components/AddIngredient';
 
@@ -94,7 +93,6 @@ const IngredientsTab = ({navigation}) => {
 
   return (
     <View style={styles.container}>
-      <Header title="Pantry List" />
       <FlatList
         data={pantryIngredients}
         renderItem={({item}) => <ListItem item={item} deleteItem={deleteItem}
