@@ -7,7 +7,7 @@ import { Image } from 'react-native-elements/dist/image/Image';
 const RecipeTab = ({route, navigation}) => {
   if(route.params != null){
       console.log("NOT NULL");
-      const filterDummyData = [{
+       const filterDummyData = [{
         "name": "Tomato, Basil, and Corn Salad with Apple Cider Dressing", 
         "ingredients": ["2 cups frozen corn kernels, thawed", "1 pint grape tomatoes, halved", "10 fresh basil leaves, chopped", "3 tablespoons extra-virgin olive oil", "1 tablespoon apple cider vinegar", "xbc teaspoon salt (Optional)"], 
         "nutrition facts": "120 calories; protein 2.1g; carbohydrates 13.7g; fat 7.3g; sodium 103.2mg", 
@@ -56,12 +56,14 @@ const RecipeTab = ({route, navigation}) => {
         "total": "10 mins", 
         "prep": "10 mins"}
     
-      ]; 
+      ];  
+      //const filterData = route.params;
           //console.log(filterData);
       return(
         <View style={{backgroundColor: '#ffffff'}}>
            <FlatList
           data={filterDummyData}
+          //data={filterData}
           contentContainerStyle={{padding: 10}}
           renderItem={({item}) => (
             <TouchableOpacity onPress={() => navigation.navigate('Recipe Details', item)}>
@@ -108,13 +110,18 @@ const RecipeTab = ({route, navigation}) => {
  else{
      console.log("NULL");
   return (
-    <View>
-      <Text>Begin Search to view Recipe Details</Text>
+    <View style={{
+      alignItems: 'left', 
+      padding:50, 
+      marginBottom: 10, 
+      backgroundColor:'#e6e6fa', 
+     }}>
+      <Text>Begin Search By Ingredients to view new Recipes </Text>
     <TouchableOpacity 
     style={styles.btn}
     onPress={()=> navigation.navigate("Ingredients")}>
       <Text style={StyleSheet.btnText}>
-        <Icon name="search" size={20}/> Go to Search
+        <Icon name="search" size={20}/> Search By Ingredients
       </Text>
     </TouchableOpacity>
     </View>
@@ -152,6 +159,7 @@ btn: {
   padding: 9,
   margin: 5,
   borderRadius: 5,
+  alignItems: 'center'
 },
 btnText: {
   color: 'darkslateblue',
