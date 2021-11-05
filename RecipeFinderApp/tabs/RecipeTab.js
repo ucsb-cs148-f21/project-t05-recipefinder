@@ -62,8 +62,8 @@ const RecipeTab = ({route, navigation}) => {
       return(
         <View style={{backgroundColor: '#ffffff'}}>
            <FlatList
-          data={filterDummyData}
-          //data={filterData}
+          //data={filterDummyData}
+          data={filterData}
           contentContainerStyle={{padding: 10}}
           renderItem={({item}) => (
             <TouchableOpacity onPress={() => navigation.navigate('Recipe Details', item)}>
