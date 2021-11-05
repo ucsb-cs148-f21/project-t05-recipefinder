@@ -5,7 +5,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 
 import IngredientsTab from '../RecipeFinderApp/tabs/IngredientsTab'
 import RecipeTab from '../RecipeFinderApp/tabs/RecipeTab'
-
+import ProfileTab from '../RecipeFinderApp/tabs/ProfileTab'
 const BottomTabs = createBottomTabNavigator();
 
 export default class App extends Component {
@@ -23,6 +23,8 @@ export default class App extends Component {
                  : 'ios-nutrition-outline';
               }else if(route.name === 'Recipes') {
                 iconName = focused ? 'ios-book' : 'ios-book-outline';
+              }else if(route.name === 'Profile') {
+                iconName = focused ? 'ios-person' : 'ios-person-outline';
               }
               return  <Ionicons name={iconName} size={size} color={color} />
             },
@@ -34,6 +36,7 @@ export default class App extends Component {
             >
           <BottomTabs.Screen name="Ingredients" component={IngredientsTab} />
           <BottomTabs.Screen name="Recipes" component={RecipeTab} />
+          <BottomTabs.Screen name="Profile" component={ProfileTab} />
         </BottomTabs.Navigator>
       </NavigationContainer>
     );
