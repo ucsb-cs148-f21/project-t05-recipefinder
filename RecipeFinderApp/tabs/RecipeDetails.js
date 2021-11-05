@@ -77,7 +77,7 @@ const RecipeDetails = ({route, navigation}) => {
 
                 <View
                 style={{
-                alignItems: 'left', 
+                alignItems: 'center', 
                 padding:20, 
                 marginBottom: 10, 
                 backgroundColor:'#e6e6fa', 
@@ -103,7 +103,7 @@ const RecipeDetails = ({route, navigation}) => {
                     style={styles.btn}
                     onPress={ () => navigation.navigate("Ingredients")}>
                         <Text style={styles.btnText}>
-                            <Icon name="search" size={20} /> Go Back to Search
+                         <Icon name="search" size={20} /> Search By Ingredients 
                         </Text>
                     </TouchableOpacity>
                 </View>
