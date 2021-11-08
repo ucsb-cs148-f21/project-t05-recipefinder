@@ -11,13 +11,21 @@
 
 | Fri 11/05 | Leadership Update
 Product Owner: Leon Feng
+
 Scrum Master: Sara Medernach
+
 Testing/QA Coordinator: Royce Nguyen
+
 Retro 1 Leader: Wyatt Spivak
+
 Retro 2 Leader: Royce Nguyen
+
 Retro 3 Leader: Richard Rao
+
 UX Coordinator: Wyatt Spivak
+
 Design Document Coordinator: Ana Saldana
+
 Deployment Document Coordinator: Royce Nguyen
 User Manual Coordinator: Richard Rao
 Final Presentation Leader: Sara Medernach
