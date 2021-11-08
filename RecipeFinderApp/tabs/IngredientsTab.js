@@ -2,12 +2,12 @@ import React, {useState} from 'react';
 import {View, StyleSheet, FlatList, Alert, InteractionManager, Text, TouchableOpacity} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useEffect } from 'react';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 
-import Header from '../components/Header';
 import ListItem from '../components/ListItem';
 import AddIngredient from '../components/AddIngredient';
-import SearchIngredient from '../components/SearchIngredient';
+
 
 const IngredientsTab = ({navigation}) => {
   const [pantryIngredients, setPantryIngredients] = useState([]);
@@ -77,8 +77,8 @@ const IngredientsTab = ({navigation}) => {
   }
 
   const fetchPost = (ingredientsQuery) =>{
-    apiURL = 'http://localhost:19002/api/recipes/?ingredients=' + ingredientsQuery;
-    //apiURL = 'https://jsonplaceholder.typicode.com/users';
+    //apiURL = 'http://localhost:19002/api/recipes/?ingredients=' + ingredientsQuery;
+    apiURL = 'https://jsonplaceholder.typicode.com/photos';
     console.log(apiURL)
     fetch(apiURL)
     .then((response) => response.json())
@@ -93,23 +93,26 @@ const IngredientsTab = ({navigation}) => {
 
   return (
     <View style={styles.container}>
-      <Header title="Pantry List" />
       <FlatList
         data={pantryIngredients}
         renderItem={({item}) => <ListItem item={item} deleteItem={deleteItem}
           />}
+        keyExtractor={(item, index) => index.toString()}
       />
       <AddIngredient addPantryIngredient={addPantryIngredient} />
-      <SearchIngredient searchPantryIngredient={searchPantryIngredient}/>
-      <FlatList
-      data={filterData}
-      renderItem={({item}) => (
-        <TouchableOpacity onPress={() => navigation.navigate('Recipes', item)}>
-          <Text style={styles.text}>{item.name}</Text>
-        </TouchableOpacity>
-      )}
-      >
-      </FlatList>
+      <View>
+      <TouchableOpacity
+        style={styles.btn}
+        onPress={() => {
+            searchPantryIngredient();
+            navigation.navigate('Recipes', filterData)
+          }}
+        >
+        <Text style={styles.btnText}>
+          <Icon name="search" size={20} /> Search By Ingredients
+        </Text>
+      </TouchableOpacity>
+    </View>
     </View>
   );
 };
@@ -120,7 +123,18 @@ const styles = StyleSheet.create({
   },
   text:{
     fontSize: 18,
-  }
+  },
+  btn: {
+    backgroundColor: '#c2bad8',
+    padding: 9,
+    margin: 5,
+  },
+  btnText: {
+    color: 'darkslateblue',
+    fontSize: 20,
+    textAlign: 'center',
+  },
+
 });
 
 export default IngredientsTab;
