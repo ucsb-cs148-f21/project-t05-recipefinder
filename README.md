@@ -2,7 +2,7 @@
 
 This project is a mobile app that displays recipes based on their items in their pantry
 
-* [Deployment Instruction] (.docs/DEPLOY.md)
+* [Deployment Instruction](.docs/DEPLOY.md)
 
 # members and github IDS
 
