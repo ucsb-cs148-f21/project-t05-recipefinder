@@ -84,6 +84,8 @@ const IngredientsTab = ({navigation}) => {
     .then((response) => response.json())
     .then((responseJson) => {
       setfilterData(responseJson);
+      console.log(responseJson);
+      console.log(filterData)
     }).catch((error) => {
       console.error(error);
     })
@@ -95,14 +97,14 @@ const IngredientsTab = ({navigation}) => {
       <Header title="Pantry List" />
       <FlatList
         data={pantryIngredients}
-        renderItem={({item}) => <ListItem item={item} deleteItem={deleteItem}
+        renderItem={({item, index}) => <ListItem item={item} deleteItem={deleteItem}
           />}
       />
       <AddIngredient addPantryIngredient={addPantryIngredient} />
       <SearchIngredient searchPantryIngredient={searchPantryIngredient}/>
       <FlatList
       data={filterData}
-      renderItem={({item}) => (
+      renderItem={({item, index}) => (
         <TouchableOpacity onPress={() => navigation.navigate('Recipes', item)}>
           <Text style={styles.text}>{item.name}</Text>
         </TouchableOpacity>

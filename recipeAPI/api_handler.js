@@ -6,8 +6,9 @@ const helmet = require('helmet');
 const morgan = require('morgan');
 const logger = require("./logger");
 const express = require("express");
+var cors = require('cors')
 const app = express();
-
+app.use(cors())
 //app.set('view engine', 'pug')
 
 app.use(express.json());
@@ -44,7 +45,7 @@ db.connect(function(err) {
 });
 
 //right I hard code it to return all ingredients
-app.get("/api/recipes/", async(req, res) => {
+app.get("/api/recipes/", async(req, res, next) => {
     let query_params = req.query.ingredients
     let params_object = query_params.split(",")
 
