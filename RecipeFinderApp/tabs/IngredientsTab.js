@@ -85,6 +85,8 @@ const IngredientsTab = ({navigation}) => {
     .then((responseJson) => {
         console.log(responseJson)
       setfilterData(responseJson);
+      console.log(responseJson);
+      console.log(filterData)
     }).catch((error) => {
       console.error(error);
     })
@@ -95,7 +97,7 @@ const IngredientsTab = ({navigation}) => {
     <View style={styles.container}>
       <FlatList
         data={pantryIngredients}
-        renderItem={({item}) => <ListItem item={item} deleteItem={deleteItem}
+        renderItem={({item, index}) => <ListItem item={item} deleteItem={deleteItem}
           />}
         keyExtractor={(item, index) => index.toString()}
       />
