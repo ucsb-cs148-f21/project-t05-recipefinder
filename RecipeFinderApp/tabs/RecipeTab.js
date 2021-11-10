@@ -3,11 +3,22 @@ import { View, Text, Button, StyleSheet, TouchableOpacity} from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import Icon  from 'react-native-vector-icons/MaterialIcons';
 import { Image } from 'react-native-elements/dist/image/Image';
+import { useState } from 'react';
+
+
+
 
 const RecipeTab = ({route, navigation}) => {
+
+  const [estado, setEstado] = useState(false);
+
+  const agregarFavoritos = () => {
+    setEstado(!estado);
+  };
+
   if(route.params != null){
       console.log("NOT NULL");
-      /*
+    
        const filterDummyData = [{
         "name": "Tomato, Basil, and Corn Salad with Apple Cider Dressing", 
         "ingredients": ["2 cups frozen corn kernels, thawed", "1 pint grape tomatoes, halved", "10 fresh basil leaves, chopped", "3 tablespoons extra-virgin olive oil", "1 tablespoon apple cider vinegar", "xbc teaspoon salt (Optional)"], 
@@ -57,17 +68,18 @@ const RecipeTab = ({route, navigation}) => {
         "total": "10 mins", 
         "prep": "10 mins"}
     
-      ];   */
-      const filterData = route.params;
-        console.log(filterData);
+      ];  
+      //const filterData = route.params;
+        //console.log(filterData);
       return(
         <View style={{backgroundColor: '#ffffff'}}>
            <FlatList
-          //data={filterDummyData}
-          data={filterData}
+          data={filterDummyData}
+          //data={filterData}
           contentContainerStyle={{padding: 10}}
           keyExtractor={(item, index) => index.toString()}
-          renderItem={({item}) => (
+          extraData={estado}
+          renderItem={({item, index}) => (
             <TouchableOpacity onPress={() => navigation.navigate('Recipe Details', item)}>
               <View style={{
                 flexDirection: 'row', 
@@ -88,15 +100,27 @@ const RecipeTab = ({route, navigation}) => {
               style={{ 
                 height: 150, 
                 width: 150 ,
+                marginTop: 30,
+                marginBottom: 30,
                 marginRight: 10,
                 borderRadius: 10
               }}
               resizeMode ="cover"/>
+               
               <View style={{flexShrink: 1}}>
+              <TouchableOpacity style={{alignItems:'flex-end'}} >
+        <Icon
+          name={estado ? 'favorite-border' : 'favorite'}
+          size={25}
+          color="#ff6347"
+          onPress={() => agregarFavoritos(item.id)}
+        />
+      </TouchableOpacity>
               <Text style={{fontSize: 22, fontWeight: '700', textAlign:'auto'}}>{item.name}</Text>
               <Text style={{fontSize: 15, opacity: 0.7 , fontWeight: '600'}}>Prep Time: {item.prep}</Text>
               <Text style={{fontSize: 15, opacity: 0.7 , fontWeight: '600'}}>Total Time: {item.total}</Text>
               <Text style={{fontSize: 15, opacity: 0.7, fontWeight: '600' }}>Servings: {item.servings}</Text>
+             
                </View>
                </View>
             </TouchableOpacity>
@@ -108,7 +132,6 @@ const RecipeTab = ({route, navigation}) => {
     
       );
     }
-   
  else{
      console.log("NULL");
   return (

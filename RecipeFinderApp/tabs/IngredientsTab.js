@@ -14,6 +14,7 @@ const IngredientsTab = ({navigation}) => {
   const [filterData, setfilterData] = useState([]);
   let ingredientsQuery = '';
   let apiURL = '';
+  let ready = false;
   
   const deleteItem = id => {
     setPantryIngredients(prevPantryIngredients => {
@@ -63,7 +64,7 @@ const IngredientsTab = ({navigation}) => {
     }
   };
 
-  const searchPantryIngredient = () => {
+  const searchPantryIngredient = async() => {
     ingredientsQuery = '';
     for(var i=0; i < pantryIngredients.length; i++){
       if(i == pantryIngredients.length-1){
@@ -76,11 +77,12 @@ const IngredientsTab = ({navigation}) => {
     console.log(ingredientsQuery);
   }
 
-  const fetchPost = (ingredientsQuery) =>{
+  const fetchPost = async (ingredientsQuery) =>{
     //apiURL = 'http://localhost:19002/api/recipes/?ingredients=' + ingredientsQuery;
     apiURL = 'https://jsonplaceholder.typicode.com/photos';
     console.log(apiURL)
-    fetch(apiURL)
+    await fetch(apiURL)
+
     .then((response) => response.json())
     .then((responseJson) => {
         console.log(responseJson)
@@ -105,7 +107,10 @@ const IngredientsTab = ({navigation}) => {
         style={styles.btn}
         onPress={() => {
             searchPantryIngredient();
+            
             navigation.navigate('Recipes', filterData)
+            
+          
           }}
         >
         <Text style={styles.btnText}>

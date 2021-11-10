@@ -39,8 +39,9 @@ export default class App extends Component {
           <BottomTabs.Screen name="Recipes" component={RecipeTab} />
           <BottomTabs.Screen name="Profile" component={ProfileTab} />
           <BottomTabs.Screen name="Recipe Details" component={RecipeDetails}   options={{
-      tabBarButton: (props) => null, //this is additional if you want to hide the tab element from the bottom nav
-    }}/>
+          //tabBarStyle: {display: 'none'}, // this removes bottom nav bar 
+      tabBarButton: (props) => null //this is additional if you want to hide the tab element from the bottom nav
+      } }/>
         </BottomTabs.Navigator>
       </NavigationContainer>
     );
