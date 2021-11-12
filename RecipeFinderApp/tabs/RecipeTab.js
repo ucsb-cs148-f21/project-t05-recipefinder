@@ -9,13 +9,6 @@ import { useState } from 'react';
 
 
 const RecipeTab = ({route, navigation}) => {
-
-  const [estado, setEstado] = useState(false);
-
-  const agregarFavoritos = () => {
-    setEstado(!estado);
-  };
-
   if(route.params != null){
       console.log("NOT NULL");
     
@@ -78,7 +71,6 @@ const RecipeTab = ({route, navigation}) => {
           //data={filterData}
           contentContainerStyle={{padding: 10}}
           keyExtractor={(item, index) => index.toString()}
-          extraData={estado}
           renderItem={({item, index}) => (
             <TouchableOpacity onPress={() => navigation.navigate('Recipe Details', item)}>
               <View style={{
@@ -100,22 +92,14 @@ const RecipeTab = ({route, navigation}) => {
               style={{ 
                 height: 150, 
                 width: 150 ,
-                marginTop: 30,
-                marginBottom: 30,
+                marginTop: 20,
+                marginBottom: 20,
                 marginRight: 10,
                 borderRadius: 10
               }}
               resizeMode ="cover"/>
                
               <View style={{flexShrink: 1}}>
-              <TouchableOpacity style={{alignItems:'flex-end'}} >
-        <Icon
-          name={estado ? 'favorite-border' : 'favorite'}
-          size={25}
-          color="#ff6347"
-          onPress={() => agregarFavoritos(item.id)}
-        />
-      </TouchableOpacity>
               <Text style={{fontSize: 22, fontWeight: '700', textAlign:'auto'}}>{item.name}</Text>
               <Text style={{fontSize: 15, opacity: 0.7 , fontWeight: '600'}}>Prep Time: {item.prep}</Text>
               <Text style={{fontSize: 15, opacity: 0.7 , fontWeight: '600'}}>Total Time: {item.total}</Text>

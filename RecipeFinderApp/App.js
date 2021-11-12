@@ -19,7 +19,7 @@ export default class App extends Component {
     return (
       <NavigationContainer>
         <BottomTabs.Navigator
-        initialRouteName="SplashScreen"
+        // initialRouteName="SplashScreen"
           screenOptions={({ route }) => ({
             tabBarIcon: ({ focused, color, size }) => {
               let iconName;
@@ -41,7 +41,7 @@ export default class App extends Component {
             inactiveTintColor: 'gray',
           }}
             >
-          <BottomTabs.Screen name="SplashScreen" component={SplashScreen} options={{
+          {/* <BottomTabs.Screen name="SplashScreen" component={SplashScreen} options={{
             tabBarStyle: {display: 'none'},
             header: (props) => null,
             tabBarButton: (props) => null
@@ -50,7 +50,7 @@ export default class App extends Component {
             tabBarStyle: {display: 'none'},
             header: (props) => null,
             tabBarButton: (props) => null
-          }}/>
+          }}/> */}
           <BottomTabs.Screen name="Ingredients" component={IngredientsTab} />
           <BottomTabs.Screen name="Recipes" component={RecipeTab} />
           <BottomTabs.Screen name="Profile" component={ProfileTab} />
