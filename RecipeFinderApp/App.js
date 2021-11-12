@@ -7,6 +7,11 @@ import IngredientsTab from '../RecipeFinderApp/tabs/IngredientsTab'
 import RecipeTab from '../RecipeFinderApp/tabs/RecipeTab'
 import ProfileTab from '../RecipeFinderApp/tabs/ProfileTab'
 import RecipeDetails from './tabs/RecipeDetails';
+
+import SplashScreen from './tabs/SplashScreen';
+import SignInScreen from './tabs/SignInScreen';
+import LogInTab from './tabs/LogInTab';
+
 const BottomTabs = createBottomTabNavigator();
 
 export default class App extends Component {
@@ -14,6 +19,7 @@ export default class App extends Component {
     return (
       <NavigationContainer>
         <BottomTabs.Navigator
+        initialRouteName="SplashScreen"
           screenOptions={({ route }) => ({
             tabBarIcon: ({ focused, color, size }) => {
               let iconName;
@@ -35,6 +41,16 @@ export default class App extends Component {
             inactiveTintColor: 'gray',
           }}
             >
+          <BottomTabs.Screen name="SplashScreen" component={SplashScreen} options={{
+            tabBarStyle: {display: 'none'},
+            header: (props) => null,
+            tabBarButton: (props) => null
+          }}/>
+          <BottomTabs.Screen name="SignInScreen" component={SignInScreen} options={{
+            tabBarStyle: {display: 'none'},
+            header: (props) => null,
+            tabBarButton: (props) => null
+          }}/>
           <BottomTabs.Screen name="Ingredients" component={IngredientsTab} />
           <BottomTabs.Screen name="Recipes" component={RecipeTab} />
           <BottomTabs.Screen name="Profile" component={ProfileTab} />
