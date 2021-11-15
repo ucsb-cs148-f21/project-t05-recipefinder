@@ -6,15 +6,14 @@ import { SafeAreaView } from 'react-navigation';
 
 const RecipeDetails = ({route, navigation}) => {
   //route.params contains the Recipe JSON object
-  if(route.params != null){
       console.log("NOT NULL");
       const item = route.params;
       var steps = route.params.steps;
       var ingredients = route.params.ingredients;
       console.log(item);
   return(
-    <SafeAreaView>
-      <View style={{flexDirection: 'column', backgroundColor:"#fff", padding: 15}}>
+    <SafeAreaView style={styles.container}>
+      <View style={{ flexDirection: 'column', backgroundColor:"#fff", padding: 15}}>
         <FlatList
           data={ingredients}
           contentContainerStyle={{padding: 10}}
@@ -98,16 +97,6 @@ const RecipeDetails = ({route, navigation}) => {
                     </FlatList>
                 </View>
                 
-                <View>
-                    <TouchableOpacity
-                    style={styles.btn}
-                    onPress={ () => navigation.navigate("Ingredients")}>
-                        <Text style={styles.btnText}>
-                         <Icon name="search" size={20} /> Search By Ingredients 
-                        </Text>
-                    </TouchableOpacity>
-                </View>
-
             </View>
         )}>
         </FlatList>
@@ -117,30 +106,14 @@ const RecipeDetails = ({route, navigation}) => {
 
   );
 }
- else{
-     console.log("NULL");
-  return (
-    <View>
-      <Text>Begin Search to view Recipe Details</Text>
-      <TouchableOpacity 
-        style={styles.btn}
-        onPress={()=> navigation.navigate("Ingredients")}>
-        <Text style={StyleSheet.btnText}>
-          <Icon name="search" size={20}/> Go to Search
-        </Text>
-      </TouchableOpacity>
-    </View>
-  )
-}
-} 
+
 
 export default RecipeDetails;
 
 const styles = StyleSheet.create({
 container: {
   flex: 1, 
-  alignItems: 'center', 
-  justifyContent: 'center'
+  backgroundColor: 'white'
 },
 text: {
   color: 'black',
