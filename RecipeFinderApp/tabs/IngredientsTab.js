@@ -10,17 +10,17 @@ import AddIngredient from '../components/AddIngredient';
 
 
 const IngredientsTab = ({navigation}) => {
+  //Array use to store Ingredients 
   const [pantryIngredients, setPantryIngredients] = useState([]);
-  const [filterData, setfilterData] = useState([]);
-  let ingredientsQuery = '';
-  let apiURL = '';
-  
+
+  //Deletes Ingredient Item from List
   const deleteItem = id => {
     setPantryIngredients(prevPantryIngredients => {
       return prevPantryIngredients.filter(item => item.id !== id);
     });
   };
 
+  //Stores and Retrieves Ingredients data to Local Storage
   useEffect(() =>{
     getPantryIngredientsFromUserDevice();
   }, []);
@@ -49,7 +49,7 @@ const IngredientsTab = ({navigation}) => {
     }
   };
 
-
+//Adds Ingredient to Pantry List
   const addPantryIngredient = text => {
     if (text == '') {
       Alert.alert(
@@ -63,36 +63,7 @@ const IngredientsTab = ({navigation}) => {
     }
   };
 
-  const searchPantryIngredient = () => {
-    ingredientsQuery = '';
-    for(var i=0; i < pantryIngredients.length; i++){
-      if(i == pantryIngredients.length-1){
-      ingredientsQuery += pantryIngredients[i].ingredient;
-      }else{
-        ingredientsQuery += pantryIngredients[i].ingredient + ",";
-      }
-    }
-    fetchPost(ingredientsQuery);
-    console.log(ingredientsQuery);
-  }
-
-  const fetchPost = (ingredientsQuery) =>{
-    apiURL = 'http://localhost:19002/api/recipes/?ingredients=' + ingredientsQuery;
-    //apiURL = 'https://jsonplaceholder.typicode.com/photos';
-    //apiURL = 'http://localhost:19002/api/login/?username=Royce&password=Pass'
-    //apiURL = 'http://localhost:19002/api/signup/?username=yee&password=Pass'
-    console.log(apiURL)
-    fetch(apiURL)
-    .then((response) => response.json())
-    .then((responseJson) => {
-        console.log(responseJson)
-      setfilterData(responseJson);
-      console.log(responseJson);
-      console.log(filterData)
-    }).catch((error) => {
-      console.error(error);
-    })
-  }
+  
 
 
   return (
@@ -108,12 +79,11 @@ const IngredientsTab = ({navigation}) => {
       <TouchableOpacity
         style={styles.btn}
         onPress={() => {
-            searchPantryIngredient();
-            navigation.navigate('Recipes', filterData)
+            navigation.navigate('Recipes', pantryIngredients)
           }}
         >
         <Text style={styles.btnText}>
-          <Icon name="search" size={20} /> Search By Ingredients
+          <Icon name="done" size={20} /> Done
         </Text>
       </TouchableOpacity>
     </View>
@@ -132,6 +102,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#c2bad8',
     padding: 9,
     margin: 5,
+    borderRadius: 5,
   },
   btnText: {
     color: 'darkslateblue',

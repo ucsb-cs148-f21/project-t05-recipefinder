@@ -5,14 +5,12 @@ import Icon  from 'react-native-vector-icons/MaterialIcons';
 import { SafeAreaView } from 'react-navigation';
 
 const RecipeDetails = ({route, navigation}) => {
-  if(route.params != null){
-      console.log("NOT NULL");
     const item = route.params;
     var steps = route.params.steps;
     var ingredients = route.params.ingredients;
       console.log(item);
   return(
-    <SafeAreaView>
+    <SafeAreaView style={{backgroundColor:'white', flex: 1}}>
 
     <View style={{flexDirection: 'column', backgroundColor:"#fff", padding: 15}}>
 
@@ -98,16 +96,6 @@ const RecipeDetails = ({route, navigation}) => {
                     </FlatList>
                 </View>
                 
-                <View>
-                    <TouchableOpacity
-                    style={styles.btn}
-                    onPress={ () => navigation.navigate("Ingredients")}>
-                        <Text style={styles.btnText}>
-                         <Icon name="search" size={20} /> Search By Ingredients 
-                        </Text>
-                    </TouchableOpacity>
-                </View>
-
             </View>
         )}>
         </FlatList>
@@ -117,22 +105,6 @@ const RecipeDetails = ({route, navigation}) => {
 
   );
 }
- else{
-     console.log("NULL");
-  return (
-    <View>
-      <Text>Begin Search to view Recipe Details</Text>
-    <TouchableOpacity 
-    style={styles.btn}
-    onPress={()=> navigation.navigate("Ingredients")}>
-      <Text style={StyleSheet.btnText}>
-        <Icon name="search" size={20}/> Go to Search
-      </Text>
-    </TouchableOpacity>
-    </View>
-  )
-}
-} 
 
 export default RecipeDetails;
 
