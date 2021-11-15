@@ -10,17 +10,17 @@ import AddIngredient from '../components/AddIngredient';
 
 
 const IngredientsTab = ({navigation}) => {
+  //Array use to store Ingredients
   const [pantryIngredients, setPantryIngredients] = useState([]);
-  const [filterData, setfilterData] = useState([]);
-  let ingredientsQuery = '';
-  let apiURL = '';
-  let ready = false;
-  
+ 
+  //Deletes Ingredient Item from list
   const deleteItem = id => {
     setPantryIngredients(prevPantryIngredients => {
       return prevPantryIngredients.filter(item => item.id !== id);
     });
   };
+
+  //Stores and Retrieves Ingredients data to Local Storage
 
   useEffect(() =>{
     getPantryIngredientsFromUserDevice();
@@ -50,7 +50,7 @@ const IngredientsTab = ({navigation}) => {
     }
   };
 
-
+  //Adds Ingredients to Pantry List
   const addPantryIngredient = text => {
     if (text == '') {
       Alert.alert(
@@ -64,39 +64,13 @@ const IngredientsTab = ({navigation}) => {
     }
   };
 
-  const searchPantryIngredient = async() => {
-    ingredientsQuery = '';
-    for(var i=0; i < pantryIngredients.length; i++){
-      if(i == pantryIngredients.length-1){
-      ingredientsQuery += pantryIngredients[i].ingredient;
-      }else{
-        ingredientsQuery += pantryIngredients[i].ingredient + ",";
-      }
-    }
-    fetchPost(ingredientsQuery);
-    console.log(ingredientsQuery);
-  }
-
-  const fetchPost = async (ingredientsQuery) =>{
-    //apiURL = 'http://localhost:19002/api/recipes/?ingredients=' + ingredientsQuery;
-    apiURL = 'https://jsonplaceholder.typicode.com/photos';
-    console.log(apiURL)
-    await fetch(apiURL)
-
-    .then((response) => response.json())
-    .then((responseJson) => {
-        console.log(responseJson)
-      setfilterData(responseJson);
-      console.log(responseJson);
-      console.log(filterData)
-    }).catch((error) => {
-      console.error(error);
-    })
-  }
+  
 
 
   return (
+
     <View style={styles.container}>
+    
       <FlatList
         data={pantryIngredients}
         renderItem={({item, index}) => <ListItem item={item} deleteItem={deleteItem}
@@ -104,22 +78,18 @@ const IngredientsTab = ({navigation}) => {
         keyExtractor={(item, index) => index.toString()}
       />
       <AddIngredient addPantryIngredient={addPantryIngredient} />
+
       <View>
-      <TouchableOpacity
-        style={styles.btn}
-        onPress={() => {
-            searchPantryIngredient();
-            
-            navigation.navigate('Recipes', filterData)
-            
-          
-          }}
-        >
-        <Text style={styles.btnText}>
-          <Icon name="search" size={20} /> Search By Ingredients
-        </Text>
-      </TouchableOpacity>
-    </View>
+        <TouchableOpacity
+          style={styles.btn}
+          onPress={() => {
+            navigation.navigate('Recipes', pantryIngredients);
+            }}>
+          <Text style={styles.btnText}>
+            <Icon name="done" size={20} /> Done
+          </Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };

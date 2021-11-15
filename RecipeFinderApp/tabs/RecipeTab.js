@@ -9,10 +9,48 @@ import { useState } from 'react';
 
 
 const RecipeTab = ({route, navigation}) => {
+  //route containes the Ingredients pass after Done is tapped
+  //Array FilterData use to store the Search by Ingredient Result
+  const [filterData, setfilterData] = useState([]);
+  let ingredientsQuery = '';
+  let apiURL = '';
+  const pantryIngredients = route.params;
+
+  //Does search based on Ingredient Query call Fetch for API
+  const searchPantryIngredient = async() => {
+    ingredientsQuery = '';
+    for(var i=0; i < pantryIngredients.length; i++){
+      if(i == pantryIngredients.length-1){
+      ingredientsQuery += pantryIngredients[i].ingredient;
+      }else{
+        ingredientsQuery += pantryIngredients[i].ingredient + ",";
+      }
+    }
+    fetchPost(ingredientsQuery);
+    console.log(ingredientsQuery);
+  }
+
+  const fetchPost = async (ingredientsQuery) =>{
+    apiURL = 'http://localhost:19002/api/recipes/?ingredients=' + ingredientsQuery;
+    //apiURL = 'https://jsonplaceholder.typicode.com/photos';
+    console.log(apiURL)
+    fetch(apiURL)
+
+    .then((response) => response.json())
+    .then((responseJson) => {
+        setfilterData(responseJson);
+    })
+    .catch((error) => {
+      console.error(error);
+    })
+  }
+
   if(route.params != null){
+    console.log(route.params);
       console.log("NOT NULL");
     
-       const filterDummyData = [{
+      //Testing Data will remove later
+       /*const filterDummyData = [{
         "name": "Tomato, Basil, and Corn Salad with Apple Cider Dressing", 
         "ingredients": ["2 cups frozen corn kernels, thawed", "1 pint grape tomatoes, halved", "10 fresh basil leaves, chopped", "3 tablespoons extra-virgin olive oil", "1 tablespoon apple cider vinegar", "xbc teaspoon salt (Optional)"], 
         "nutrition facts": "120 calories; protein 2.1g; carbohydrates 13.7g; fat 7.3g; sodium 103.2mg", 
@@ -61,81 +99,87 @@ const RecipeTab = ({route, navigation}) => {
         "total": "10 mins", 
         "prep": "10 mins"}
     
-      ];  
-      //const filterData = route.params;
-        //console.log(filterData);
+      ];  */
+
       return(
         <View style={{backgroundColor: '#ffffff'}}>
-           <FlatList
-          data={filterDummyData}
-          //data={filterData}
-          contentContainerStyle={{padding: 10}}
-          keyExtractor={(item, index) => index.toString()}
-          renderItem={({item, index}) => (
+           <View>
+        <TouchableOpacity
+          style={styles.btn}
+          onPress={() => {
+            searchPantryIngredient();
+            }}>
+          <Text style={styles.btnText}>
+            <Icon name="search" size={20} /> Search By Ingredient
+          </Text>
+        </TouchableOpacity>
+      </View>
+          <FlatList
+            //data={filterDummyData}
+            data={filterData}
+            contentContainerStyle={{padding: 10}}
+            keyExtractor={(item, index) => index.toString()}
+            renderItem={({item, index}) => (
             <TouchableOpacity onPress={() => navigation.navigate('Recipe Details', item)}>
-              <View style={{
-                flexDirection: 'row', 
-                padding:20, 
-                marginBottom: 20, 
-                backgroundColor:'#e6e6fa', 
-                borderRadius: 30 ,
-                shadowColor: '#000',
-                shadowOpacity: 0.3,
-                shadowOffset:{
-                  width: 0,
-                  height: 10,
-                },
-                shadowRadius: 20,
-                }}>
-                  <Image
-              source={{uri: item.url}}
-              style={{ 
-                height: 150, 
-                width: 150 ,
-                marginTop: 20,
-                marginBottom: 20,
-                marginRight: 10,
-                borderRadius: 10
-              }}
-              resizeMode ="cover"/>
+                <View style={{
+                  flexDirection: 'row', 
+                  padding:20, 
+                  marginBottom: 20, 
+                  backgroundColor:'#e6e6fa', 
+                  borderRadius: 30 ,
+                  shadowColor: '#000',
+                  shadowOpacity: 0.3,
+                  shadowOffset:{
+                    width: 0,
+                    height: 10,
+                  },
+                  shadowRadius: 20,}}>
+                    
+                    <Image
+                      source={{uri: item.url}}
+                      style={{ 
+                        height: 150, 
+                        width: 150 ,
+                        marginTop: 20,
+                        marginBottom: 20,
+                        marginRight: 10,
+                        borderRadius: 10
+                      }}
+                      resizeMode ="cover"/>
                
-              <View style={{flexShrink: 1}}>
-              <Text style={{fontSize: 22, fontWeight: '700', textAlign:'auto'}}>{item.name}</Text>
-              <Text style={{fontSize: 15, opacity: 0.7 , fontWeight: '600'}}>Prep Time: {item.prep}</Text>
-              <Text style={{fontSize: 15, opacity: 0.7 , fontWeight: '600'}}>Total Time: {item.total}</Text>
-              <Text style={{fontSize: 15, opacity: 0.7, fontWeight: '600' }}>Servings: {item.servings}</Text>
-             
-               </View>
-               </View>
+                      <View style={{flexShrink: 1}}>
+                        <Text style={{fontSize: 22, fontWeight: '700', textAlign:'auto'}}>{item.name}</Text>
+                        <Text style={{fontSize: 15, opacity: 0.7 , fontWeight: '600'}}>Prep Time: {item.prep}</Text>
+                        <Text style={{fontSize: 15, opacity: 0.7 , fontWeight: '600'}}>Total Time: {item.total}</Text>
+                        <Text style={{fontSize: 15, opacity: 0.7, fontWeight: '600' }}>Servings: {item.servings}</Text>
+                      </View>
+                </View>
             </TouchableOpacity>
-          )}
-          >
+          )}>
           </FlatList>
-         
+
         </View>
-    
       );
     }
  else{
      console.log("NULL");
-  return (
-    <View style={{
-      alignItems: 'center', 
-      padding:50, 
-      marginBottom: 10, 
-      backgroundColor:'#e6e6fa', 
-     }}>
-      <Text>Begin Search By Ingredients to view new Recipes </Text>
-    <TouchableOpacity 
-    style={styles.btn}
-    onPress={()=> navigation.navigate("Ingredients")}>
-      <Text style={StyleSheet.btnText}>
-        <Icon name="search" size={20}/> Search By Ingredients
-      </Text>
-    </TouchableOpacity>
-    </View>
-  )
-}
+    return (
+      <View style={{
+        alignItems: 'center', 
+        padding:50, 
+        marginBottom: 10, 
+        backgroundColor:'#e6e6fa', }}>
+        <Text>Add Ingredients to Your Pantry to Begin a Search By Ingredients </Text>
+        <TouchableOpacity 
+          style={styles.btn}
+          onPress={()=> navigation.navigate("Ingredients")}>
+          <Text style={StyleSheet.btnText}>
+            <Icon name="search" size={20}/> Add Ingredients
+          </Text>
+        </TouchableOpacity>
+      </View>
+   )
+  }
 } 
 
  

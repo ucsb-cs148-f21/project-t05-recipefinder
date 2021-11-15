@@ -5,17 +5,16 @@ import Icon  from 'react-native-vector-icons/MaterialIcons';
 import { SafeAreaView } from 'react-navigation';
 
 const RecipeDetails = ({route, navigation}) => {
+  //route.params contains the Recipe JSON object
   if(route.params != null){
       console.log("NOT NULL");
-    const item = route.params;
-    var steps = route.params.steps;
-    var ingredients = route.params.ingredients;
+      const item = route.params;
+      var steps = route.params.steps;
+      var ingredients = route.params.ingredients;
       console.log(item);
   return(
     <SafeAreaView>
-
-    <View style={{flexDirection: 'column', backgroundColor:"#fff", padding: 15}}>
-
+      <View style={{flexDirection: 'column', backgroundColor:"#fff", padding: 15}}>
         <FlatList
           data={ingredients}
           contentContainerStyle={{padding: 10}}
@@ -34,12 +33,13 @@ const RecipeDetails = ({route, navigation}) => {
                 },
                 shadowRadius: 5,}}>
       
-              <Text style={{marginTop: 5, textAlign: 'center'}}>{item}</Text>
-              </View>
+                <Text style={{marginTop: 5, textAlign: 'center'}}>{item}</Text>
+            </View>
           )}
           keyExtractor={(item, index) => index.toString()}
+
           ListHeaderComponent={({ListHeaderComponent}) => (
-            <View>
+          <View>
             <View style={{
                 alignItems: 'center', 
                 padding:20, 
@@ -66,14 +66,14 @@ const RecipeDetails = ({route, navigation}) => {
                     <Text style={{marginTop: 5, fontWeight: '500', fontSize: 13}}>Prep Time: {item.prep}</Text>
                     <Text style={{fontWeight: '600', fontSize: 13}}>Total Time: {item.total}</Text>
                     <Text style={{fontWeight: '600', fontSize: 13}}>Yield: {item.yield}</Text>
-                  </View>
-                  <Text>Ingredients:</Text>
-                  </View>
+            </View>
+              <Text>Ingredients:</Text>
+          </View>
           )}
+
           ListFooterComponent={({ListFooterComponent}) => (
             <View> 
-
-                <Text>Steps:</Text>
+              <Text>Steps:</Text>
 
                 <View
                 style={{
@@ -122,13 +122,13 @@ const RecipeDetails = ({route, navigation}) => {
   return (
     <View>
       <Text>Begin Search to view Recipe Details</Text>
-    <TouchableOpacity 
-    style={styles.btn}
-    onPress={()=> navigation.navigate("Ingredients")}>
-      <Text style={StyleSheet.btnText}>
-        <Icon name="search" size={20}/> Go to Search
-      </Text>
-    </TouchableOpacity>
+      <TouchableOpacity 
+        style={styles.btn}
+        onPress={()=> navigation.navigate("Ingredients")}>
+        <Text style={StyleSheet.btnText}>
+          <Icon name="search" size={20}/> Go to Search
+        </Text>
+      </TouchableOpacity>
     </View>
   )
 }
