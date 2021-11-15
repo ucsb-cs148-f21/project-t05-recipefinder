@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, Button, StyleSheet, TouchableOpacity} from 'react-native';
+import { View, Text, Alert, StyleSheet, TouchableOpacity} from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import Icon  from 'react-native-vector-icons/MaterialIcons';
 import { Image } from 'react-native-elements/dist/image/Image';
@@ -18,15 +18,31 @@ const RecipeTab = ({route, navigation}) => {
 
   //Does search based on Ingredient Query call Fetch for API
   const searchPantryIngredient = async() => {
-    ingredientsQuery = '';
-    for(var i=0; i < pantryIngredients.length; i++){
-      if(i == pantryIngredients.length-1){
-      ingredientsQuery += pantryIngredients[i].ingredient;
-      }else{
-        ingredientsQuery += pantryIngredients[i].ingredient + ",";
+    if(route.params != null){
+      ingredientsQuery = '';
+      for(var i=0; i < pantryIngredients.length; i++){
+        if(i == pantryIngredients.length-1){
+          ingredientsQuery += pantryIngredients[i].ingredient;
+        }
+        else{
+          ingredientsQuery += pantryIngredients[i].ingredient + ",";
+        }
+      }
+      if(pantryIngredients.length){
+        fetchPost(ingredientsQuery);
+      }
+      else{
+        Alert.alert(
+          'Empty Pantry List',
+          'Please Add Ingredients to Your Pantry List',
+        );
       }
     }
-    fetchPost(ingredientsQuery);
+    else{
+      Alert.alert(
+        'Please Add Ingredients to Your Pantry List and Select Done',
+      );
+    }
     console.log(ingredientsQuery);
   }
 
@@ -44,10 +60,6 @@ const RecipeTab = ({route, navigation}) => {
       console.error(error);
     })
   }
-
-  if(route.params != null){
-    console.log(route.params);
-      console.log("NOT NULL");
     
       //Testing Data will remove later
        /*const filterDummyData = [{
@@ -102,7 +114,7 @@ const RecipeTab = ({route, navigation}) => {
       ];  */
 
       return(
-        <View style={{backgroundColor: '#ffffff'}}>
+        <View style={{backgroundColor: '#ffffff', flex: 1}}>
            <View>
         <TouchableOpacity
           style={styles.btn}
@@ -160,26 +172,6 @@ const RecipeTab = ({route, navigation}) => {
 
         </View>
       );
-    }
- else{
-     console.log("NULL");
-    return (
-      <View style={{
-        alignItems: 'center', 
-        padding:50, 
-        marginBottom: 10, 
-        backgroundColor:'#e6e6fa', }}>
-        <Text>Add Ingredients to Your Pantry to Begin a Search By Ingredients </Text>
-        <TouchableOpacity 
-          style={styles.btn}
-          onPress={()=> navigation.navigate("Ingredients")}>
-          <Text style={StyleSheet.btnText}>
-            <Icon name="search" size={20}/> Add Ingredients
-          </Text>
-        </TouchableOpacity>
-      </View>
-   )
-  }
 } 
 
  
@@ -188,14 +180,15 @@ export default RecipeTab;
     
 const styles = StyleSheet.create({
 container: {
-  flex: 1, 
+  flex: 1,
   alignItems: 'center', 
-  justifyContent: 'center'
+  justifyContent: 'center',
+  backgroundColor: 'white'
 },
 text: {
   color: 'black',
-  fontSize: 19,
-
+  fontSize: 14,
+  textAlign: 'center'
 },
 title: {
 textAlign: 'center',
@@ -209,10 +202,9 @@ fontWeight: 'bold',
 },
 btn: {
   backgroundColor: '#c2bad8',
-  padding: 9,
+  padding: 10,
   margin: 5,
   borderRadius: 5,
-  alignItems: 'center'
 },
 btnText: {
   color: 'darkslateblue',
