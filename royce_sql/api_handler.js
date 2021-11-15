@@ -44,7 +44,7 @@ const db = mysql.createConnection({ //db configuration
 db.connect(function(err) {
     if(err)
     {
-        throw 'could not connect to database';
+        throw err;
     }
     console.log("Successfully connected to MYSQL database");
 });
@@ -63,17 +63,13 @@ app.get("/api/recipes/", async(req, res) => {
         qry += " AND ingredient LIKE '%" + params_object[i] + "%'";
     }
 
-    console.log(qry);
-
     db.query(qry, (err, result) =>{
         if (err){
             console.log(err)
         }
-        //console.log(result)
         let test = [];
         for (var i = 0; i < result.length; i++)
         {
-            //console.log(JSON.parse(result[i].recipe));
             try
             {
                 test.push(JSON.parse(result[i].recipe));
@@ -88,6 +84,56 @@ app.get("/api/recipes/", async(req, res) => {
     })
 
 }); 
+
+app.get('/api/login/', async(req, res) => {
+    let username = req.query.username;
+    let password = req.query.password;
+
+    qry = "SELECT `user_id`, `user_username`, `user_password`, `user_type` FROM `entity_users` WHERE `user_username`='" + username + "' AND `user_password`='" + password + "'";
+
+    db.query(qry, function(err, res)
+    {
+        if (err)
+        {
+            throw err;
+            return res.send("User login incorrect");
+            console.log("User login fail");
+        }
+        console.log("User login success");
+    })
+    return res.send('User has been added successfully');
+});
+
+
+app.get('/api/signup/', async(req, res) => {
+    let username = req.query.username;
+    let password = req.query.password;
+
+    qry = "SELECT `user_username` FROM `entity_users` WHERE `user_username`='" + username + "'";
+
+    let found = false;
+    db.query(qry, function(err, res)
+    {
+        if (res.length > 0)
+        {
+            found = true;
+            console.log("already an account with that username");
+        }
+        else
+        {
+            console.log("unique username, adding you now!");
+            qry = "INSERT INTO `entity_users` (`user_username`, `user_password`, `user_type`) VALUES ('" + username + "', '" + password + "', 'user')";
+
+            db.query(qry, function(err, res)
+            {
+                if (err)
+                {
+                    throw err;
+                }
+            })
+        }
+    })
+});
 
 //validator that check the user input
 // function validateRecipe(recipe){

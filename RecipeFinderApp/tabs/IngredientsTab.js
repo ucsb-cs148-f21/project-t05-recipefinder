@@ -77,8 +77,10 @@ const IngredientsTab = ({navigation}) => {
   }
 
   const fetchPost = (ingredientsQuery) =>{
-    //apiURL = 'http://localhost:19002/api/recipes/?ingredients=' + ingredientsQuery;
-    apiURL = 'https://jsonplaceholder.typicode.com/photos';
+    apiURL = 'http://localhost:19002/api/recipes/?ingredients=' + ingredientsQuery;
+    //apiURL = 'https://jsonplaceholder.typicode.com/photos';
+    //apiURL = 'http://localhost:19002/api/login/?username=Royce&password=Pass'
+    //apiURL = 'http://localhost:19002/api/signup/?username=yee&password=Pass'
     console.log(apiURL)
     fetch(apiURL)
     .then((response) => response.json())
