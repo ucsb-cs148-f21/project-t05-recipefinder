@@ -1,14 +1,67 @@
-import React, { Component } from 'react';
-import { View, Text, Button, StyleSheet, TouchableOpacity} from 'react-native';
+import React from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, Alert} from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import Icon  from 'react-native-vector-icons/MaterialIcons';
 import { Image } from 'react-native-elements/dist/image/Image';
+import { useState } from 'react';
 
 const RecipeTab = ({route, navigation}) => {
-  if(route.params != null){
-      console.log("NOT NULL");
-      /*
-       const filterDummyData = [{
+  //route contains the Ingredients pass after Done is tapped
+  //Array filterData stores the Search by Ingredient Response
+  const [filterData, setfilterData] = useState([]);
+  let ingredientsQuery = '';
+  let apiURL = '';
+  const pantryIngredients = route.params;
+
+  //Does search based on Ingredient Query and calls Fetch for API
+  const searchPantryIngredient = () => {
+    if(route.params != null){
+      ingredientsQuery = '';
+      for(var i=0; i < pantryIngredients.length; i++){
+        if(i == pantryIngredients.length-1){
+        ingredientsQuery += pantryIngredients[i].ingredient;
+        }
+        else{
+          ingredientsQuery += pantryIngredients[i].ingredient + ",";
+        }
+      }
+      if(pantryIngredients.length){
+        fetchPost(ingredientsQuery);
+      }
+      else{
+        Alert.alert(
+          'Empty Pantry List',
+          'Please Add Ingredients to Your Pantry List',
+        );
+      }
+    }
+    else{
+      Alert.alert(
+        'Please Add Ingrediens to Your Pantry List and Select Done',
+      );
+    }
+    console.log(ingredientsQuery);
+  }
+
+  const fetchPost = (ingredientsQuery) =>{
+   apiURL = 'http://localhost:19002/api/recipes/?ingredients=' + ingredientsQuery;
+    //apiURL = 'https://jsonplaceholder.typicode.com/photos';
+    //apiURL = 'http://localhost:19002/api/login/?username=Royce&password=Pass'
+    //apiURL = 'http://localhost:19002/api/signup/?username=yee&password=Pass'
+    console.log(apiURL)
+    fetch(apiURL)
+    .then((response) => response.json())
+    .then((responseJson) => {
+        console.log(responseJson)
+      setfilterData(responseJson);
+      console.log(responseJson);
+    }).catch((error) => {
+      console.error(error);
+    })
+  }
+
+  //Testing Data will remove later
+       /*const filterDummyData = [{
         "name": "Tomato, Basil, and Corn Salad with Apple Cider Dressing", 
         "ingredients": ["2 cups frozen corn kernels, thawed", "1 pint grape tomatoes, halved", "10 fresh basil leaves, chopped", "3 tablespoons extra-virgin olive oil", "1 tablespoon apple cider vinegar", "xbc teaspoon salt (Optional)"], 
         "nutrition facts": "120 calories; protein 2.1g; carbohydrates 13.7g; fat 7.3g; sodium 103.2mg", 
@@ -58,10 +111,20 @@ const RecipeTab = ({route, navigation}) => {
         "prep": "10 mins"}
     
       ];   */
-      const filterData = route.params;
-        console.log(filterData);
+      
       return(
-        <View style={{backgroundColor: '#ffffff'}}>
+        <View style={{backgroundColor: '#ffffff', flex: 1}}>
+           <View>
+        <TouchableOpacity
+          style={styles.btn}
+          onPress={() => {
+            searchPantryIngredient();
+            }}>
+          <Text style={styles.btnText}>
+            <Icon name="search" size={20} /> Search By Ingredient
+          </Text>
+        </TouchableOpacity>
+      </View>
            <FlatList
           //data={filterDummyData}
           data={filterData}
@@ -107,28 +170,6 @@ const RecipeTab = ({route, navigation}) => {
         </View>
     
       );
-    }
-   
- else{
-     console.log("NULL");
-  return (
-    <View style={{
-      alignItems: 'center', 
-      padding:50, 
-      marginBottom: 10, 
-      backgroundColor:'#e6e6fa', 
-     }}>
-      <Text>Begin Search By Ingredients to view new Recipes </Text>
-    <TouchableOpacity 
-    style={styles.btn}
-    onPress={()=> navigation.navigate("Ingredients")}>
-      <Text style={StyleSheet.btnText}>
-        <Icon name="search" size={20}/> Search By Ingredients
-      </Text>
-    </TouchableOpacity>
-    </View>
-  )
-}
 } 
 
  
