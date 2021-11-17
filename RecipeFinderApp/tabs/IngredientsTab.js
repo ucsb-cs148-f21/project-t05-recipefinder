@@ -5,6 +5,7 @@ import { useEffect } from 'react';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 
+
 import ListItem from '../components/ListItem';
 import AddIngredient from '../components/AddIngredient';
 
@@ -94,6 +95,7 @@ const IngredientsTab = ({navigation}) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: 'white',
   },
   text:{
     fontSize: 18,
