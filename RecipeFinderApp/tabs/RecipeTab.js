@@ -5,6 +5,7 @@ import Icon  from 'react-native-vector-icons/MaterialIcons';
 import { Image } from 'react-native-elements/dist/image/Image';
 import { useState } from 'react';
 
+
 const RecipeTab = ({route, navigation}) => {
   //route contains the Ingredients pass after Done is tapped
   //Array filterData stores the Search by Ingredient Response
@@ -147,7 +148,7 @@ const RecipeTab = ({route, navigation}) => {
                 shadowRadius: 20,
                 }}>
                   <Image
-              source={{uri: item.url}}
+              source={{uri: item.imgUrl}}
               style={{ 
                 height: 150, 
                 width: 150 ,
