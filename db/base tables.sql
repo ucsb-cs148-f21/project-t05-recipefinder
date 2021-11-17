@@ -12,10 +12,10 @@ CREATE TABLE `ingredients` (
   `ingredient_id` int(10) NOT NULL AUTO_INCREMENT,
   `ingredient` TEXT(5000),
   PRIMARY KEY (`ingredient_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE `recipes` (
   `ingredient_id` int(10) NOT NULL AUTO_Increment UNIQUE,
   `recipe`TEXT(5000),
   PRIMARY KEY (`ingredient_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

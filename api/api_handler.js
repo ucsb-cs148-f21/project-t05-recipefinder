@@ -34,10 +34,10 @@ if (app.get('env') === 'development'){
 const mysql = require('mysql2')
 
 const db = mysql.createConnection({ //db configuration
-    user: "root",
-    host: "localhost",
-    password: "",
-    database: "recipe_finder"
+    user: "sql3451481",
+    host: "sql3.freemysqlhosting.net",
+    password: "3LN7mANFNg",
+    database: "sql3451481"
 })
 
 //checking database connection
