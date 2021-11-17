@@ -148,7 +148,7 @@ const RecipeTab = ({route, navigation}) => {
                 shadowRadius: 20,
                 }}>
                   <Image
-              source={{uri: item.url}}
+              source={{uri: item.imgUrl}}
               style={{ 
                 height: 150, 
                 width: 150 ,

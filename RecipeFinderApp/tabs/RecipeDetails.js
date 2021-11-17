@@ -52,7 +52,7 @@ const RecipeDetails = ({route, navigation}) => {
                 },
                 shadowRadius: 5,}}>
                     <Image
-                    source={{uri: item.url}}
+                    source={{uri: item.imgUrl}}
                     style={{ 
                       height: 300, 
                       width: 300 ,
