@@ -11,7 +11,10 @@ base_url = 'https://www.allrecipes.com/recipe/'
 
 rmin = 220000
 rmax = 260000
-threads = 25
+threads = 24
+#rmin = 220001
+#rmax = 220002
+#threads = 1
 inc = math.floor((rmax - rmin) / threads)
 
 files = os.listdir(os.getcwd() + '/recipes_bs4')
@@ -29,6 +32,13 @@ def getRecipe(rmin, rmax):
 
         #name, total time, servings, ingredients, directions, nutrition facts
         recipe_info = {}
+        
+        try:
+            img = soup.find_all(class_="image-container")
+            imgUrl = img[0].div['data-src']
+            recipe_info.update({"imgUrl":imgUrl})
+        except Exception as e:
+            continue
 
         #name element
         try:
@@ -56,9 +66,13 @@ def getRecipe(rmin, rmax):
         try:
             ingredients = soup.find_all(class_="ingredients-item-name")
             ingre_list = []
+            baseStr = ""
             for i in ingredients:
                 ingre_list.append(str(i.string).strip())
+                baseStr += " "
+                baseStr += str(i.string).strip()
             recipe_info.update({"ingredients": ingre_list})
+            recipe_info.update({"db": baseStr})
         except Exception as e:
             continue
 

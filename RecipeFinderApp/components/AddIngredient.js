@@ -8,12 +8,13 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
+
 const AddIngredient = ({addPantryIngredient}) => {
   const [text, setText] = useState('');
   const onChange = textValue => setText(textValue);
 
   return (
-    <View>
+    <View style={styles.container}>
       <TextInput
         placeholder="Add Ingredient to Pantry List..."
         style={styles.input}
@@ -35,18 +36,22 @@ const AddIngredient = ({addPantryIngredient}) => {
 };
 
 const styles = StyleSheet.create({
+  container: {
+    backgroundColor: 'white',
+  },
   input: {
     height: 60,
     padding: 8,
     margin: 5,
   },
   btn: {
-    backgroundColor: '#c2bad8',
+    backgroundColor: '#8a2be2',
     padding: 9,
     margin: 5,
+    borderRadius: 5,
   },
   btnText: {
-    color: 'darkslateblue',
+    color: 'white',
     fontSize: 20,
     textAlign: 'center',
   },
