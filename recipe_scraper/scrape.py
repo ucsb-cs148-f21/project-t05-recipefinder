@@ -20,6 +20,7 @@ inc = math.floor((rmax - rmin) / threads)
 files = os.listdir(os.getcwd() + '/recipes_bs4')
 files.sort()
 
+
 def getRecipe(rmin, rmax):
     for i in range(rmin, rmax):
         print(str(i) + " of " + str(rmax))
@@ -30,17 +31,17 @@ def getRecipe(rmin, rmax):
 
         soup = BeautifulSoup(html, 'lxml')
 
-        #name, total time, servings, ingredients, directions, nutrition facts
+        # name, total time, servings, ingredients, directions, nutrition facts
         recipe_info = {}
-        
+
         try:
             img = soup.find_all(class_="image-container")
             imgUrl = img[0].div['data-src']
-            recipe_info.update({"imgUrl":imgUrl})
+            recipe_info.update({"imgUrl": imgUrl})
         except Exception as e:
             continue
 
-        #name element
+        # name element
         try:
             names = soup.find_all('h1')
             name = str(names[0].string)
@@ -50,18 +51,18 @@ def getRecipe(rmin, rmax):
                 continue
             recipe_info.update({"name": str(name)})
         except Exception as e:
-            continue;
+            continue
 
-        #prep, cook, additional, total, servings, yield
+        # prep, cook, additional, total, servings, yield
         try:
             headers = soup.find_all(class_="recipe-meta-item-header")
             info = soup.find_all(class_="recipe-meta-item-body")
             for i in range(0, len(headers)):
-                recipe_info.update({str(headers[i].string).lower().replace(':', ''): str(info[i].string).lower().strip()})
+                recipe_info.update({str(headers[i].string).lower().replace(
+                    ':', ''): str(info[i].string).lower().strip()})
 
         except Exception as e:
             continue
-
 
         try:
             ingredients = soup.find_all(class_="ingredients-item-name")
@@ -88,25 +89,29 @@ def getRecipe(rmin, rmax):
             continue
 
         try:
-            facts = str(soup.find_all(class_="partial recipe-nutrition-section")[0].get_text()).replace(" Per Serving: ", "").replace(". Full Nutrition  ", "").strip()
+            facts = str(soup.find_all(class_="partial recipe-nutrition-section")[0].get_text(
+            )).replace(" Per Serving: ", "").replace(". Full Nutrition  ", "").strip()
             recipe_info.update({"nutrition facts": facts})
         except Exception as e:
             continue
 
-        #export as json
-        #keep ingredients separate for wyatt/richard
-        #print(recipe_info)
+        # export as json
+        # keep ingredients separate for wyatt/richard
+        # print(recipe_info)
         jsonList = json.dumps(recipe_info)
         f = open("recipes_bs4/" + str(name) + ".txt", "w")
         f.write(jsonList)
         f.close()
 
+
 t = []
+
 
 def startThread(sargs):
     x = Thread(target=getRecipe, args=sargs)
     t.append(x)
     x.start()
+
 
 for i in range(0, threads):
     if (i == threads - 1):
@@ -119,4 +124,4 @@ for i in t:
     i.join()
 
 
-#check the min and max of the recipes database
+# check the min and max of the recipes database
