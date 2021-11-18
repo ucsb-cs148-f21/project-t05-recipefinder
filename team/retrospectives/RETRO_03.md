@@ -11,8 +11,7 @@
 * a measurement: See if the development of app progresses faster and smoother(less stuck time) and check if we are able to track progress more effectively
 ## Optional
 
-* If issues persist for more than a tow-three days, reach out to TA for help.
-
+* Remeber sunk cost fallacy, some features may not be reasonable to implement.
 
 ## Retro Assessment
 
