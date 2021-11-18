@@ -11,13 +11,11 @@ import {
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { LinearGradient } from 'expo-linear-gradient';
 import * as Animatable from 'react-native-animatable'
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 
 const SplashScreen = ({navigation}) => {
     return (
         <View style={styles.container}>
-            <KeyboardAwareScrollView contentContainerStyle={{flexGrow: 1}}>
             <View style={styles.header} >
                 <Animatable.Image
                 animation = "bounceIn"
@@ -48,7 +46,6 @@ const SplashScreen = ({navigation}) => {
                     </TouchableOpacity>
                 </View>
             </Animatable.View>
-            </KeyboardAwareScrollView>
         </View>  
     );
 };
