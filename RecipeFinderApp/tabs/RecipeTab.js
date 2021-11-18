@@ -76,6 +76,7 @@ const RecipeTab = ({route, navigation}) => {
     .then((response) => response.json())
     .then((responseJson) => {
         console.log(responseJson)
+      setAllData(responseJson);
       setfilterData(responseJson);
       console.log(responseJson);
     }).catch((error) => {
@@ -83,7 +84,7 @@ const RecipeTab = ({route, navigation}) => {
     })
   }
 
-  useEffect(() => {
+  /*useEffect(() => {
       const recipes = [{
         "name": "Tomato, Basil, and Corn Salad with Apple Cider Dressing", 
         "ingredients": ["2 cups frozen corn kernels, thawed", "1 pint grape tomatoes, halved", "10 fresh basil leaves, chopped", "3 tablespoons extra-virgin olive oil", "1 tablespoon apple cider vinegar", "xbc teaspoon salt (Optional)"], 
@@ -136,7 +137,7 @@ const RecipeTab = ({route, navigation}) => {
       ]
     setAllData(recipes)
     setFilterData(recipes)
-    }, [])
+    }, [])*/
       
       return(
         <View style={{backgroundColor: '#ffffff', flex: 1}}>
