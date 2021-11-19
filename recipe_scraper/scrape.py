@@ -17,6 +17,8 @@ threads = 24
 #threads = 1
 inc = math.floor((rmax - rmin) / threads)
 
+if not os.path.exists(os.getcwd() + '/recipes_bs4'):
+    os.makedirs(os.getcwd() + '/recipes_bs4')
 files = os.listdir(os.getcwd() + '/recipes_bs4')
 files.sort()
 
@@ -32,6 +34,7 @@ def getRecipe(rmin, rmax):
 
         #name, total time, servings, ingredients, directions, nutrition facts
         recipe_info = {}
+        recipe_info.update({"id" : str(i)})
         
         try:
             img = soup.find_all(class_="image-container")

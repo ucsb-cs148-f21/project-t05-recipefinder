@@ -9,7 +9,7 @@ git clone https://github.com/ucsb-cs148-f21/project-t05-recipefinder
 
 You can either do this locally, or use the publically availible database we already set up. 
 
-** If you do not want to setup the database locally, skip to setting up the api step. **
+** If you do not want to setup the database locally, skip to setting up the api step.  **
 
 ### Local Database Setup
 
@@ -18,7 +18,7 @@ You can either do this locally, or use the publically availible database we alre
 3. Start your SQL server from the XAMPP Control Panel
 4. Launch workbench, and load into your localhost database
 5. Copy and paste the SQL script named **base tables.sql** from the db folder. Run the script.
-6. Copy and paste the SQL script named **recipesandingredients.sql** from the db folder. Run the script.o
+6. Copy and paste the SQL script named **recipesandingredients.sql** from the db folder. Run the script.
 7. If you followed through this process, make sure to edit the SQL credentials in /api/api\_handler.js
 
 ### Running the API
