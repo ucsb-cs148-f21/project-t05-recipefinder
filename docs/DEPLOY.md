@@ -9,7 +9,7 @@ git clone https://github.com/ucsb-cs148-f21/project-t05-recipefinder
 
 You can either do this locally, or use the publically availible database we already set up. 
 
-** If you do not want to setup the database locally, skip to setting up the api step.  **
+**If you do not want to setup the database locally, skip to setting up the api step.**
 
 ### Local Database Setup
 

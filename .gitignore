@@ -2,3 +2,4 @@
 **/.expo
 **/ios/.expo
 **/__pycache__
+**/ios/**
