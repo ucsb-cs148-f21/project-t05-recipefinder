@@ -77,7 +77,7 @@ const RecipeTab = ({route, navigation}) => {
     .then((responseJson) => {
         console.log(responseJson)
       setAllData(responseJson);
-      setfilterData(responseJson);
+      setFilterData(responseJson);
       console.log(responseJson);
     }).catch((error) => {
       console.error(error);
