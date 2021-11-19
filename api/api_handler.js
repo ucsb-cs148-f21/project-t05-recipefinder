@@ -1,7 +1,6 @@
 const startupDebugger = require('debug')('app:startup');
 const dbDebugger = require('debug')('app:db'); 
 const config = require('config')
-const Joi = require('joi');
 const helmet = require('helmet');
 const morgan = require('morgan');
 const logger = require("./logger");
@@ -20,15 +19,6 @@ app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   next();
 });
-
-// //configuration
-console.log('Application Name: ' + config.get('name'))
-console.log('Application Name: ' + config.get('mail.host'))
-
-if (app.get('env') === 'development'){
-    app.use(morgan('tiny')); //log http request for testing purpose 
-    startupDebugger('Morgan enabled...')
-}
 
 //establish connection instance
 const mysql = require('mysql2')
@@ -163,15 +153,6 @@ db.connect(function(err) {
         }
     })
 });
-
-//validator that check the user input
-// function validateRecipe(recipe){
-//     const schema = {
-//         name: Joi.string().min(3).required()
-//     };
-//     result = Joi.validateRecipe(recipe, schema);
-//     return result;
-// }
 
 //Port
 const port = process.env.PORT || 19002

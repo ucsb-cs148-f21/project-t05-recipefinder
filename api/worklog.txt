@@ -1,8 +1,0 @@
-10/16: I finished SQL script for generating a dummy database for testing purposes. 
-I also finished setting up connection to db using Express JS, and right now we can query columns, but 
-we still need to work on the search algorithm. 
-
-todo: figure out the search Algorithm, try to set up a potential virtualenv so that we can install all
-necessary packages using commmand lines. Add more safety checks to user input. 
-
-10/17: 

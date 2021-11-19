@@ -6,6 +6,7 @@ import lxml
 from threading import Thread
 import math
 import os
+import shutil
 
 base_url = 'https://www.allrecipes.com/recipe/'
 
@@ -18,6 +19,9 @@ threads = 24
 inc = math.floor((rmax - rmin) / threads)
 
 if not os.path.exists(os.getcwd() + '/recipes_bs4'):
+    os.makedirs(os.getcwd() + '/recipes_bs4')
+else:
+    shutil.rmtree(os.getcwd() + "/recipes_bs4")
     os.makedirs(os.getcwd() + '/recipes_bs4')
 files = os.listdir(os.getcwd() + '/recipes_bs4')
 files.sort()
