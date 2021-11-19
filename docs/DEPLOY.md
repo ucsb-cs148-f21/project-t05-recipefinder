@@ -25,7 +25,7 @@ You can either do this locally, or use the publically availible database we alre
 
 1. Go to the /api/ directory.
 2. Run `sudo npm -g install nodemon`.
-3. Run `nodemon api\_handler.js`.
+3. Run `nodemon api_handler.js`.
 4. Now our API is ready to receive and process requests!
 
 ### Running the app
