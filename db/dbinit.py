@@ -2,7 +2,7 @@ import json
 import io
 import os
 
-curdir = os.getcwd() + "/recipes_bs4"
+curdir = os.getcwd() + "/../recipe_scraper/recipes_bs4/"
 sql = io.open("recipesandingredients.sql", "w", encoding="utf8")
 os.chdir(curdir)
 

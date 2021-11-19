@@ -4,7 +4,7 @@ This project is a mobile app that displays recipes based on their items in their
 
 * [Deployment Instruction](./docs/DEPLOY.md)
 
-# members and github IDS
+# Members and Github IDS
 
 Ana Saldana  @ana633
 
