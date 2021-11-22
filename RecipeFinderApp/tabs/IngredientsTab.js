@@ -101,13 +101,13 @@ const styles = StyleSheet.create({
     fontSize: 18,
   },
   btn: {
-    backgroundColor: '#c2bad8',
+    backgroundColor: '#8a2be2',
     padding: 9,
     margin: 5,
     borderRadius: 5,
   },
   btnText: {
-    color: 'darkslateblue',
+    color: 'white',
     fontSize: 20,
     textAlign: 'center',
   },

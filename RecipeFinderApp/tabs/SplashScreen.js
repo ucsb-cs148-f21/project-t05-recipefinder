@@ -11,13 +11,11 @@ import {
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { LinearGradient } from 'expo-linear-gradient';
 import * as Animatable from 'react-native-animatable'
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 
 const SplashScreen = ({navigation}) => {
     return (
         <View style={styles.container}>
-            <KeyboardAwareScrollView contentContainerStyle={{flexGrow: 1}}>
             <View style={styles.header} >
                 <Animatable.Image
                 animation = "bounceIn"
@@ -48,7 +46,6 @@ const SplashScreen = ({navigation}) => {
                     </TouchableOpacity>
                 </View>
             </Animatable.View>
-            </KeyboardAwareScrollView>
         </View>  
     );
 };
@@ -70,23 +67,27 @@ const styles = StyleSheet.create({
     },
     footer: {
         flex: 1,
-        backgroundColor: '#fff',
+        backgroundColor: '#8a2be2',
         borderTopLeftRadius: 30,
         borderTopRightRadius: 30,
         paddingVertical: 50,
         paddingHorizontal: 30
     },
     logo: {
+        position: 'relative',
+        top: 50,
         width: height_logo, 
-        height: height_logo
+        height: height_logo,
+        backgroundColor: 'transparent'
     },
     title: {
-        color: '#05375a',
+        textAlign: 'center',
+        color: 'white',
         fontSize: 30,
         fontWeight: 'bold'
     },
     text: {
-        color: 'grey', 
+        color: '#DED55B', 
         marginTop: 5
     },
     textSign: {
@@ -102,7 +103,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row'
     },
     button: {
-        alignItems: 'flex-end',
+        alignItems: 'center',
         marginTop: 30, 
     }
 });
