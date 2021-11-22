@@ -1,19 +1,31 @@
 import React, { Component } from 'react';
-import { NavigationContainer } from '@react-navigation/native'
-import Ionicons from 'react-native-vector-icons/Ionicons'
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
+import { NavigationContainer } from '@react-navigation/native';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createStackNavigator } from '@react-navigation/stack';
 
-import IngredientsTab from '../RecipeFinderApp/tabs/IngredientsTab'
-import RecipeTab from '../RecipeFinderApp/tabs/RecipeTab'
-import ProfileTab from '../RecipeFinderApp/tabs/ProfileTab'
+import SplashScreen from './tabs/SplashScreen';
+import SignInScreen from './tabs/SignInScreen';
+
+import IngredientsTab from './tabs/IngredientsTab';
+import RecipeTab from './tabs/RecipeTab';
+import ProfileTab from './tabs/ProfileTab';
 import RecipeDetails from './tabs/RecipeDetails';
-const BottomTabs = createBottomTabNavigator();
 
-export default class App extends Component {
-  render() {
-    return (
+import RootStackScreen from './tabs/RootStackScreen';
+
+var isSignIn = true;
+
+const BottomTabs = createBottomTabNavigator();
+const RootStack = createStackNavigator();
+
+export default function App() {
+  return (
       <NavigationContainer>
-        <BottomTabs.Navigator
+        {isSignIn == false ? (
+          <RootStackScreen></RootStackScreen>
+        ) : (
+          <BottomTabs.Navigator
           screenOptions={({ route }) => ({
             tabBarIcon: ({ focused, color, size }) => {
               let iconName;
@@ -42,10 +54,11 @@ export default class App extends Component {
       tabBarButton: (props) => null, //this is additional if you want to hide the tab element from the bottom nav
     }}/>
         </BottomTabs.Navigator>
+        )}
       </NavigationContainer>
-    );
-  }
+  );
 }
+
 
 
 
