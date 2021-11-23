@@ -112,7 +112,7 @@ export default function App() {
   return (
     <AuthContext.Provider value={authContext}>
         <NavigationContainer>
-          {loginState.userToken == null ? (
+          {loginState.userToken != null ? (
             <BottomTabs.Navigator
             screenOptions={({ route }) => ({
               tabBarIcon: ({ focused, color, size }) => {
