@@ -23,7 +23,7 @@ const SplashScreen = ({navigation}) => {
                 animation = "bounceIn"
                 duraton="1500"
                 style={styles.logo}
-                source = {require("../assets/recipe.png")}
+                source = {require("../assets/recipeIcon.png")}
                 resizeMode= "stretch"
                 />
             </View>
