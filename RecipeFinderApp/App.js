@@ -7,9 +7,15 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
 import { AuthContext } from './component/context';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 const Stack = createStackNavigator(); 
 const BottomTabs = createBottomTabNavigator();
+
+import IngredientsTab from './tabs/IngredientsTab';
+import ProfileTab from './tabs/ProfileTab';
+import RecipeTab from './tabs/RecipeTab';
+import RecipeDetails from './tabs/RecipeDetails';
 
 export default function App() {
 
@@ -106,7 +112,7 @@ export default function App() {
   return (
     <AuthContext.Provider value={authContext}>
         <NavigationContainer>
-          {loginState.userToken != null ? (
+          {loginState.userToken == null ? (
             <BottomTabs.Navigator
             screenOptions={({ route }) => ({
               tabBarIcon: ({ focused, color, size }) => {
