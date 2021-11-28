@@ -31,12 +31,12 @@ const SplashScreen = ({navigation}) => {
                 style={styles.footer}
                 animation = "fadeInUpBig"
             > 
-                <Text style={styles.title}>Log in to find out amazing recipes!</Text>
+                <Text style={styles.title}>Log in to find amazing recipes!</Text>
                 <Text style={styles.text}>Sign in with an account</Text>
                 <View style = {styles.button}>
                     <TouchableOpacity onPress= {()=>navigation.navigate('SignInScreen')}>
                         <LinearGradient
-                            colors = {['#8a2be2', '#00008b']}
+                            colors = {['#F96300', '#F5C900']}
                             style = {styles.signIn}
                         >
                             <Text style = {styles.textSign}>Get Started</Text>
@@ -63,7 +63,7 @@ const height_logo = height * 0.25
 const styles = StyleSheet.create({
     container:{
         flex: 1,
-        backgroundColor: '#8a2be2'
+        backgroundColor: '#F96300'
     },
     header:{
         flex: 2,
@@ -83,12 +83,12 @@ const styles = StyleSheet.create({
         height: height_logo
     },
     title: {
-        color: '#05375a',
+        color: '#FD6300',
         fontSize: 30,
         fontWeight: 'bold'
     },
     text: {
-        color: 'grey', 
+        color: 'orange', 
         marginTop: 5
     },
     textSign: {

@@ -180,7 +180,7 @@ const SignInScreen = ({navigation}) => {
                         onPress ={()=>(loginHandle(data.username, data.password))}
                     >
                         <LinearGradient
-                        colors = {['#8a2be2', '#483d8b']}
+                        colors = {['#F96300', '#F5c900']}
                         style={styles.signIn}
                     >
                         <Text style = {[styles.textSign, {
@@ -197,7 +197,7 @@ const SignInScreen = ({navigation}) => {
                         style={styles.signIn}
                     >
                         <Text style = {[styles.textSign, {
-                            color:'#8a2be2'}]}>Create account</Text>
+                            color:'#F96300'}]}>Create account</Text>
                         </LinearGradient>
                     </TouchableOpacity>
                 </View> 
@@ -212,7 +212,7 @@ export default SignInScreen;
 const styles = StyleSheet.create({
     container: {
       flex: 1, 
-      backgroundColor: '#8a2be2',
+      backgroundColor: '#F96300',
     },
     header: {
         flex: 1,
