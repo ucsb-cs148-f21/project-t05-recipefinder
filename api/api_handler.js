@@ -75,24 +75,26 @@ db.connect(function(err) {
 }); 
 
 app.get('/api/login/', async(req, res) => {
-const db = mysql.createConnection({ //db configuration
-    user: "sql3451481",
-    host: "sql3.freemysqlhosting.net",
-    password: "3LN7mANFNg",
-    database: "sql3451481"
-})
 
-//checking database connection
-db.connect(function(err) {
-    if(err)
-    {
-        throw err;
-    }
-    console.log("Successfully connected to MYSQL database");
-});
+    const db = mysql.createConnection({ //db configuration
+        user: "sql3451481",
+        host: "sql3.freemysqlhosting.net",
+        password: "3LN7mANFNg",
+        database: "sql3451481"
+    })
+
+    //checking database connection
+    db.connect(function(err) {
+        if(err)
+        {
+            throw err;
+        }
+        console.log("Successfully connected to MYSQL database");
+    });
     let username = req.query.username;
     let password = req.query.password;
 
+    var success = false;
     qry = "SELECT `user_id`, `user_username`, `user_password`, `user_type` FROM `entity_users` WHERE `user_username`='" + username + "' AND `user_password`='" + password + "'";
 
     db.query(qry, function(err, res)
@@ -100,31 +102,38 @@ db.connect(function(err) {
         if (err)
         {
             throw err;
-            return res.send("User login incorrect");
+            success = false;
             console.log("User login fail");
         }
-        console.log("User login success");
+        else
+        {
+            console.log("User login success");
+            success = true;
+        }
     })
-    return res.send('User has been added successfully');
+    var test = {
+        loginValid = success
+    };
+    res.send(test);
 });
 
 
 app.get('/api/signup/', async(req, res) => {
-const db = mysql.createConnection({ //db configuration
-    user: "sql3451481",
-    host: "sql3.freemysqlhosting.net",
-    password: "3LN7mANFNg",
-    database: "sql3451481"
-})
+    const db = mysql.createConnection({ //db configuration
+        user: "sql3451481",
+        host: "sql3.freemysqlhosting.net",
+        password: "3LN7mANFNg",
+        database: "sql3451481"
+    })
 
-//checking database connection
-db.connect(function(err) {
-    if(err)
-    {
-        throw err;
-    }
-    console.log("Successfully connected to MYSQL database");
-});
+    //checking database connection
+    db.connect(function(err) {
+        if(err)
+        {
+            throw err;
+        }
+        console.log("Successfully connected to MYSQL database");
+    });
     let username = req.query.username;
     let password = req.query.password;
 
@@ -152,6 +161,10 @@ db.connect(function(err) {
             })
         }
     })
+    var test = {
+        alreadyUsed = found
+    };
+    res.send(test);
 });
 
 //Port
