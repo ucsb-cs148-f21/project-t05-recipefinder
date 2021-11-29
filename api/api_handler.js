@@ -99,9 +99,8 @@ app.get('/api/login/', async(req, res) => {
 
     db.query(qry, function(err, res)
     {
-        if (err)
+        if (res.length == 0)
         {
-            throw err;
             success = false;
             console.log("User login fail");
         }
@@ -112,7 +111,7 @@ app.get('/api/login/', async(req, res) => {
         }
     })
     var test = {
-        loginValid = success
+        loginValid: success
     };
     res.send(test);
 });
@@ -140,9 +139,10 @@ app.get('/api/signup/', async(req, res) => {
     qry = "SELECT `user_username` FROM `entity_users` WHERE `user_username`='" + username + "'";
 
     let found = false;
-    db.query(qry, function(err, res)
+    var userID = -1;
+    db.query(qry, function(err, ressql)
     {
-        if (res.length > 0)
+        if (ressql.length > 0)
         {
             found = true;
             console.log("already an account with that username");
@@ -159,10 +159,12 @@ app.get('/api/signup/', async(req, res) => {
                     throw err;
                 }
             })
+            userID = ressql.user_id;
         }
     })
     var test = {
-        alreadyUsed = found
+        alreadyUsed: found,
+        userToken: userID
     };
     res.send(test);
 });
