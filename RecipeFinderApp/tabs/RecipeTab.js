@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Alert} from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Alert, SafeAreaView} from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import Icon  from 'react-native-vector-icons/MaterialIcons';
 import { Image } from 'react-native-elements/dist/image/Image';
@@ -69,7 +69,7 @@ const RecipeTab = ({route, navigation}) => {
         "db": "2 cups frozen corn kernels, thawed 1 pint grape tomatoes, halved 10 fresh basil leaves, chopped 3 tablespoons extra-virgin olive oil 1 tablespoon apple cider vinegar xbc teaspoon salt (Optional)", 
         "yield": "6 servings", 
         "id": "240001", 
-        "url": "https://imagesvc.meredithcorp.io/v3/mm/image?url=https%3A%2F%2Fimages.media-allrecipes.com%2Fuserphotos%2F1578799.jpg", 
+        "imgUrl": "https://imagesvc.meredithcorp.io/v3/mm/image?url=https%3A%2F%2Fimages.media-allrecipes.com%2Fuserphotos%2F1578799.jpg", 
         "servings": "6", 
         "steps": ["Five ingredients and five minutes is all you need to make this easy and nutritious summer salad! If you have extra time, you can use 4 ears of fresh corn, cooked and shucked, instead of the frozen corn. You can vary the amount of basil, olive oil, and apple cider vinegar to your taste.", "Mix corn, tomatoes, and basil leaves together in a bowl; add olive oil, vinegar, and salt and mix until evenly coated.", "If you make this 30 minutes before serving, you can use frozen corn and leave it at room temperature until serving. This way you will not have to defrost it ahead of time."], 
         "total": "10 mins", 
@@ -81,7 +81,7 @@ const RecipeTab = ({route, navigation}) => {
         "db": "2 cups frozen corn kernels, thawed 1 pint grape tomatoes, halved 10 fresh basil leaves, chopped 3 tablespoons extra-virgin olive oil 1 tablespoon apple cider vinegar xbc teaspoon salt (Optional)", 
         "yield": "6 servings", 
         "id": "240000", 
-        "url": "https://imagesvc.meredithcorp.io/v3/mm/image?url=https%3A%2F%2Fimages.media-allrecipes.com%2Fuserphotos%2F1649244.jpg&w=596&h=596&c=sc&poi=face&q=85", 
+        "imgUrl": "https://imagesvc.meredithcorp.io/v3/mm/image?url=https%3A%2F%2Fimages.media-allrecipes.com%2Fuserphotos%2F1649244.jpg&w=596&h=596&c=sc&poi=face&q=85", 
         "servings": "6", 
         "steps": ["Five ingredients and five minutes is all you need to make this easy and nutritious summer salad! If you have extra time, you can use 4 ears of fresh corn, cooked and shucked, instead of the frozen corn. You can vary the amount of basil, olive oil, and apple cider vinegar to your taste.", "Mix corn, tomatoes, and basil leaves together in a bowl; add olive oil, vinegar, and salt and mix until evenly coated.", "If you make this 30 minutes before serving, you can use frozen corn and leave it at room temperature until serving. This way you will not have to defrost it ahead of time."], 
         "total": "10 mins", 
@@ -93,7 +93,7 @@ const RecipeTab = ({route, navigation}) => {
         "db": "2 cups frozen corn kernels, thawed 1 pint grape tomatoes, halved 10 fresh basil leaves, chopped 3 tablespoons extra-virgin olive oil 1 tablespoon apple cider vinegar xbc teaspoon salt (Optional)", 
         "yield": "6 servings", 
         "id": "240002", 
-        "url": "https://imagesvc.meredithcorp.io/v3/mm/image?url=https%3A%2F%2Fimages.media-allrecipes.com%2Fuserphotos%2F1649244.jpg&w=596&h=596&c=sc&poi=face&q=85", 
+        "imgUrl": "https://imagesvc.meredithcorp.io/v3/mm/image?url=https%3A%2F%2Fimages.media-allrecipes.com%2Fuserphotos%2F1649244.jpg&w=596&h=596&c=sc&poi=face&q=85", 
         "servings": "6", 
         "steps": ["Five ingredients and five minutes is all you need to make this easy and nutritious summer salad! If you have extra time, you can use 4 ears of fresh corn, cooked and shucked, instead of the frozen corn. You can vary the amount of basil, olive oil, and apple cider vinegar to your taste.", "Mix corn, tomatoes, and basil leaves together in a bowl; add olive oil, vinegar, and salt and mix until evenly coated.", "If you make this 30 minutes before serving, you can use frozen corn and leave it at room temperature until serving. This way you will not have to defrost it ahead of time."], 
         "total": "10 mins", 
@@ -105,7 +105,7 @@ const RecipeTab = ({route, navigation}) => {
         "db": "2 cups frozen corn kernels, thawed 1 pint grape tomatoes, halved 10 fresh basil leaves, chopped 3 tablespoons extra-virgin olive oil 1 tablespoon apple cider vinegar xbc teaspoon salt (Optional)", 
         "yield": "6 servings", 
         "id": "240003", 
-        "url": "https://imagesvc.meredithcorp.io/v3/mm/image?url=https%3A%2F%2Fimages.media-allrecipes.com%2Fuserphotos%2F1649244.jpg&w=596&h=596&c=sc&poi=face&q=85", 
+        "imgUrl": "https://imagesvc.meredithcorp.io/v3/mm/image?url=https%3A%2F%2Fimages.media-allrecipes.com%2Fuserphotos%2F1649244.jpg&w=596&h=596&c=sc&poi=face&q=85", 
         "servings": "6", 
         "steps": ["Five ingredients and five minutes is all you need to make this easy and nutritious summer salad! If you have extra time, you can use 4 ears of fresh corn, cooked and shucked, instead of the frozen corn. You can vary the amount of basil, olive oil, and apple cider vinegar to your taste.", "Mix corn, tomatoes, and basil leaves together in a bowl; add olive oil, vinegar, and salt and mix until evenly coated.", "If you make this 30 minutes before serving, you can use frozen corn and leave it at room temperature until serving. This way you will not have to defrost it ahead of time."], 
         "total": "10 mins", 
@@ -114,7 +114,7 @@ const RecipeTab = ({route, navigation}) => {
       ];   */
       
       return(
-        <View style={{backgroundColor: '#ffffff', flex: 1}}>
+        <SafeAreaView style={{backgroundColor: '#ffffff', flex: 1}}>
            <View>
         <TouchableOpacity
           style={styles.btn}
@@ -137,7 +137,7 @@ const RecipeTab = ({route, navigation}) => {
                 flexDirection: 'row', 
                 padding:20, 
                 marginBottom: 20, 
-                backgroundColor:'#8a2be2', 
+                backgroundColor:'#e6e6fa', 
                 borderRadius: 30 ,
                 shadowColor: '#000',
                 shadowOpacity: 0.3,
@@ -168,7 +168,7 @@ const RecipeTab = ({route, navigation}) => {
           >
           </FlatList>
          
-        </View>
+        </SafeAreaView>
     
       );
 } 
@@ -199,7 +199,7 @@ textAlign: 'center',
 fontWeight: 'bold',
 },
 btn: {
-  backgroundColor: '#8a2be2',
+  backgroundColor: '#F96300',
   padding: 9,
   margin: 5,
   borderRadius: 5,

@@ -12,7 +12,7 @@ const RecipeDetails = ({route, navigation}) => {
   return(
     <SafeAreaView style={{backgroundColor:'white', flex: 1}}>
 
-    <View style={{flexDirection: 'column', backgroundColor:"#fff", padding: 15}}>
+    <View style={{flexDirection: 'column', backgroundColor:"#fff", padding: 15, flex:1}}>
 
         <FlatList
           data={ingredients}

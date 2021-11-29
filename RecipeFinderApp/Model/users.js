@@ -1,4 +1,4 @@
-export default Users = [ // Dummy User database 
+const Users = [ // Dummy User database 
     {
         id: 1, 
         username: "Royce123",
@@ -42,3 +42,5 @@ export default Users = [ // Dummy User database
         userToken: "Wyatt",
     }
 ];
+
+export default Users;
