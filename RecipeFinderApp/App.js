@@ -18,7 +18,7 @@ import RecipeTab from './tabs/RecipeTab';
 import RecipeDetails from './tabs/RecipeDetails';
 
 export default function App() {
-
+  
   const initialLoginState = {
     isLoading: true,
     userName: null,
@@ -62,7 +62,7 @@ export default function App() {
   const authContext = React.useMemo(() => ({
     signIn: async(founduser)=>{
       const userToken = String(founduser[0].userToken) 
-      const userName = founduser[0].useraame
+      const userName = founduser[0].username
     
       try {
         await AsyncStorage.setItem('userToken', userToken)

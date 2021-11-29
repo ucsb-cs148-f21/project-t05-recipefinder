@@ -24,6 +24,17 @@ import Users from '../Model/users';
 const SignInScreen = ({navigation}) => {
     const {signIn} = React.useContext(AuthContext); 
 
+    const login_api = async (username, password) => {
+        try {
+          const response = await fetch(`http://localhost:19002/api/login/?username=${username}&password=${password}`);
+          const json = await response.json();
+          console.log(json)
+          return json;
+        } catch (error) {
+          console.error(error);
+        }
+    };
+
     const [data, setData] = React.useState({
         username: "",
         password: "", 
@@ -77,6 +88,8 @@ const SignInScreen = ({navigation}) => {
     }
 
 
+
+
     const loginHandle = (username, password) => {
         if (data.username.length == 0 || data.password.length == 0){
             Alert.alert('Oops!', 'username or password field cannot be empty.', [
@@ -85,18 +98,21 @@ const SignInScreen = ({navigation}) => {
             return;
         }
 
-        let founduser = Users.filter(element => {
-            return username == element.username && password== element.password
-        })
+        let founduser = login_api(username, password)
 
-        if (founduser.length == 0 ){
+        // let founduser = Users.filter(element => {
+        //     return username == element.username && password== element.password
+        // })
+       
+        if  (founduser == false){
             Alert.alert('Oops!', 'Wrong username or password. Please try again.', [
                 {text: 'Okay'}
             ]);
             return;
         }
 
-        signIn(founduser); 
+
+        // signIn(founduser); 
     }
 
     return (

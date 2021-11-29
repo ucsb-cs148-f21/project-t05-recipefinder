@@ -95,13 +95,12 @@ app.get('/api/login/', async(req, res) => {
     let password = req.query.password;
 
     var success = false;
-    qry = "SELECT `user_id`, `user_username`, `user_password`, `user_type` FROM `entity_users` WHERE `user_username`='" + username + "' AND `user_password`='" + password + "'";
+    qry = "SELECT `user_id`, `user_username`, `user_password` FROM `entity_users` WHERE `user_username`='" + username + "' AND `user_password`='" + password + "'";
 
     db.query(qry, function(err, res)
     {
-        if (err)
+        if (res.length == 0)
         {
-            throw err;
             success = false;
             console.log("User login fail");
         }
@@ -111,9 +110,13 @@ app.get('/api/login/', async(req, res) => {
             success = true;
         }
     })
+    console.log(res);
+    console.log(res.user_id);
     var test = {
-        loginValid = success
+        loginValid: success,
+        userToken: res.user_id
     };
+    console.log(test);
     res.send(test);
 });
 
@@ -162,7 +165,7 @@ app.get('/api/signup/', async(req, res) => {
         }
     })
     var test = {
-        alreadyUsed = found
+        alreadyUsed: found
     };
     res.send(test);
 });
