@@ -1,10 +1,20 @@
-import React, { useState, useEffect } from "react";
-import { StyleSheet, Text, View, SafeAreaView, Image, ScrollView } from "react-native";
+import React, { useState, useContext } from "react";
+import { 
+    StyleSheet, 
+    Text, 
+    View, 
+    SafeAreaView, 
+    Image, 
+    ScrollView,
+    TouchableOpacity
+ } from "react-native";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import Users from '../Model/users';
+import { AuthContext } from '../component/context';
 
 export default function ProfileTab() {
+    const {signOut} = React.useContext(AuthContext);
 
     async function filterItems(arr, query) {
         return arr.filter(function(el) {
@@ -26,20 +36,23 @@ export default function ProfileTab() {
         }
       };
 
-    var userInfo;
+    const [userData, setUserData] = useState('');
+ 
     retrieveData().then((data) => {
-        userInfo = data;
-        console.log(data);
-        console.log(userInfo);
+        setUserData(data)
 
     });
-    console.log("User Info: " + userInfo)
 
 
 
     return (
         <SafeAreaView style={styles.container}>
             <ScrollView showsVerticalScrollIndicator={false}>
+                <View style={styles.logout}>
+                    <TouchableOpacity onPress= {()=>signOut()}>
+                        <Text style = {[styles.text, {color: "#AEB5BC", fontSize: 10}]}>Logout</Text>
+                    </TouchableOpacity>
+                </View>
                 <View style={{ alignSelf: "center" }}>
                     <View style={styles.profileImage}>
                         <Image source={require("../assets/profpic.png")} style={styles.image} resizeMode="center"></Image>
@@ -49,8 +62,8 @@ export default function ProfileTab() {
                     </View>
                 </View>
                 <View style={styles.infoContainer}>
-                    <Text style={[styles.text, { fontWeight: "200", fontSize: 36 }]}>nah</Text>
-                    <Text style={[styles.text, { color: "#AEB5BC", fontSize: 14 }]}>Food man</Text>
+                    <Text style={[styles.text, { fontWeight: "200", fontSize: 36 }]}>{userData.username}</Text>
+                    <Text style={[styles.text, { color: "#AEB5BC", fontSize: 14 }]}>{userData.email}</Text>
                 </View>
 
                 <View style={styles.statsContainer}>
@@ -198,5 +211,10 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         alignItems: "flex-start",
         marginBottom: 16
+    },
+    logout: {
+        ...StyleSheet.absoluteFillObject,
+        top: 20,
+        right: 5,
     }
 });
