@@ -1,7 +1,6 @@
 const startupDebugger = require('debug')('app:startup');
 const dbDebugger = require('debug')('app:db'); 
 const config = require('config')
-const Joi = require('joi');
 const helmet = require('helmet');
 const morgan = require('morgan');
 const logger = require("./logger");
@@ -21,18 +20,12 @@ app.use(function(req, res, next) {
   next();
 });
 
-// //configuration
-console.log('Application Name: ' + config.get('name'))
-console.log('Application Name: ' + config.get('mail.host'))
-
-if (app.get('env') === 'development'){
-    app.use(morgan('tiny')); //log http request for testing purpose 
-    startupDebugger('Morgan enabled...')
-}
-
 //establish connection instance
 const mysql = require('mysql2')
 
+
+//https req GET 
+app.get("/api/recipes/", async(req, res) => {
 const db = mysql.createConnection({ //db configuration
     user: "sql3451481",
     host: "sql3.freemysqlhosting.net",
@@ -48,9 +41,6 @@ db.connect(function(err) {
     }
     console.log("Successfully connected to MYSQL database");
 });
-
-//https req GET 
-app.get("/api/recipes/", async(req, res) => {
     let query_params = req.query.ingredients
     let params_object = query_params.split(",")
     if (params_object.length == 0)
@@ -79,33 +69,67 @@ app.get("/api/recipes/", async(req, res) => {
                 continue;
             }
         }
-        console.log(test)
         res.send(test);
     })
 
 }); 
 
 app.get('/api/login/', async(req, res) => {
+
+    const db = mysql.createConnection({ //db configuration
+        user: "sql3451481",
+        host: "sql3.freemysqlhosting.net",
+        password: "3LN7mANFNg",
+        database: "sql3451481"
+    })
+
+    //checking database connection
+    db.connect(function(err) {
+        if(err)
+        {
+            throw err;
+        }
+        console.log("Successfully connected to MYSQL database");
+    });
     let username = req.query.username;
     let password = req.query.password;
 
-    qry = "SELECT `user_id`, `user_username`, `user_password`, `user_type` FROM `entity_users` WHERE `user_username`='" + username + "' AND `user_password`='" + password + "'";
-
-    db.query(qry, function(err, res)
+    qry = "SELECT `user_id`, `user_username`, `user_password` FROM `entity_users` WHERE `user_username`='" + username + "' AND `user_password`='" + password + "'";
+    db.query(qry, function(err, ressql)
     {
-        if (err)
+        res.send(ressql);
+        if (ressql.length == 0)
         {
-            throw err;
-            return res.send("User login incorrect");
-            console.log("User login fail");
+           console.log("User login fail");
         }
-        console.log("User login success");
+        else
+        {
+            console.log("User login success");
+        }
     })
-    return res.send('User has been added successfully');
+    var test = {
+        loginValid: success,
+        userToken: userID
+    };
 });
 
 
 app.get('/api/signup/', async(req, res) => {
+    const db = mysql.createConnection({ //db configuration
+        user: "sql3451481",
+        host: "sql3.freemysqlhosting.net",
+        password: "3LN7mANFNg",
+        database: "sql3451481"
+    })
+
+    //checking database connection
+    db.connect(function(err) {
+        if(err)
+        {
+            throw err;
+        }
+        console.log("Successfully connected to MYSQL database");
+    });
     let username = req.query.username;
     let password = req.query.password;
 
@@ -133,16 +157,11 @@ app.get('/api/signup/', async(req, res) => {
             })
         }
     })
+    var test = {
+        alreadyUsed: found
+    };
+    res.send(test);
 });
-
-//validator that check the user input
-// function validateRecipe(recipe){
-//     const schema = {
-//         name: Joi.string().min(3).required()
-//     };
-//     result = Joi.validateRecipe(recipe, schema);
-//     return result;
-// }
 
 //Port
 const port = process.env.PORT || 19002

@@ -5,35 +5,38 @@ import {
     Image, 
     StyleSheet,
     Dimensions,
-    TouchableOpacity
+    TouchableOpacity,
 } from 'react-native';
 
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { LinearGradient } from 'expo-linear-gradient';
 import * as Animatable from 'react-native-animatable'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 
 const SplashScreen = ({navigation}) => {
     return (
         <View style={styles.container}>
+            <KeyboardAwareScrollView contentContainerStyle={{flexGrow: 1}}>
             <View style={styles.header} >
                 <Animatable.Image
                 animation = "bounceIn"
+                duraton="1500"
                 style={styles.logo}
-                source = {require("../assets/recipe.png")}
+                source = {require("../assets/recipeIcon.png")}
                 resizeMode= "stretch"
                 />
             </View>
             <Animatable.View 
                 style={styles.footer}
                 animation = "fadeInUpBig"
-            >
-                <Text style={styles.title}>Log in to find out amazing recipes!</Text>
+            > 
+                <Text style={styles.title}>Log in to find amazing recipes!</Text>
                 <Text style={styles.text}>Sign in with an account</Text>
                 <View style = {styles.button}>
                     <TouchableOpacity onPress= {()=>navigation.navigate('SignInScreen')}>
                         <LinearGradient
-                            colors = {['#8a2be2', '#00008b']}
+                            colors = {['#F96300', '#F5C900']}
                             style = {styles.signIn}
                         >
                             <Text style = {styles.textSign}>Get Started</Text>
@@ -46,7 +49,9 @@ const SplashScreen = ({navigation}) => {
                     </TouchableOpacity>
                 </View>
             </Animatable.View>
-        </View>  
+            </KeyboardAwareScrollView>
+        </View> 
+
     );
 };
 
@@ -58,36 +63,32 @@ const height_logo = height * 0.25
 const styles = StyleSheet.create({
     container:{
         flex: 1,
-        backgroundColor: '#8a2be2'
+        backgroundColor: '#F96300'
     },
     header:{
         flex: 2,
         justifyContent: 'center', 
-        alignItems: 'center'
+        alignItems: 'center',
     },
     footer: {
         flex: 1,
-        backgroundColor: '#8a2be2',
+        backgroundColor: '#fff',
         borderTopLeftRadius: 30,
         borderTopRightRadius: 30,
         paddingVertical: 50,
         paddingHorizontal: 30
     },
     logo: {
-        position: 'relative',
-        top: 50,
         width: height_logo, 
-        height: height_logo,
-        backgroundColor: 'transparent'
+        height: height_logo
     },
     title: {
-        textAlign: 'center',
-        color: 'white',
+        color: '#FD6300',
         fontSize: 30,
         fontWeight: 'bold'
     },
     text: {
-        color: '#DED55B', 
+        color: 'orange', 
         marginTop: 5
     },
     textSign: {
@@ -103,7 +104,10 @@ const styles = StyleSheet.create({
         flexDirection: 'row'
     },
     button: {
-        alignItems: 'center',
+        alignItems: 'flex-end',
         marginTop: 30, 
+    },
+    end: {
+        backgroundColor: '#fff'
     }
 });

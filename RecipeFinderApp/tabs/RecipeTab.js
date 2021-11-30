@@ -85,7 +85,7 @@ const RecipeTab = ({route, navigation}) => {
   }
       
       return(
-        <View style={{backgroundColor: '#ffffff', flex: 1}}>
+        <SafeAreaView style={{backgroundColor: '#ffffff', flex: 1}}>
            <View>
         <TouchableOpacity
           style={styles.btn}
@@ -208,7 +208,7 @@ const RecipeTab = ({route, navigation}) => {
           >
           </FlatList>
          
-        </View>
+        </SafeAreaView>
     
       );
 } 
@@ -239,7 +239,7 @@ textAlign: 'center',
 fontWeight: 'bold',
 },
 btn: {
-  backgroundColor: '#c2bad8',
+  backgroundColor: '#F96300',
   padding: 9,
   margin: 5,
   borderRadius: 5,
