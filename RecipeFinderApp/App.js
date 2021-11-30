@@ -60,9 +60,9 @@ export default function App() {
   const [loginState, dispatch] = React.useReducer(loginReducer, initialLoginState);
 
   const authContext = React.useMemo(() => ({
-    signIn: async(founduser)=>{
-      const userToken = String(founduser[0].userToken) 
-      const userName = founduser[0].username
+    signIn: async(user, token)=>{
+      const userToken = token
+      const userName = user
     
       try {
         await AsyncStorage.setItem('userToken', userToken)

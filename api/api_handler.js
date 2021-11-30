@@ -94,30 +94,23 @@ app.get('/api/login/', async(req, res) => {
     let username = req.query.username;
     let password = req.query.password;
 
-    var success = false;
     qry = "SELECT `user_id`, `user_username`, `user_password` FROM `entity_users` WHERE `user_username`='" + username + "' AND `user_password`='" + password + "'";
-
-    db.query(qry, function(err, res)
+    db.query(qry, function(err, ressql)
     {
-        if (res.length == 0)
+        res.send(ressql);
+        if (ressql.length == 0)
         {
-            success = false;
-            console.log("User login fail");
+           console.log("User login fail");
         }
         else
         {
             console.log("User login success");
-            success = true;
         }
     })
-    console.log(res);
-    console.log(res.user_id);
     var test = {
         loginValid: success,
-        userToken: res.user_id
+        userToken: userID
     };
-    console.log(test);
-    res.send(test);
 });
 
 

@@ -87,32 +87,31 @@ const SignInScreen = ({navigation}) => {
         }
     }
 
-
-
-
-    const loginHandle = (username, password) => {
-        if (data.username.length == 0 || data.password.length == 0){
+    const loginHandle = async(username, password) => {
+        console.log(username, password)
+        if (username.length == 0 || password.length == 0){
             Alert.alert('Oops!', 'username or password field cannot be empty.', [
                 {text: 'Okay'}
             ]);
             return;
         }
 
-        let founduser = login_api(username, password)
-
-        // let founduser = Users.filter(element => {
-        //     return username == element.username && password== element.password
-        // })
-       
-        if  (founduser == false){
+        var founduser = await login_api(username, password)
+        if  (founduser.length == 0){
             Alert.alert('Oops!', 'Wrong username or password. Please try again.', [
                 {text: 'Okay'}
             ]);
             return;
         }
 
+        var user = founduser[0].user_username
+        var token = founduser[0].user_id
 
-        // signIn(founduser); 
+        // let founduser = Users.filter(element => {
+        //     return username == element.username && password== element.password
+        // })
+       
+        signIn(user, token); 
     }
 
     return (
