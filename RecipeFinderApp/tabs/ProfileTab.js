@@ -62,14 +62,6 @@ export default function ProfileTab() {
                         </View>
                     </View>
                 </View>
-                <Button
-                    title="Sign Out"
-                    onPress={() => (signOut())}
-                />
-                <Button
-                    title="Print current userToken"
-                    onPress={() => (_retrieveData())}
-                />
             </ScrollView>
         </SafeAreaView>
     );
