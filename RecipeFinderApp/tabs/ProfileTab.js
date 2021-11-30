@@ -1,12 +1,58 @@
-import React from "react";
-import { StyleSheet, Text, View, SafeAreaView, Image, ScrollView, Button } from "react-native";
+import React, { useState, useContext } from "react";
+import { 
+    StyleSheet, 
+    Text, 
+    View, 
+    SafeAreaView, 
+    Image, 
+    ScrollView,
+    TouchableOpacity
+ } from "react-native";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
+import Users from '../Model/users';
+import { AuthContext } from '../component/context';
 
 export default function ProfileTab() {
+    const {signOut} = React.useContext(AuthContext);
+
+    async function filterItems(arr, query) {
+        return arr.filter(function(el) {
+          if (el.userToken == query){
+            return el;
+          }
+        })
+      }
+
+    const retrieveData = async () => {
+        try {
+          const value = await AsyncStorage.getItem('userToken')
+          if (value !== null) {
+            const user_info = await filterItems(Users, value)
+            return await user_info[0];
+          }
+        } catch (error) {
+          console.log(error);
+        }
+      };
+
+    const [userData, setUserData] = useState('');
+ 
+    retrieveData().then((data) => {
+        setUserData(data)
+
+    });
+
+
 
     return (
         <SafeAreaView style={styles.container}>
             <ScrollView showsVerticalScrollIndicator={false}>
+                <View style={styles.logout}>
+                    <TouchableOpacity onPress= {()=>signOut()}>
+                        <Text style = {[styles.text, {color: "#AEB5BC", fontSize: 10}]}>Logout</Text>
+                    </TouchableOpacity>
+                </View>
                 <View style={{ alignSelf: "center" }}>
                     <View style={styles.profileImage}>
                         <Image source={require("../assets/profpic.png")} style={styles.image} resizeMode="center"></Image>
@@ -15,10 +61,9 @@ export default function ProfileTab() {
                         <Ionicons name="ios-create" size={15} color="#DFD8C8" style={{ marginTop: 0, marginLeft: 3 }}></Ionicons>
                     </View>
                 </View>
-
                 <View style={styles.infoContainer}>
-                    <Text style={[styles.text, { fontWeight: "200", fontSize: 36 }]}>Guy Fieri</Text>
-                    <Text style={[styles.text, { color: "#AEB5BC", fontSize: 14 }]}>Food Eater</Text>
+                    <Text style={[styles.text, { fontWeight: "200", fontSize: 36 }]}>{userData.username}</Text>
+                    <Text style={[styles.text, { color: "#AEB5BC", fontSize: 14 }]}>{userData.email}</Text>
                 </View>
 
                 <View style={styles.statsContainer}>
@@ -49,14 +94,12 @@ export default function ProfileTab() {
                 <Text style={[styles.subText, styles.recent]}>Allergies</Text>
                 <View style={{ alignItems: "center" }}>
                     <View style={styles.recentItem}>
-                        <View style={styles.activityIndicator}></View>
                         <View style={{ width: 250 }}>
                             <Text style={[styles.text, { color: "#41444B", fontWeight: "300" }]}>Peanuts</Text>
                         </View>
                     </View>
 
                     <View style={styles.recentItem}>
-                        <View style={styles.activityIndicator}></View>
                         <View style={{ width: 250 }}>
                             <Text style={[styles.text, { color: "#41444B", fontWeight: "300" }]}>Grass</Text>
                         </View>
@@ -158,22 +201,6 @@ const styles = StyleSheet.create({
         overflow: "hidden",
         marginHorizontal: 10
     },
-    mediaCount: {
-        backgroundColor: "#41444B",
-        position: "absolute",
-        top: "50%",
-        marginTop: -50,
-        marginLeft: 30,
-        width: 100,
-        height: 100,
-        alignItems: "center",
-        justifyContent: "center",
-        borderRadius: 12,
-        shadowColor: "rgba(0, 0, 0, 0.38)",
-        shadowOffset: { width: 0, height: 10 },
-        shadowRadius: 20,
-        shadowOpacity: 1
-    },
     recent: {
         marginLeft: 78,
         marginTop: 32,
@@ -185,13 +212,9 @@ const styles = StyleSheet.create({
         alignItems: "flex-start",
         marginBottom: 16
     },
-    activityIndicator: {
-        backgroundColor: "#CABFAB",
-        padding: 4,
-        height: 12,
-        width: 12,
-        borderRadius: 6,
-        marginTop: 3,
-        marginRight: 20
+    logout: {
+        ...StyleSheet.absoluteFillObject,
+        top: 20,
+        right: 5,
     }
 });
