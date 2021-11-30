@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Alert, Modal, Pressable} from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Alert, Modal, Pressable, SafeAreaView} from 'react-native';
 import { FlatList, TextInput } from 'react-native-gesture-handler';
 import Icon  from 'react-native-vector-icons/MaterialIcons';
 import { Image } from 'react-native-elements/dist/image/Image';
