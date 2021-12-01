@@ -6,6 +6,7 @@ import {
     SafeAreaView, 
     Image, 
     ScrollView,
+    LinearGradient,
     TouchableOpacity
  } from "react-native";
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -18,7 +19,7 @@ export default function ProfileTab() {
 
     async function filterItems(arr, query) {
         return arr.filter(function(el) {
-          if (el.userToken == query){
+          if (el.id == query){
             return el;
           }
         })
@@ -36,21 +37,23 @@ export default function ProfileTab() {
         }
       };
 
-    const [userData, setUserData] = useState('');
+    const [userName, setUserName] = useState('');
+    const [userEmail, setUserEmail] = useState('');
  
     retrieveData().then((data) => {
-        setUserData(data)
-
+        setUserName(data.username);
+        setUserEmail(data.email);
     });
 
-
+    
 
     return (
         <SafeAreaView style={styles.container}>
             <ScrollView showsVerticalScrollIndicator={false}>
                 <View style={styles.logout}>
-                    <TouchableOpacity onPress= {()=>signOut()}>
-                        <Text style = {[styles.text, {color: "#AEB5BC", fontSize: 10}]}>Logout</Text>
+                    <TouchableOpacity style={styles.button} onPress= {()=>signOut()}>
+                            <Text style = {[styles.text, {color: "#AEB5BC", fontSize: 10}]}>Logout</Text>
+
                     </TouchableOpacity>
                 </View>
                 <View style={{ alignSelf: "center" }}>
@@ -62,8 +65,8 @@ export default function ProfileTab() {
                     </View>
                 </View>
                 <View style={styles.infoContainer}>
-                    <Text style={[styles.text, { fontWeight: "200", fontSize: 36 }]}>{userData.username}</Text>
-                    <Text style={[styles.text, { color: "#AEB5BC", fontSize: 14 }]}>{userData.email}</Text>
+                    <Text style={[styles.text, { fontWeight: "200", fontSize: 36 }]}>{userName}</Text>
+                    <Text style={[styles.text, { color: "#AEB5BC", fontSize: 14 }]}>{userEmail}</Text>
                 </View>
 
                 <View style={styles.statsContainer}>
@@ -114,6 +117,10 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: "#FFF"
+    },
+    button: {
+        borderRadius: 10,
+
     },
     text: {
         fontFamily: "HelveticaNeue",
@@ -185,6 +192,11 @@ const styles = StyleSheet.create({
         alignItems: "center",
         marginTop: 16
     },
+    signIn: {
+        width: 80,
+        height: 40,
+        borderRadius: 10, 
+    },
     statsContainer: {
         flexDirection: "row",
         alignSelf: "center",
@@ -213,7 +225,8 @@ const styles = StyleSheet.create({
         marginBottom: 16
     },
     logout: {
-        ...StyleSheet.absoluteFillObject,
+        alignSelf: 'flex-end',
+        backgroundColor: '#ee6e73',
         top: 20,
         right: 5,
     }
