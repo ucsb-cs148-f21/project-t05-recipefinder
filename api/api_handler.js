@@ -146,7 +146,7 @@ app.get('/api/signup/', async(req, res) => {
         else
         {
             console.log("unique username, adding you now!");
-            qry = "INSERT INTO `entity_users` (`user_username`, `user_password`, `user_type`) VALUES ('" + username + "', '" + password + "', 'user')";
+            qry = "INSERT INTO `entity_users` (`user_username`, `user_password`) VALUES ('" + username + "', '" + password + "')";
 
             db.query(qry, function(err, res)
             {
