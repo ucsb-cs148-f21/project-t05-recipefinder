@@ -25,8 +25,10 @@ const SignInScreen = ({navigation}) => {
     const {signIn} = React.useContext(AuthContext); 
 
     const login_api = async (username, password) => {
+        console.log(username, password)
         try {
-          const response = await fetch(`http://localhost:19002/api/login/?username=${username}&password=${password}`);
+        // const response = await fetch(`http://localhost:19002/api/login/?username=${username}&password=${password}`);
+          const response = await fetch(`https://n9nk4e4y95.execute-api.us-west-2.amazonaws.com/live/login/${username},${password}`);
           const json = await response.json();
           console.log(json)
           return json;
@@ -86,9 +88,8 @@ const SignInScreen = ({navigation}) => {
             });
         }
     }
-
+console.log(data.username, data.password)
     const loginHandle = async(username, password) => {
-        console.log(username, password)
         if (username.length == 0 || password.length == 0){
             Alert.alert('Oops!', 'username or password field cannot be empty.', [
                 {text: 'Okay'}
@@ -105,7 +106,7 @@ const SignInScreen = ({navigation}) => {
         }
 
         var user = founduser[0].user_username
-        var token = founduser[0].user_id
+        var token = founduser[0].user_id.toString()
 
         // let founduser = Users.filter(element => {
         //     return username == element.username && password== element.password
