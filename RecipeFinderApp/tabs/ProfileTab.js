@@ -51,7 +51,7 @@ export default function ProfileTab() {
 
     });
     
-
+    
     return (
         <SafeAreaView style={styles.container}>
             <ScrollView showsVerticalScrollIndicator={false}>
