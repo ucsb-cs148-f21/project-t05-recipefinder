@@ -28,7 +28,7 @@ files.sort()
 
 def getRecipe(rmin, rmax):
     for i in range(rmin, rmax):
-        print(str(i) + " of " + str(rmax))
+        print(str(i))
         new_url = base_url + str(i)
 
         page = requests.get(new_url)

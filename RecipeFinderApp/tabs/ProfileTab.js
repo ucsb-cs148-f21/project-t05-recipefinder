@@ -25,7 +25,7 @@ export default function ProfileTab() {
     };
     async function filterItems(arr, query) {
         return arr.filter(function(el) {
-          if (el.userToken == query){
+          if (el.id == query){
             return el;
           }
         })
@@ -46,6 +46,7 @@ export default function ProfileTab() {
     const [userData, setUserData] = useState('');
  
     retrieveData().then((data) => {
+
         setUserData(data)
 
     });

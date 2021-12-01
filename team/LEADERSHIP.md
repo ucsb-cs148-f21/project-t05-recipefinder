@@ -27,5 +27,8 @@ UX Coordinator: Wyatt Spivak
 Design Document Coordinator: Ana Saldana
 
 Deployment Document Coordinator: Royce Nguyen
+
 User Manual Coordinator: Richard Rao
+
 Final Presentation Leader: Sara Medernach
+

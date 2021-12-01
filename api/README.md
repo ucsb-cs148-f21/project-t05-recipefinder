@@ -14,8 +14,16 @@ API Requests
 ____________
 Login: http://localhost:19002/api/login/?username=foo&?password=bar
 
+Deployed: https://n9nk4e4y95.execute-api.us-west-2.amazonaws.com/live/login/foo,bar
+
 Signup: http://localhost:19002/api/signup/?username=foo&?password=bar
 
-Search: http://localhost:19002/api/recipes/?ingredients=foo,bar
+Deployed:https://n9nk4e4y95.execute-api.us-west-2.amazonaws.com/live/signup/foo,bar
+
+Search: http://localhost:19002/api/recipes/
+
+Deployed: https://n9nk4e4y95.execute-api.us-west-2.amazonaws.com/live/recipe/foo,bar,foob,ar,f,o
+
+
 
 
