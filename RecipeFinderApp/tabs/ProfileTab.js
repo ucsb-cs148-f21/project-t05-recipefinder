@@ -7,6 +7,7 @@ import {
     Image, 
     ScrollView,
     LinearGradient,
+    FlatList,
     TouchableOpacity
  } from "react-native";
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -17,6 +18,11 @@ import { AuthContext } from '../component/context';
 export default function ProfileTab() {
     const {signOut} = React.useContext(AuthContext);
 
+    const renderItem = ({ item }) => {
+        return (
+        <Text style={[styles.text, { color: "#41444B", fontWeight: "300" }]}>{item.allergies}</Text>
+        );
+    };
     async function filterItems(arr, query) {
         return arr.filter(function(el) {
           if (el.userToken == query){
@@ -37,15 +43,12 @@ export default function ProfileTab() {
         }
       };
 
-    const [userName, setUserName] = useState('');
-    const [userEmail, setUserEmail] = useState('');
+    const [userData, setUserData] = useState('');
  
     retrieveData().then((data) => {
-        setUserName(data.username);
-        setUserEmail(data.email);
+        setUserData(data)
 
     });
-
     
 
     return (
@@ -54,7 +57,6 @@ export default function ProfileTab() {
                 <View style={styles.logout}>
                     <TouchableOpacity style={styles.button} onPress= {()=>signOut()}>
                             <Text style = {[styles.text, {color: "#AEB5BC", fontSize: 10}]}>Logout</Text>
-
                     </TouchableOpacity>
                 </View>
                 <View style={{ alignSelf: "center" }}>
@@ -66,8 +68,8 @@ export default function ProfileTab() {
                     </View>
                 </View>
                 <View style={styles.infoContainer}>
-                    <Text style={[styles.text, { fontWeight: "200", fontSize: 36 }]}>{userName}</Text>
-                    <Text style={[styles.text, { color: "#AEB5BC", fontSize: 14 }]}>{userEmail}</Text>
+                    <Text style={[styles.text, { fontWeight: "200", fontSize: 36 }]}>{userData.username}</Text>
+                    <Text style={[styles.text, { color: "#AEB5BC", fontSize: 14 }]}>{userData.email}</Text>
                 </View>
 
                 <View style={styles.statsContainer}>
@@ -97,17 +99,9 @@ export default function ProfileTab() {
                 </View>
                 <Text style={[styles.subText, styles.recent]}>Allergies</Text>
                 <View style={{ alignItems: "center" }}>
-                    <View style={styles.recentItem}>
-                        <View style={{ width: 250 }}>
-                            <Text style={[styles.text, { color: "#41444B", fontWeight: "300" }]}>Peanuts</Text>
-                        </View>
-                    </View>
-
-                    <View style={styles.recentItem}>
-                        <View style={{ width: 250 }}>
-                            <Text style={[styles.text, { color: "#41444B", fontWeight: "300" }]}>Grass</Text>
-                        </View>
-                    </View>
+                <SafeAreaView style={{flex: 1}}>
+                    <FlatList data={userData} renderItem={renderItem} keyExtractor={(id) => item.id} />
+                </SafeAreaView>
                 </View>
             </ScrollView>
         </SafeAreaView>
