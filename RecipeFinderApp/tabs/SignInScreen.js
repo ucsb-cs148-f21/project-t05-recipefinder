@@ -26,7 +26,7 @@ const SignInScreen = ({navigation}) => {
 
     const login_api = async (username, password) => {
         try {
-          const response = await fetch(`http://localhost:19002/api/login/?username=${username}&password=${password}`);
+          const response = await fetch(`https://n9nk4e4y95.execute-api.us-west-2.amazonaws.com/live/login/${username},${password}`);
           const json = await response.json();
           console.log(json)
           return json;
