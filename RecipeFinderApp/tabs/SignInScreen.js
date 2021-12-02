@@ -20,6 +20,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { AuthContext } from '../component/context';
 import Users from '../Model/users';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const SignInScreen = ({navigation}) => {
     const {signIn} = React.useContext(AuthContext); 
@@ -104,8 +105,16 @@ console.log(data.username, data.password)
             return;
         }
 
-        var user = founduser[0].user_username
-        var token = founduser[0].user_id.toString()
+        var user = founduser[0].user_username;
+        var token = founduser[0].user_id.toString();
+
+        //add this to help persist Ingredient List based on UserName
+        try {
+            await AsyncStorage.setItem('userName', user);
+            console.log('success');
+          } catch (error){
+            console.log(error);
+        }
 
         // let founduser = Users.filter(element => {
         //     return username == element.username && password== element.password
