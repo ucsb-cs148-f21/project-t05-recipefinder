@@ -114,12 +114,12 @@ const RecipeTab = ({route, navigation}) => {
                   <Text style={styles.modalText}>Filter Recipes</Text>
                   <View style={styles.row}>
                     <View style={styles.inputWrap}>
-                      <Text style={styles.btnText}>Prep Time: </Text>
+                      <Text style={styles.inputText}>Prep Time: </Text>
                     </View>
                     <View style={styles.inputWrap}>
                       <TextInput
                         placeholder="Prep Time"
-                        style={styles.btnText}
+                        style={styles.inputText}
                         onChangeText={onChangePrep}
                         value={textPrep}
                       />
@@ -127,12 +127,12 @@ const RecipeTab = ({route, navigation}) => {
                   </View>
                   <View style={styles.row}>
                     <View style={styles.inputWrap}>
-                      <Text style={styles.btnText}>Total Time: </Text>
+                      <Text style={styles.inputText}>Total Time: </Text>
                     </View>
                     <View style={styles.inputWrap}>
                       <TextInput
                         placeholder="Total Time"
-                        style={styles.btnText}
+                        style={styles.inputText}
                         onChangeText={onChangeTotal}
                         value={textTotal}
                       />
@@ -140,12 +140,12 @@ const RecipeTab = ({route, navigation}) => {
                   </View>
                   <View style={styles.row}>
                     <View style={styles.inputWrap}>
-                      <Text style={styles.btnText}>Servings: </Text>
+                      <Text style={styles.inputText}>Servings: </Text>
                     </View>
                     <View style={styles.inputWrap}>
                       <TextInput
                         placeholder="Servings"
-                        style={styles.btnText}
+                        style={styles.inputText}
                         onChangeText={onChangeServings}
                         value={textServings}
                       />
@@ -250,6 +250,11 @@ btn: {
 },
 btnText: {
   color: 'white',
+  fontSize: 20,
+  textAlign: 'center',
+},
+inputText:{
+  color: 'black',
   fontSize: 20,
   textAlign: 'center',
 },
