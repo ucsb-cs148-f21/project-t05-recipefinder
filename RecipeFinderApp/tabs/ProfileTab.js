@@ -15,17 +15,12 @@ import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import Users from '../Model/users';
 import { AuthContext } from '../component/context';
 
-export default function ProfileTab() {
+const ProfileTab = ({ navigation }) => {
     const {signOut} = React.useContext(AuthContext);
 
-    const renderItem = ({ item }) => {
-        return (
-        <Text style={[styles.text, { color: "#41444B", fontWeight: "300" }]}>{item.allergies}</Text>
-        );
-    };
     async function filterItems(arr, query) {
         return arr.filter(function(el) {
-          if (el.id == query){
+          if (el.id== query){
             return el;
           }
         })
@@ -44,12 +39,13 @@ export default function ProfileTab() {
       };
 
     const [userData, setUserData] = useState('');
- 
-    retrieveData().then((data) => {
 
-        setUserData(data)
+    retrieveData().then((data) => {
+        setUserData(data);
 
     });
+    var allergies = userData.allergies
+
     
     
     return (
@@ -65,7 +61,9 @@ export default function ProfileTab() {
                         <Image source={require("../assets/profpic.png")} style={styles.image} resizeMode="center"></Image>
                     </View>
                     <View style={styles.add}>
-                        <Ionicons name="ios-create" size={15} color="#DFD8C8" style={{ marginTop: 0, marginLeft: 3 }}></Ionicons>
+                        <TouchableOpacity onPress={()=>navigation.navigate("Edit Profile")}>
+                            <Ionicons name="ios-create" size={15} color="#DFD8C8" style={{ marginTop: 0, marginLeft: 3 }}></Ionicons>
+                        </TouchableOpacity>
                     </View>
                 </View>
                 <View style={styles.infoContainer}>
@@ -73,35 +71,16 @@ export default function ProfileTab() {
                     <Text style={[styles.text, { color: "#AEB5BC", fontSize: 14 }]}>{userData.email}</Text>
                 </View>
 
-                <View style={styles.statsContainer}>
-                    <View style={styles.statsBox}>
-                        <Text style={[styles.text, { fontSize: 24 }]}>783</Text>
-                        <Text style={[styles.text, styles.subText]}>Recipes Used</Text>
-                    </View>
-                    <View style={[styles.statsBox, { borderColor: "#DFD8C8", borderLeftWidth: 1, borderRightWidth: 1 }]}>
-                        <Text style={[styles.text, { fontSize: 24 }]}>4,844</Text>
-                        <Text style={[styles.text, styles.subText]}>Ingredients Used</Text>
-                    </View>
-                </View>
-
-                <View style={{ marginTop: 32 }}>
-                  <Text style = {[styles.favoriteText, {fontSize: 16}]}>Favorites</Text>
-                    <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-                        <View style={styles.mediaImageContainer}>
-                            <Image source={require("../assets/pasta.png")} style={styles.image} resizeMode="cover"></Image>
-                        </View>
-                        <View style={styles.mediaImageContainer}>
-                            <Image source={require("../assets/bread.png")} style={styles.image} resizeMode="cover"></Image>
-                        </View>
-                        <View style={styles.mediaImageContainer}>
-                            <Image source={require("../assets/icon.png")} style={styles.image} resizeMode="cover"></Image>
-                        </View>
-                    </ScrollView>
-                </View>
-                <Text style={[styles.subText, styles.recent]}>Allergies</Text>
-                <View style={{ alignItems: "center" }}>
+                
+                
+                <View style={{ alignItems: "center" , marginRight: 100}}>
+                <Text style={[styles.text]}>Allergies</Text>
                 <SafeAreaView style={{flex: 1}}>
-                    <FlatList data={userData} renderItem={renderItem} keyExtractor={(id) => item.id} />
+                <FlatList
+                    data={allergies}
+                    keyExtractor={(item, index) => index.toString()}
+                    renderItem={({item}) => ( <Text style={styles.text}>{item}</Text>)}>
+                    </FlatList>
                 </SafeAreaView>
                 </View>
             </ScrollView>
@@ -227,3 +206,5 @@ const styles = StyleSheet.create({
         right: 5,
     }
 });
+
+export default ProfileTab;
