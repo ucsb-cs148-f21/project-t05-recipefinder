@@ -105,7 +105,7 @@ const SignInScreen = ({navigation}) => {
         }
 
         var user = founduser[0].user_username
-        var token = founduser[0].user_id
+        var token = founduser[0].user_id.toString()
 
         // let founduser = Users.filter(element => {
         //     return username == element.username && password== element.password

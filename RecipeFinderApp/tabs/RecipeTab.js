@@ -30,7 +30,9 @@ const RecipeTab = ({route, navigation}) => {
     if (textTotal == '') textTotal = 10000000
     if (textServings == '') textServings = 0
     for(var i=0; i < allData.length; i++){
-      if(Number(allData[i]['prep'].split(" ")[0]) <= Number(textPrep) && Number(allData[i]['total'].split(" ")[0]) <= Number(textTotal) && Number(allData[i]['servings']) >= Number(textServings)) {
+      if (allData[i]['prep'] == null){
+        newPrepData.push(allData[i])
+      } else if (Number(allData[i]['prep'].split(" ")[0]) <= Number(textPrep) && Number(allData[i]['total'].split(" ")[0]) <= Number(textTotal) && Number(allData[i]['servings']) >= Number(textServings)) {
         newPrepData.push(allData[i])
       }
     }
