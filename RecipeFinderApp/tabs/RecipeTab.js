@@ -25,7 +25,7 @@ const RecipeTab = ({route, navigation}) => {
   const onChangeServings = textValue => setTextServings(textValue);
 
   const filterRecipes = (textPrep, textTotal, textServings) => {
-    const newPrepData = []
+    const newPrepData = [];
     if (textPrep == '') textPrep = 10000000
     if (textTotal == '') textTotal = 10000000
     if (textServings == '') textServings = 0
@@ -33,7 +33,7 @@ const RecipeTab = ({route, navigation}) => {
       if (allData[i]['prep'] == null){
         newPrepData.push(allData[i])
       } else if (Number(allData[i]['prep'].split(" ")[0]) <= Number(textPrep) && Number(allData[i]['total'].split(" ")[0]) <= Number(textTotal) && Number(allData[i]['servings']) >= Number(textServings)) {
-        newPrepData.push(allData[i])
+        newPrepData.push(allData[i]);
       }
     }
     setFilterData(newPrepData);
@@ -79,67 +79,15 @@ const RecipeTab = ({route, navigation}) => {
     fetch(apiURL)
     .then((response) => response.json())
     .then((responseJson) => {
-        console.log(responseJson, "jaja")
-      setfilterData(responseJson);
-      console.log(responseJson);
+        console.log(responseJson);
+        setAllData(responseJson);
+        setFilterData(responseJson);
+        console.log(responseJson);
     }).catch((error) => {
       console.error(error);
     })
   }
-
-  //Testing Data will remove later
-       /*const filterDummyData = [{
-        "name": "Tomato, Basil, and Corn Salad with Apple Cider Dressing", 
-        "ingredients": ["2 cups frozen corn kernels, thawed", "1 pint grape tomatoes, halved", "10 fresh basil leaves, chopped", "3 tablespoons extra-virgin olive oil", "1 tablespoon apple cider vinegar", "xbc teaspoon salt (Optional)"], 
-        "nutrition facts": "120 calories; protein 2.1g; carbohydrates 13.7g; fat 7.3g; sodium 103.2mg", 
-        "db": "2 cups frozen corn kernels, thawed 1 pint grape tomatoes, halved 10 fresh basil leaves, chopped 3 tablespoons extra-virgin olive oil 1 tablespoon apple cider vinegar xbc teaspoon salt (Optional)", 
-        "yield": "6 servings", 
-        "id": "240001", 
-        "imgUrl": "https://imagesvc.meredithcorp.io/v3/mm/image?url=https%3A%2F%2Fimages.media-allrecipes.com%2Fuserphotos%2F1578799.jpg", 
-        "servings": "6", 
-        "steps": ["Five ingredients and five minutes is all you need to make this easy and nutritious summer salad! If you have extra time, you can use 4 ears of fresh corn, cooked and shucked, instead of the frozen corn. You can vary the amount of basil, olive oil, and apple cider vinegar to your taste.", "Mix corn, tomatoes, and basil leaves together in a bowl; add olive oil, vinegar, and salt and mix until evenly coated.", "If you make this 30 minutes before serving, you can use frozen corn and leave it at room temperature until serving. This way you will not have to defrost it ahead of time."], 
-        "total": "10 mins", 
-        "prep": "10 mins"},
-    
-        {"name": "Tomato, Basil, and Corn Salad with Apple Cider Dressing", 
-        "ingredients": ["2 cups frozen corn kernels, thawed", "1 pint grape tomatoes, halved", "10 fresh basil leaves, chopped", "3 tablespoons extra-virgin olive oil", "1 tablespoon apple cider vinegar", "xbc teaspoon salt (Optional)"], 
-        "nutrition facts": "120 calories; protein 2.1g; carbohydrates 13.7g; fat 7.3g; sodium 103.2mg", 
-        "db": "2 cups frozen corn kernels, thawed 1 pint grape tomatoes, halved 10 fresh basil leaves, chopped 3 tablespoons extra-virgin olive oil 1 tablespoon apple cider vinegar xbc teaspoon salt (Optional)", 
-        "yield": "6 servings", 
-        "id": "240000", 
-        "imgUrl": "https://imagesvc.meredithcorp.io/v3/mm/image?url=https%3A%2F%2Fimages.media-allrecipes.com%2Fuserphotos%2F1649244.jpg&w=596&h=596&c=sc&poi=face&q=85", 
-        "servings": "6", 
-        "steps": ["Five ingredients and five minutes is all you need to make this easy and nutritious summer salad! If you have extra time, you can use 4 ears of fresh corn, cooked and shucked, instead of the frozen corn. You can vary the amount of basil, olive oil, and apple cider vinegar to your taste.", "Mix corn, tomatoes, and basil leaves together in a bowl; add olive oil, vinegar, and salt and mix until evenly coated.", "If you make this 30 minutes before serving, you can use frozen corn and leave it at room temperature until serving. This way you will not have to defrost it ahead of time."], 
-        "total": "10 mins", 
-        "prep": "10 mins"},
-    
-        {"name": "Tomato, Basil, and Corn Salad with Apple Cider Dressing", 
-        "ingredients": ["2 cups frozen corn kernels, thawed", "1 pint grape tomatoes, halved", "10 fresh basil leaves, chopped", "3 tablespoons extra-virgin olive oil", "1 tablespoon apple cider vinegar", "xbc teaspoon salt (Optional)"], 
-        "nutrition facts": "120 calories; protein 2.1g; carbohydrates 13.7g; fat 7.3g; sodium 103.2mg", 
-        "db": "2 cups frozen corn kernels, thawed 1 pint grape tomatoes, halved 10 fresh basil leaves, chopped 3 tablespoons extra-virgin olive oil 1 tablespoon apple cider vinegar xbc teaspoon salt (Optional)", 
-        "yield": "6 servings", 
-        "id": "240002", 
-        "imgUrl": "https://imagesvc.meredithcorp.io/v3/mm/image?url=https%3A%2F%2Fimages.media-allrecipes.com%2Fuserphotos%2F1649244.jpg&w=596&h=596&c=sc&poi=face&q=85", 
-        "servings": "6", 
-        "steps": ["Five ingredients and five minutes is all you need to make this easy and nutritious summer salad! If you have extra time, you can use 4 ears of fresh corn, cooked and shucked, instead of the frozen corn. You can vary the amount of basil, olive oil, and apple cider vinegar to your taste.", "Mix corn, tomatoes, and basil leaves together in a bowl; add olive oil, vinegar, and salt and mix until evenly coated.", "If you make this 30 minutes before serving, you can use frozen corn and leave it at room temperature until serving. This way you will not have to defrost it ahead of time."], 
-        "total": "10 mins", 
-        "prep": "10 mins"},
-    
-        {"name": "Tomato, Basil, and Corn Salad with Apple Cider Dressing", 
-        "ingredients": ["2 cups frozen corn kernels, thawed", "1 pint grape tomatoes, halved", "10 fresh basil leaves, chopped", "3 tablespoons extra-virgin olive oil", "1 tablespoon apple cider vinegar", "xbc teaspoon salt (Optional)"], 
-        "nutrition facts": "120 calories; protein 2.1g; carbohydrates 13.7g; fat 7.3g; sodium 103.2mg", 
-        "db": "2 cups frozen corn kernels, thawed 1 pint grape tomatoes, halved 10 fresh basil leaves, chopped 3 tablespoons extra-virgin olive oil 1 tablespoon apple cider vinegar xbc teaspoon salt (Optional)", 
-        "yield": "6 servings", 
-        "id": "240003", 
-        "imgUrl": "https://imagesvc.meredithcorp.io/v3/mm/image?url=https%3A%2F%2Fimages.media-allrecipes.com%2Fuserphotos%2F1649244.jpg&w=596&h=596&c=sc&poi=face&q=85", 
-        "servings": "6", 
-        "steps": ["Five ingredients and five minutes is all you need to make this easy and nutritious summer salad! If you have extra time, you can use 4 ears of fresh corn, cooked and shucked, instead of the frozen corn. You can vary the amount of basil, olive oil, and apple cider vinegar to your taste.", "Mix corn, tomatoes, and basil leaves together in a bowl; add olive oil, vinegar, and salt and mix until evenly coated.", "If you make this 30 minutes before serving, you can use frozen corn and leave it at room temperature until serving. This way you will not have to defrost it ahead of time."], 
-        "total": "10 mins", 
-        "prep": "10 mins"}
-    
-      ];   */
-      
-      return(
+  return(
         <SafeAreaView style={{backgroundColor: '#ffffff', flex: 1}}>
            <View>
         <TouchableOpacity
@@ -166,12 +114,12 @@ const RecipeTab = ({route, navigation}) => {
                   <Text style={styles.modalText}>Filter Recipes</Text>
                   <View style={styles.row}>
                     <View style={styles.inputWrap}>
-                      <Text style={styles.btnText}>Prep Time: </Text>
+                      <Text style={styles.inputText}>Prep Time: </Text>
                     </View>
                     <View style={styles.inputWrap}>
                       <TextInput
                         placeholder="Prep Time"
-                        style={styles.btnText}
+                        style={styles.inputText}
                         onChangeText={onChangePrep}
                         value={textPrep}
                       />
@@ -179,12 +127,12 @@ const RecipeTab = ({route, navigation}) => {
                   </View>
                   <View style={styles.row}>
                     <View style={styles.inputWrap}>
-                      <Text style={styles.btnText}>Total Time: </Text>
+                      <Text style={styles.inputText}>Total Time: </Text>
                     </View>
                     <View style={styles.inputWrap}>
                       <TextInput
                         placeholder="Total Time"
-                        style={styles.btnText}
+                        style={styles.inputText}
                         onChangeText={onChangeTotal}
                         value={textTotal}
                       />
@@ -192,12 +140,12 @@ const RecipeTab = ({route, navigation}) => {
                   </View>
                   <View style={styles.row}>
                     <View style={styles.inputWrap}>
-                      <Text style={styles.btnText}>Servings: </Text>
+                      <Text style={styles.inputText}>Servings: </Text>
                     </View>
                     <View style={styles.inputWrap}>
                       <TextInput
                         placeholder="Servings"
-                        style={styles.btnText}
+                        style={styles.inputText}
                         onChangeText={onChangeServings}
                         value={textServings}
                       />
@@ -232,7 +180,7 @@ const RecipeTab = ({route, navigation}) => {
                 flexDirection: 'row', 
                 padding:20, 
                 marginBottom: 20, 
-                backgroundColor:'#e6e6fa', 
+                backgroundColor:'#ffdab9', 
                 borderRadius: 30 ,
                 shadowColor: '#000',
                 shadowOpacity: 0.3,
@@ -302,6 +250,11 @@ btn: {
 },
 btnText: {
   color: 'white',
+  fontSize: 20,
+  textAlign: 'center',
+},
+inputText:{
+  color: 'black',
   fontSize: 20,
   textAlign: 'center',
 },
