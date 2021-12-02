@@ -13,8 +13,8 @@ base_url = 'https://www.allrecipes.com/recipe/'
 rmin = 220000
 rmax = 260000
 threads = 24
-#rmin = 220001
-#rmax = 220002
+#rmin = 234994
+#rmax = 234995
 #threads = 1
 inc = math.floor((rmax - rmin) / threads)
 
@@ -75,9 +75,12 @@ def getRecipe(rmin, rmax):
             ingre_list = []
             baseStr = ""
             for i in ingredients:
-                ingre_list.append(str(i.string).strip())
+                string = str(i.string)
+                string.strip()
+                string = string.replace('\u2009', ' ')
+                ingre_list.append(string)
                 baseStr += " "
-                baseStr += str(i.string).strip()
+                baseStr += string
             recipe_info.update({"ingredients": ingre_list})
             recipe_info.update({"db": baseStr})
         except Exception as e:
