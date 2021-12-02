@@ -26,13 +26,42 @@ const RecipeTab = ({route, navigation}) => {
 
   const filterRecipes = (textPrep, textTotal, textServings) => {
     const newPrepData = [];
-    if (textPrep == '') textPrep = 10000000
-    if (textTotal == '') textTotal = 10000000
+    var prepTime = 0;
+    var totalTime = 0;
+    if (textPrep == '') textPrep = 10000000000
+    if (textTotal == '') textTotal = 10000000000
     if (textServings == '') textServings = 0
     for(var i=0; i < allData.length; i++){
+      var inPrep = false;
+      var inTotal = false;
       if (allData[i]['prep'] == null){
-        newPrepData.push(allData[i])
-      } else if (Number(allData[i]['prep'].split(" ")[0]) <= Number(textPrep) && Number(allData[i]['total'].split(" ")[0]) <= Number(textTotal) && Number(allData[i]['servings']) >= Number(textServings)) {
+        inPrep = true;
+      }
+      else {
+        if (allData[i]['prep'].search("hr") != -1) {
+          prepTime = Number(allData[i]['prep'].split(" ")[0]) * 60 + Number(allData[i]['prep'].split(" ")[2]);
+        }
+        else {prepTime = Number(allData[i]['prep'].split(" ")[0])}
+        if (prepTime <= Number(textPrep)) {
+          inPrep = true;
+        }
+      }
+      console.log(inTotal)
+      if (allData[i]['total'] == null) {
+        inTotal = true;
+      } 
+      else {
+        if (allData[i]['total'].search("hr") != -1) {
+          totalTime = Number(allData[i]['total'].split(" ")[0]) * 60 + Number(allData[i]['total'].split(" ")[2]);
+        }
+        else {totalTime = Number(allData[i]['total'].split(" ")[0])}
+        console.log(allData[i]['total'], totalTime, textTotal)
+        if (totalTime <= Number(textTotal)) {
+          inTotal = true;
+        }
+        console.log(allData[i]['total'], totalTime, inTotal, 2)
+      }
+      if (Number(allData[i]['servings']) >= Number(textServings) && inPrep && inTotal) {
         newPrepData.push(allData[i]);
       }
     }
