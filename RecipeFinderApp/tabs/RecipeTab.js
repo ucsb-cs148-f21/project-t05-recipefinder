@@ -180,7 +180,7 @@ const RecipeTab = ({route, navigation}) => {
                 flexDirection: 'row', 
                 padding:20, 
                 marginBottom: 20, 
-                backgroundColor:'#deb887', 
+                backgroundColor:'#ffdab9', 
                 borderRadius: 30 ,
                 shadowColor: '#000',
                 shadowOpacity: 0.3,
