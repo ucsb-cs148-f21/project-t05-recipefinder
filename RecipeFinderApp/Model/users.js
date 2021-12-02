@@ -1,11 +1,11 @@
-const Users = [ // Dummy User database 
+const Users = [
     {
         id: 1, 
         username: "Royce123",
         password: "passwordcs148",
         email: "royce123@gmail.com",
         userToken: "Royce",
-        allergies: ["peanuts"],
+        allergies: ["peanuts", "tofu", "cake"],
     }, 
     {
         id: 2, 
