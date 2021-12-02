@@ -4,6 +4,9 @@ import { FlatList, TextInput } from 'react-native-gesture-handler';
 import Icon  from 'react-native-vector-icons/MaterialIcons';
 import { Image } from 'react-native-elements/dist/image/Image';
 import { useState, useEffect } from 'react';
+import { CheckBox } from 'react-native-elements/dist/checkbox/CheckBox';
+import Users from '../Model/users';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 const RecipeTab = ({route, navigation}) => {
@@ -16,6 +19,7 @@ const RecipeTab = ({route, navigation}) => {
   const pantryIngredients = route.params;
 
   const [modalVisible, setModalVisible] = useState(false);
+  const [checked, setChecked] = useState(false);
 
   const [textPrep, setTextPrep] = useState('');
   const [textTotal, setTextTotal] = useState('');
@@ -24,7 +28,35 @@ const RecipeTab = ({route, navigation}) => {
   const onChangeTotal = textValue => setTextTotal(textValue);
   const onChangeServings = textValue => setTextServings(textValue);
 
-  const filterRecipes = (textPrep, textTotal, textServings) => {
+  async function filterItems(arr, query) {
+    return arr.filter(function(el) {
+      if (el.id == query){
+        return el;
+      }
+    })
+  }
+
+  const retrieveData = async () => {
+      try {
+        const value = await AsyncStorage.getItem('userToken')
+        if (value !== null) {
+          const user_info = await filterItems(Users, value)
+          return await user_info[0];
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+  const [userData, setUserData] = useState('');
+
+  retrieveData().then((data) => {
+
+      setUserData(data)
+
+  });
+
+  const filterRecipes = (textPrep, textTotal, textServings, checked) => {
     const newPrepData = [];
     var prepTime = 0;
     var totalTime = 0;
@@ -34,6 +66,18 @@ const RecipeTab = ({route, navigation}) => {
     for(var i=0; i < allData.length; i++){
       var inPrep = false;
       var inTotal = false;
+      var hasAllergies = false;
+      if (checked) {
+        for(var j=0; j < allData[i]['ingredients'].length; j++) {
+          for(var k=0; k < userData.allergies.length; k++) {
+            console.log(userData.allergies[k], allData[i]['ingredients'][j].search(userData.allergies[k]))
+            if (allData[i]['ingredients'][j].search(userData.allergies[k]) != -1) {
+              hasAllergies = true;
+              break;
+            }
+          }
+        }
+      }
       if (allData[i]['prep'] == null){
         inPrep = true;
       }
@@ -46,7 +90,6 @@ const RecipeTab = ({route, navigation}) => {
           inPrep = true;
         }
       }
-      console.log(inTotal)
       if (allData[i]['total'] == null) {
         inTotal = true;
       } 
@@ -55,13 +98,11 @@ const RecipeTab = ({route, navigation}) => {
           totalTime = Number(allData[i]['total'].split(" ")[0]) * 60 + Number(allData[i]['total'].split(" ")[2]);
         }
         else {totalTime = Number(allData[i]['total'].split(" ")[0])}
-        console.log(allData[i]['total'], totalTime, textTotal)
         if (totalTime <= Number(textTotal)) {
           inTotal = true;
         }
-        console.log(allData[i]['total'], totalTime, inTotal, 2)
       }
-      if (Number(allData[i]['servings']) >= Number(textServings) && inPrep && inTotal) {
+      if (Number(allData[i]['servings']) >= Number(textServings) && inPrep && inTotal && !hasAllergies) {
         newPrepData.push(allData[i]);
       }
     }
@@ -143,6 +184,17 @@ const RecipeTab = ({route, navigation}) => {
                   <Text style={styles.modalText}>Filter Recipes</Text>
                   <View style={styles.row}>
                     <View style={styles.inputWrap}>
+                      <Text style={styles.inputText}>Allergies </Text>
+                    </View>
+                    <View style={styles.inputWrap}>
+                      <CheckBox
+                        checked={checked}
+                        onPress={() => setChecked(!checked)}
+                      />
+                    </View>
+                  </View>
+                  <View style={styles.row}>
+                    <View style={styles.inputWrap}>
                       <Text style={styles.inputText}>Prep Time: </Text>
                     </View>
                     <View style={styles.inputWrap}>
@@ -184,7 +236,7 @@ const RecipeTab = ({route, navigation}) => {
                     style={styles.btn}
                     onPress={() => {
                       setModalVisible(!modalVisible);
-                      filterRecipes(textPrep, textTotal, textServings);
+                      filterRecipes(textPrep, textTotal, textServings, checked);
                     }}
                   >
                     <Text style={styles.textStyle}>Apply</Text>
