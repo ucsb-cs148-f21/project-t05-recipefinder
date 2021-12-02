@@ -21,9 +21,8 @@ import RecipeDetails from './tabs/RecipeDetails';
 function ProfilePage() {
   return (
     <Stack.Navigator>
-      <Stack.Screen name="Profile" component={ProfileTab} />
+      <Stack.Screen name="Prof" component={ProfileTab} />
       <Stack.Screen name="Edit Profile" component={EditProfile} />
-
     </Stack.Navigator>
   );
 }
@@ -148,7 +147,7 @@ export default function App() {
               >
             <BottomTabs.Screen name="Ingredients" component={IngredientsTab} />
             <BottomTabs.Screen name="Recipes" component={RecipeTab} />
-            <BottomTabs.Screen name="Prof" component={ProfilePage} options={{headerShown: false}} />
+            <BottomTabs.Screen name="Profile" component={ProfilePage} options={{headerShown: false}} />
             <BottomTabs.Screen name="Recipe Details" component={RecipeDetails}   options={{
         tabBarButton: (props) => null, //this is additional if you want to hide the tab element from the bottom nav
       }}/>
