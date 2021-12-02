@@ -1,9 +1,12 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Alert, Modal, Pressable, SafeAreaView} from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Alert, Modal, Pressable, SafeAreaView, Switch} from 'react-native';
 import { FlatList, TextInput } from 'react-native-gesture-handler';
 import Icon  from 'react-native-vector-icons/MaterialIcons';
 import { Image } from 'react-native-elements/dist/image/Image';
 import { useState, useEffect } from 'react';
+import { CheckBox } from 'react-native-elements/dist/checkbox/CheckBox';
+import Users from '../Model/users';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 const RecipeTab = ({route, navigation}) => {
@@ -16,6 +19,9 @@ const RecipeTab = ({route, navigation}) => {
   const pantryIngredients = route.params;
 
   const [modalVisible, setModalVisible] = useState(false);
+  const [isEnabled, setIsEnabled] = useState(false);
+
+  const toggleSwitch = () => setIsEnabled(previousState => !previousState);
 
   const [textPrep, setTextPrep] = useState('');
   const [textTotal, setTextTotal] = useState('');
@@ -24,14 +30,81 @@ const RecipeTab = ({route, navigation}) => {
   const onChangeTotal = textValue => setTextTotal(textValue);
   const onChangeServings = textValue => setTextServings(textValue);
 
-  const filterRecipes = (textPrep, textTotal, textServings) => {
-    const newPrepData = []
-    if (textPrep == '') textPrep = 10000000
-    if (textTotal == '') textTotal = 10000000
+  async function filterItems(arr, query) {
+    return arr.filter(function(el) {
+      if (el.id == query){
+        return el;
+      }
+    })
+  }
+
+  const retrieveData = async () => {
+      try {
+        const value = await AsyncStorage.getItem('userToken')
+        if (value !== null) {
+          const user_info = await filterItems(Users, value)
+          return await user_info[0];
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+  const [userData, setUserData] = useState('');
+
+  retrieveData().then((data) => {
+
+      setUserData(data)
+
+  });
+
+  const filterRecipes = (textPrep, textTotal, textServings, isEnabled) => {
+    const newPrepData = [];
+    var prepTime = 0;
+    var totalTime = 0;
+    if (textPrep == '') textPrep = 10000000000
+    if (textTotal == '') textTotal = 10000000000
     if (textServings == '') textServings = 0
     for(var i=0; i < allData.length; i++){
-      if(Number(allData[i]['prep'].split(" ")[0]) <= Number(textPrep) && Number(allData[i]['total'].split(" ")[0]) <= Number(textTotal) && Number(allData[i]['servings']) >= Number(textServings)) {
-        newPrepData.push(allData[i])
+      var inPrep = false;
+      var inTotal = false;
+      var hasAllergies = false;
+      if (isEnabled) {
+        for(var j=0; j < allData[i]['ingredients'].length; j++) {
+          for(var k=0; k < userData.allergies.length; k++) {
+            if (allData[i]['ingredients'][j].search(userData.allergies[k]) != -1) {
+              hasAllergies = true;
+              break;
+            }
+          }
+        }
+      }
+      if (allData[i]['prep'] == null){
+        inPrep = true;
+      }
+      else {
+        if (allData[i]['prep'].search("hr") != -1) {
+          prepTime = Number(allData[i]['prep'].split(" ")[0]) * 60 + Number(allData[i]['prep'].split(" ")[2]);
+        }
+        else {prepTime = Number(allData[i]['prep'].split(" ")[0])}
+        if (prepTime <= Number(textPrep)) {
+          inPrep = true;
+        }
+      }
+      if (allData[i]['total'] == null) {
+        inTotal = true;
+      } 
+      else {
+        if (allData[i]['total'].search("hr") != -1) {
+          totalTime = Number(allData[i]['total'].split(" ")[0]) * 60 + Number(allData[i]['total'].split(" ")[2]);
+        }
+        else {totalTime = Number(allData[i]['total'].split(" ")[0])}
+        if (totalTime <= Number(textTotal)) {
+          inTotal = true;
+        }
+      }
+      if (Number(allData[i]['servings']) >= Number(textServings) && inPrep && inTotal && !hasAllergies) {
+        newPrepData.push(allData[i]);
       }
     }
     setFilterData(newPrepData);
@@ -77,67 +150,15 @@ const RecipeTab = ({route, navigation}) => {
     fetch(apiURL)
     .then((response) => response.json())
     .then((responseJson) => {
-        console.log(responseJson, "jaja")
-      setfilterData(responseJson);
-      console.log(responseJson);
+        console.log(responseJson);
+        setAllData(responseJson);
+        setFilterData(responseJson);
+        console.log(responseJson);
     }).catch((error) => {
       console.error(error);
     })
   }
-
-  //Testing Data will remove later
-       /*const filterDummyData = [{
-        "name": "Tomato, Basil, and Corn Salad with Apple Cider Dressing", 
-        "ingredients": ["2 cups frozen corn kernels, thawed", "1 pint grape tomatoes, halved", "10 fresh basil leaves, chopped", "3 tablespoons extra-virgin olive oil", "1 tablespoon apple cider vinegar", "xbc teaspoon salt (Optional)"], 
-        "nutrition facts": "120 calories; protein 2.1g; carbohydrates 13.7g; fat 7.3g; sodium 103.2mg", 
-        "db": "2 cups frozen corn kernels, thawed 1 pint grape tomatoes, halved 10 fresh basil leaves, chopped 3 tablespoons extra-virgin olive oil 1 tablespoon apple cider vinegar xbc teaspoon salt (Optional)", 
-        "yield": "6 servings", 
-        "id": "240001", 
-        "imgUrl": "https://imagesvc.meredithcorp.io/v3/mm/image?url=https%3A%2F%2Fimages.media-allrecipes.com%2Fuserphotos%2F1578799.jpg", 
-        "servings": "6", 
-        "steps": ["Five ingredients and five minutes is all you need to make this easy and nutritious summer salad! If you have extra time, you can use 4 ears of fresh corn, cooked and shucked, instead of the frozen corn. You can vary the amount of basil, olive oil, and apple cider vinegar to your taste.", "Mix corn, tomatoes, and basil leaves together in a bowl; add olive oil, vinegar, and salt and mix until evenly coated.", "If you make this 30 minutes before serving, you can use frozen corn and leave it at room temperature until serving. This way you will not have to defrost it ahead of time."], 
-        "total": "10 mins", 
-        "prep": "10 mins"},
-    
-        {"name": "Tomato, Basil, and Corn Salad with Apple Cider Dressing", 
-        "ingredients": ["2 cups frozen corn kernels, thawed", "1 pint grape tomatoes, halved", "10 fresh basil leaves, chopped", "3 tablespoons extra-virgin olive oil", "1 tablespoon apple cider vinegar", "xbc teaspoon salt (Optional)"], 
-        "nutrition facts": "120 calories; protein 2.1g; carbohydrates 13.7g; fat 7.3g; sodium 103.2mg", 
-        "db": "2 cups frozen corn kernels, thawed 1 pint grape tomatoes, halved 10 fresh basil leaves, chopped 3 tablespoons extra-virgin olive oil 1 tablespoon apple cider vinegar xbc teaspoon salt (Optional)", 
-        "yield": "6 servings", 
-        "id": "240000", 
-        "imgUrl": "https://imagesvc.meredithcorp.io/v3/mm/image?url=https%3A%2F%2Fimages.media-allrecipes.com%2Fuserphotos%2F1649244.jpg&w=596&h=596&c=sc&poi=face&q=85", 
-        "servings": "6", 
-        "steps": ["Five ingredients and five minutes is all you need to make this easy and nutritious summer salad! If you have extra time, you can use 4 ears of fresh corn, cooked and shucked, instead of the frozen corn. You can vary the amount of basil, olive oil, and apple cider vinegar to your taste.", "Mix corn, tomatoes, and basil leaves together in a bowl; add olive oil, vinegar, and salt and mix until evenly coated.", "If you make this 30 minutes before serving, you can use frozen corn and leave it at room temperature until serving. This way you will not have to defrost it ahead of time."], 
-        "total": "10 mins", 
-        "prep": "10 mins"},
-    
-        {"name": "Tomato, Basil, and Corn Salad with Apple Cider Dressing", 
-        "ingredients": ["2 cups frozen corn kernels, thawed", "1 pint grape tomatoes, halved", "10 fresh basil leaves, chopped", "3 tablespoons extra-virgin olive oil", "1 tablespoon apple cider vinegar", "xbc teaspoon salt (Optional)"], 
-        "nutrition facts": "120 calories; protein 2.1g; carbohydrates 13.7g; fat 7.3g; sodium 103.2mg", 
-        "db": "2 cups frozen corn kernels, thawed 1 pint grape tomatoes, halved 10 fresh basil leaves, chopped 3 tablespoons extra-virgin olive oil 1 tablespoon apple cider vinegar xbc teaspoon salt (Optional)", 
-        "yield": "6 servings", 
-        "id": "240002", 
-        "imgUrl": "https://imagesvc.meredithcorp.io/v3/mm/image?url=https%3A%2F%2Fimages.media-allrecipes.com%2Fuserphotos%2F1649244.jpg&w=596&h=596&c=sc&poi=face&q=85", 
-        "servings": "6", 
-        "steps": ["Five ingredients and five minutes is all you need to make this easy and nutritious summer salad! If you have extra time, you can use 4 ears of fresh corn, cooked and shucked, instead of the frozen corn. You can vary the amount of basil, olive oil, and apple cider vinegar to your taste.", "Mix corn, tomatoes, and basil leaves together in a bowl; add olive oil, vinegar, and salt and mix until evenly coated.", "If you make this 30 minutes before serving, you can use frozen corn and leave it at room temperature until serving. This way you will not have to defrost it ahead of time."], 
-        "total": "10 mins", 
-        "prep": "10 mins"},
-    
-        {"name": "Tomato, Basil, and Corn Salad with Apple Cider Dressing", 
-        "ingredients": ["2 cups frozen corn kernels, thawed", "1 pint grape tomatoes, halved", "10 fresh basil leaves, chopped", "3 tablespoons extra-virgin olive oil", "1 tablespoon apple cider vinegar", "xbc teaspoon salt (Optional)"], 
-        "nutrition facts": "120 calories; protein 2.1g; carbohydrates 13.7g; fat 7.3g; sodium 103.2mg", 
-        "db": "2 cups frozen corn kernels, thawed 1 pint grape tomatoes, halved 10 fresh basil leaves, chopped 3 tablespoons extra-virgin olive oil 1 tablespoon apple cider vinegar xbc teaspoon salt (Optional)", 
-        "yield": "6 servings", 
-        "id": "240003", 
-        "imgUrl": "https://imagesvc.meredithcorp.io/v3/mm/image?url=https%3A%2F%2Fimages.media-allrecipes.com%2Fuserphotos%2F1649244.jpg&w=596&h=596&c=sc&poi=face&q=85", 
-        "servings": "6", 
-        "steps": ["Five ingredients and five minutes is all you need to make this easy and nutritious summer salad! If you have extra time, you can use 4 ears of fresh corn, cooked and shucked, instead of the frozen corn. You can vary the amount of basil, olive oil, and apple cider vinegar to your taste.", "Mix corn, tomatoes, and basil leaves together in a bowl; add olive oil, vinegar, and salt and mix until evenly coated.", "If you make this 30 minutes before serving, you can use frozen corn and leave it at room temperature until serving. This way you will not have to defrost it ahead of time."], 
-        "total": "10 mins", 
-        "prep": "10 mins"}
-    
-      ];   */
-      
-      return(
+  return(
         <SafeAreaView style={{backgroundColor: '#ffffff', flex: 1}}>
            <View>
         <TouchableOpacity
@@ -162,14 +183,29 @@ const RecipeTab = ({route, navigation}) => {
               <View style={styles.centeredView}>
                 <View style={styles.modalView}>
                   <Text style={styles.modalText}>Filter Recipes</Text>
+                  <View style={styles.switchRow}>
+                    <View style={styles.inputWrap}>
+                      <Text style={styles.switchText}>Allergies</Text>
+                    </View>
+                    <View style={styles.switchWrap}>
+                      <Switch
+                        trackColor={{ false: "#767577", true: "#ffdab9" }}
+                        thumbColor={isEnabled ? "#F96300" : "#f4f3f4"}
+                        ios_backgroundColor="white"
+                        onValueChange={toggleSwitch}
+                        value={isEnabled}
+                        style={{ transform: [{ scaleX: .65 }, { scaleY: .65 }, { translateX: -100}]}}
+                      />
+                    </View>
+                  </View>
                   <View style={styles.row}>
                     <View style={styles.inputWrap}>
-                      <Text style={styles.btnText}>Prep Time: </Text>
+                      <Text style={styles.inputText}>Prep Time: </Text>
                     </View>
                     <View style={styles.inputWrap}>
                       <TextInput
                         placeholder="Prep Time"
-                        style={styles.btnText}
+                        style={styles.inputText}
                         onChangeText={onChangePrep}
                         value={textPrep}
                       />
@@ -177,12 +213,12 @@ const RecipeTab = ({route, navigation}) => {
                   </View>
                   <View style={styles.row}>
                     <View style={styles.inputWrap}>
-                      <Text style={styles.btnText}>Total Time: </Text>
+                      <Text style={styles.inputText}>Total Time: </Text>
                     </View>
                     <View style={styles.inputWrap}>
                       <TextInput
                         placeholder="Total Time"
-                        style={styles.btnText}
+                        style={styles.inputText}
                         onChangeText={onChangeTotal}
                         value={textTotal}
                       />
@@ -190,12 +226,12 @@ const RecipeTab = ({route, navigation}) => {
                   </View>
                   <View style={styles.row}>
                     <View style={styles.inputWrap}>
-                      <Text style={styles.btnText}>Servings: </Text>
+                      <Text style={styles.inputText}>Servings: </Text>
                     </View>
                     <View style={styles.inputWrap}>
                       <TextInput
                         placeholder="Servings"
-                        style={styles.btnText}
+                        style={styles.inputText}
                         onChangeText={onChangeServings}
                         value={textServings}
                       />
@@ -205,7 +241,7 @@ const RecipeTab = ({route, navigation}) => {
                     style={styles.btn}
                     onPress={() => {
                       setModalVisible(!modalVisible);
-                      filterRecipes(textPrep, textTotal, textServings);
+                      filterRecipes(textPrep, textTotal, textServings, isEnabled);
                     }}
                   >
                     <Text style={styles.textStyle}>Apply</Text>
@@ -230,7 +266,7 @@ const RecipeTab = ({route, navigation}) => {
                 flexDirection: 'row', 
                 padding:20, 
                 marginBottom: 20, 
-                backgroundColor:'#e6e6fa', 
+                backgroundColor:'#ffdab9', 
                 borderRadius: 30 ,
                 shadowColor: '#000',
                 shadowOpacity: 0.3,
@@ -303,6 +339,11 @@ btnText: {
   fontSize: 20,
   textAlign: 'center',
 },
+inputText:{
+  color: 'black',
+  fontSize: 20,
+  textAlign: 'center',
+},
 centeredView: {
   flex: 1,
   justifyContent: "center",
@@ -348,5 +389,19 @@ row: {
 inputWrap: {
   flex: 1,
   borderColor: "#cccccc"
+},
+switchRow: {
+  flex: 1,
+  flexDirection: "row",
+  marginBottom: 10,
+  alignItems: 'center'
+},
+switchWrap: {
+  borderColor: "#cccccc"
+},
+switchText: {
+  color: 'black',
+  fontSize: 20,
+  transform: [{translateX: 45}]
 }
 });

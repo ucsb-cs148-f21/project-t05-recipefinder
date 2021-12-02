@@ -29,10 +29,11 @@ const IngredientsTab = ({navigation}) => {
     savePantryIngredientsToUserDevice(pantryIngredients);
   }, [pantryIngredients]);
 
-  const savePantryIngredientsToUserDevice = async todos => {
+  const savePantryIngredientsToUserDevice = async () => {
     try {
       const stringifyPantryIngredients = JSON.stringify(pantryIngredients);
-      await AsyncStorage.setItem('pantryIngredients', stringifyPantryIngredients);
+      const userName = await AsyncStorage.getItem('userName');
+      await AsyncStorage.setItem(userName +'\'s pantryIngredients', stringifyPantryIngredients);
     } catch (error){
       console.log(error);
     }
@@ -40,7 +41,8 @@ const IngredientsTab = ({navigation}) => {
 
   const getPantryIngredientsFromUserDevice = async () => {
     try {
-      const pantryIngredients = await AsyncStorage.getItem('pantryIngredients');
+      const userName = await AsyncStorage.getItem('userName');
+      const pantryIngredients = await AsyncStorage.getItem(userName+'\'s pantryIngredients');
       if(pantryIngredients != null){
         setPantryIngredients(JSON.parse(pantryIngredients))
       }
