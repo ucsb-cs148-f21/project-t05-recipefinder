@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Alert, Modal, Pressable, SafeAreaView} from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Alert, Modal, Pressable, SafeAreaView, Switch} from 'react-native';
 import { FlatList, TextInput } from 'react-native-gesture-handler';
 import Icon  from 'react-native-vector-icons/MaterialIcons';
 import { Image } from 'react-native-elements/dist/image/Image';
@@ -19,7 +19,9 @@ const RecipeTab = ({route, navigation}) => {
   const pantryIngredients = route.params;
 
   const [modalVisible, setModalVisible] = useState(false);
-  const [checked, setChecked] = useState(false);
+  const [isEnabled, setIsEnabled] = useState(false);
+
+  const toggleSwitch = () => setIsEnabled(previousState => !previousState);
 
   const [textPrep, setTextPrep] = useState('');
   const [textTotal, setTextTotal] = useState('');
@@ -56,7 +58,7 @@ const RecipeTab = ({route, navigation}) => {
 
   });
 
-  const filterRecipes = (textPrep, textTotal, textServings, checked) => {
+  const filterRecipes = (textPrep, textTotal, textServings, isEnabled) => {
     const newPrepData = [];
     var prepTime = 0;
     var totalTime = 0;
@@ -67,10 +69,9 @@ const RecipeTab = ({route, navigation}) => {
       var inPrep = false;
       var inTotal = false;
       var hasAllergies = false;
-      if (checked) {
+      if (isEnabled) {
         for(var j=0; j < allData[i]['ingredients'].length; j++) {
           for(var k=0; k < userData.allergies.length; k++) {
-            console.log(userData.allergies[k], allData[i]['ingredients'][j].search(userData.allergies[k]))
             if (allData[i]['ingredients'][j].search(userData.allergies[k]) != -1) {
               hasAllergies = true;
               break;
@@ -182,14 +183,18 @@ const RecipeTab = ({route, navigation}) => {
               <View style={styles.centeredView}>
                 <View style={styles.modalView}>
                   <Text style={styles.modalText}>Filter Recipes</Text>
-                  <View style={styles.row}>
+                  <View style={styles.switchRow}>
                     <View style={styles.inputWrap}>
-                      <Text style={styles.inputText}>Allergies </Text>
+                      <Text style={styles.switchText}>Allergies</Text>
                     </View>
-                    <View style={styles.inputWrap}>
-                      <CheckBox
-                        checked={checked}
-                        onPress={() => setChecked(!checked)}
+                    <View style={styles.switchWrap}>
+                      <Switch
+                        trackColor={{ false: "#767577", true: "#ffdab9" }}
+                        thumbColor={isEnabled ? "#F96300" : "#f4f3f4"}
+                        ios_backgroundColor="white"
+                        onValueChange={toggleSwitch}
+                        value={isEnabled}
+                        style={{ transform: [{ scaleX: .65 }, { scaleY: .65 }, { translateX: -100}]}}
                       />
                     </View>
                   </View>
@@ -236,7 +241,7 @@ const RecipeTab = ({route, navigation}) => {
                     style={styles.btn}
                     onPress={() => {
                       setModalVisible(!modalVisible);
-                      filterRecipes(textPrep, textTotal, textServings, checked);
+                      filterRecipes(textPrep, textTotal, textServings, isEnabled);
                     }}
                   >
                     <Text style={styles.textStyle}>Apply</Text>
@@ -384,5 +389,19 @@ row: {
 inputWrap: {
   flex: 1,
   borderColor: "#cccccc"
+},
+switchRow: {
+  flex: 1,
+  flexDirection: "row",
+  marginBottom: 10,
+  alignItems: 'center'
+},
+switchWrap: {
+  borderColor: "#cccccc"
+},
+switchText: {
+  color: 'black',
+  fontSize: 20,
+  transform: [{translateX: 45}]
 }
 });
