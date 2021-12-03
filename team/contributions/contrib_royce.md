@@ -8,8 +8,8 @@
 
 **Database**
 
-- Implemented [relational tables](./../../../db/base_tables.sql)
-- Implemented converstion from [jsons to sql rows](.//../../../db/dbinit.py)
+- Implemented [relational tables](./../../db/base_tables.sql)
+- Implemented converstion from [jsons to sql rows](./../../db/dbinit.py)
 - Implemented SQL query logic
 
 **Recipes**
@@ -23,7 +23,7 @@
 
 **Documentation and Logistics**
 
-- [Wrote Deployment Manual](./../../../docs/DEPLOY.md)
+- [Wrote Deployment Manual](./../../docs/DEPLOY.md)
 - Leaded [Retro 2](../retrospectives/RETRO_02.md)
 
 **Testing**
