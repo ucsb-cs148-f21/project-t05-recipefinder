@@ -138,15 +138,14 @@ const SignUpScreen = ({navigation}) => {
             return;
         }
 
-        //sign Up must return userName to display userName for the very first time in ProfileTab
-        //var user = founduser[0].user_username; //uncomment when SignUp api returns username
-        //add this to help persist UserName
-       /*  try {
+        var user = founduser[0].user_username; //uncomment when SignUp api returns username
+        
+        try {
             await AsyncStorage.setItem('userName', user);
             console.log('success');
           } catch (error){
             console.log(error);
-        } */
+        } 
         var token = founduser[0].user_id.toString();
 
 
