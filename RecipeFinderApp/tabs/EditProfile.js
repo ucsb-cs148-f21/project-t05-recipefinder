@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useEffect } from "react";
 import { 
     StyleSheet, 
     Text, 
@@ -6,21 +6,23 @@ import {
     SafeAreaView, 
     Image, 
     ScrollView,
-    LinearGradient,
+    Icon,
     FlatList,
+    ListItem,
     TextInput,
     TouchableOpacity
  } from "react-native";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
-import Users from '../Model/users';
+import AddAllergy from '../components/AddAllergy';
 import { AuthContext } from '../component/context';
-
+import TagBar from '../components/TagBar';
 
 const EditProfile = ({navigation, route}) => {
     const [newUsername, setNewUsername] = useState('');
     const [newBio, setNewBio] = useState('');
-    const [allergies, setAllergies] = useState('');
+    const [allergies, setAllergies] = useState([]);
+
 
     return (
         <View>
@@ -44,16 +46,22 @@ const EditProfile = ({navigation, route}) => {
             value={newBio}
             placeholder="Enter new Bio"
             />
-            <TextInput
-            style={{ 
-            height: 40, 
-            borderColor: 'gray', 
-            borderWidth: 1,
-            }}
-            onChangeText={text => setAllergies(text)}
-            value={allergies}
-            placeholder="Allergies"
-            />
+            
+            <View style={styles.container}>
+                <TagBar></TagBar>
+                 {/* <View>
+                    <TouchableOpacity
+                        style={styles.btn}
+                        onPress={() => {
+                            navigation.navigate('Profile', pantryIngredients)
+                        }}
+                        >
+                        <Text style={styles.btnText}>
+                            <Icon name="done" size={20} /> Done
+                        </Text>
+                    </TouchableOpacity>
+                </View>  */}
+            </View>
         
         </View>
     )
