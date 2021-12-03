@@ -113,7 +113,6 @@ app.get('/api/login/', async(req, res) => {
     };
 });
 
-
 app.get('/api/signup/', async(req, res) => {
     const db = mysql.createConnection({ //db configuration
         user: "sql3451481",
