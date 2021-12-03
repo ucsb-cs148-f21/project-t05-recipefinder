@@ -226,7 +226,7 @@ const ProfileTab = ({ navigation }) => {
 
                     <View style={styles.add}>
                         <TouchableOpacity onPress={() => {setModalVisible(true); getProfilePictureFromUserDevice();}}>
-                            <Ionicons name="ios-create" size={15} color="#DFD8C8" style={{ marginTop: 0, marginLeft: 3 }}></Ionicons>
+                            <Ionicons name="ios-create-outline" size={15} color="white" style={{ marginTop: 0, marginLeft: 3 }}></Ionicons>
                         </TouchableOpacity>
                     </View>
                 </View>
@@ -311,7 +311,7 @@ const styles = StyleSheet.create({
         height: 150,
         borderRadius: 100,
         overflow: "hidden",
-        marginTop: 5,
+        marginTop: 25,
     },
     active: {
         backgroundColor: "#34FFB9",
@@ -324,10 +324,10 @@ const styles = StyleSheet.create({
         borderRadius: 10
     },
     add: {
-        backgroundColor: "#41444B",
+        backgroundColor: "#F96300",
         position: "absolute",
         bottom: 0,
-        right: 0,
+        right: -10,
         width: 24,
         height: 24,
         borderRadius: 12,
