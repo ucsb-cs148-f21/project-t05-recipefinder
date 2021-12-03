@@ -39,14 +39,15 @@ const RecipeTab = ({route, navigation}) => {
       if(Allergies != null){
         setUserData(JSON.parse(Allergies));
         console.log(userData);
-        if(userData[0] != null){
-          console.log(userData[0].ingredient);
-        }
       }
     } catch (error) {
       console.log(error);
     }
   };
+
+  useEffect(() =>{
+    getAllergiesFromUserDevice();
+  }, []);
 
  
   const filterRecipes = (textPrep, textTotal, textServings, isEnabled) => {
@@ -63,7 +64,7 @@ const RecipeTab = ({route, navigation}) => {
       if (isEnabled) {
         for(var j=0; j < allData[i]['ingredients'].length; j++) {
           for(var k=0; k < userData.length; k++) {
-            if (allData[i]['ingredients'][j].search(userData[k].allergy) != -1) {
+            if (allData[i]['ingredients'][j].toLowerCase().search(userData[k].allergy.toLowerCase()) != -1) {
               hasAllergies = true;
               break;
             }
@@ -236,7 +237,6 @@ const RecipeTab = ({route, navigation}) => {
                     style={styles.btn}
                     onPress={() => {
                       setModalVisible(!modalVisible);
-                      getAllergiesFromUserDevice()
                       filterRecipes(textPrep, textTotal, textServings, isEnabled);
                     }}
                   >
