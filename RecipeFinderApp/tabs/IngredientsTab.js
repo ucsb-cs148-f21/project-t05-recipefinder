@@ -71,12 +71,12 @@ const IngredientsTab = ({navigation}) => {
 
   return (
     <View style={styles.container}>
-      <FlatList
+      {/* <FlatList
         data={pantryIngredients}
         renderItem={({item, index}) => <ListItem item={item} deleteItem={deleteItem}
           />}
         keyExtractor={(item, index) => index.toString()}
-      />
+      /> */}
       <AddIngredient addPantryIngredient={addPantryIngredient} />
       <View>
       <TouchableOpacity

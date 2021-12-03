@@ -20,8 +20,10 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Users from '../Model/users';
+import { AuthContext } from '../component/context';
 
 const SignUpScreen = ({navigation}) => {
+    const {signUp} = React.useContext(AuthContext); 
 
     const [data, setData] = React.useState({
         username: "",
@@ -33,6 +35,18 @@ const SignUpScreen = ({navigation}) => {
         isValidPassword: true
     });
     
+    const signUp_api = async (username, password) => {
+        console.log(username, password)
+        try {
+          const response = await fetch(`https://n9nk4e4y95.execute-api.us-west-2.amazonaws.com/live/signup/${username},${password}`);
+          const json = await response.json();
+          console.log(json)
+          return json;
+        } catch (error) {
+          console.error(error);
+        }
+    };
+
     const textInputChange = (val) =>{
         setData({
             ...data, 
@@ -91,25 +105,14 @@ const SignUpScreen = ({navigation}) => {
         }
     }
 
-    const signupHandle = (username, password, confirm_password) =>{
+    const signupHandle = async(username, password, confirm_password) =>{
+        console.log(username, password, confirm_password)
 
-        if (data.username.length == 0 || data.password.length == 0 || data.confirm_password.length == 0){
+        if (username.length == 0 || password.length == 0 || confirm_password.length == 0){
             Alert.alert('Error!', 'username or password field cannot be empty.', [
                 {text: 'try again'}
             ]);
             return;
-        }
-
-        let foundusername= Users.filter(element => {
-            return username == element.username
-        })
-
-        if (foundusername.length != 0){
-            Alert.alert('Oops', "This username is already taken. Please choose another name.", [
-                {text: 'try again'}
-            ]);
-            return;
-
         }
 
         if (password != confirm_password){
@@ -126,8 +129,20 @@ const SignUpScreen = ({navigation}) => {
             return;
         }
 
-        
+        var founduser = await signUp_api(username, password)
+        console.log(founduser)
+        if  (founduser.length == 0){
+            Alert.alert('Oops!', 'Username is already taken. Please pick another name.', [
+                {text: 'Okay'}
+            ]);
+            return;
+        }
 
+        var token = founduser[0].user_id.toString()
+
+
+        signUp(username,token)
+ 
     }
 
     return (
