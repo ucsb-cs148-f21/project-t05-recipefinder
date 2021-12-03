@@ -4,7 +4,7 @@
     "slug": "recipefinder",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/recipeIcon.png",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
@@ -22,9 +22,11 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/recipeIcon.png",
         "backgroundColor": "#FFFFFF"
-      }
+      },
+      "versionCode": 1,
+      "package": "recipe.deploy.android"
     },
     "web": {
       "favicon": "./assets/favicon.png"
