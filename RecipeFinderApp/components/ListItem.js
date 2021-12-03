@@ -15,7 +15,7 @@ const ListItem = ({item, deleteItem}) => {
            <Icon 
            name="cancel" 
            size={20} 
-           color="firebrick"
+           color='#F96300'
            onPress={() => deleteItem(item.id)}
            style={styles.iconView}></Icon>
            </View>
@@ -27,10 +27,11 @@ const ListItem = ({item, deleteItem}) => {
 
 const styles = StyleSheet.create({
   listItem: {
-    padding: 15,
+    padding: 10,
     backgroundColor: '#f8f8f8',
     borderBottomWidth: 1,
     borderColor: '#eee',
+    borderRadius: 30,
   },
   listItemView: {
     flexDirection: 'row',

@@ -1,10 +1,9 @@
-import React, { Component } from 'react';
-import { View, Text, Image, StyleSheet, TouchableOpacity, SectionList} from 'react-native';
-import { FlatList, ScrollView } from 'react-native-gesture-handler';
-import Icon  from 'react-native-vector-icons/MaterialIcons';
+import React from 'react';
+import { View, Text, Image, StyleSheet} from 'react-native';
+import { FlatList } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-navigation';
 
-const RecipeDetails = ({route, navigation}) => {
+const RecipeDetails = ({route}) => {
     const item = route.params;
     var steps = route.params.steps;
     var ingredients = route.params.ingredients;
@@ -56,7 +55,6 @@ const RecipeDetails = ({route, navigation}) => {
                     style={{ 
                       height: 300, 
                       width: 300 ,
-                    marginRight: 10,
                     borderRadius: 10,
                     }}
                     resizeMode ="cover"/>

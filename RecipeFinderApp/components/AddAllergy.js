@@ -9,14 +9,14 @@ import {
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 
-const AddIngredient = ({addPantryIngredient}) => {
+const AddAllergy = ({addAllergy}) => {
   const [text, setText] = useState('');
   const onChange = textValue => setText(textValue);
 
   return (
-    <View>
+    <View style={styles.container}>
       <TextInput
-        placeholder="Add Ingredient to Pantry List..."
+        placeholder="Add Allergy..."
         style={styles.input}
         onChangeText={onChange}
         value={text}
@@ -24,12 +24,12 @@ const AddIngredient = ({addPantryIngredient}) => {
       <TouchableOpacity
         style={styles.btn}
         onPress={() => {
-          addPantryIngredient(text);
+          addAllergy(text);
           setText('');
         }}>
-        <Text style={styles.btnText}>
-          <Icon name="add" size={20} /> Add Ingredient
-        </Text>
+        
+          <Icon name="add" size={20} color={'white'}/> 
+        
       </TouchableOpacity>
     </View>
   );
@@ -38,18 +38,22 @@ const AddIngredient = ({addPantryIngredient}) => {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: 'white',
+    flexDirection:'row',
+    marginTop: 5,
   },
   input: {
-    height: 60,
+    height: 30,
+    width: 250,
     padding: 8,
     margin: 5,
-    fontSize: 20
   },
   btn: {
     backgroundColor: '#F96300',
-    padding: 9,
+    padding: 5,
+    width: 30,
+    height: 30,
     margin: 5,
-    borderRadius: 5,
+    borderRadius: 20,
   },
   btnText: {
     color: 'white',
@@ -58,4 +62,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AddIngredient;
+export default AddAllergy;

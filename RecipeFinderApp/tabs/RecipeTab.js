@@ -4,8 +4,6 @@ import { FlatList, TextInput } from 'react-native-gesture-handler';
 import Icon  from 'react-native-vector-icons/MaterialIcons';
 import { Image } from 'react-native-elements/dist/image/Image';
 import { useState, useEffect } from 'react';
-import { CheckBox } from 'react-native-elements/dist/checkbox/CheckBox';
-import Users from '../Model/users';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
@@ -20,6 +18,7 @@ const RecipeTab = ({route, navigation}) => {
 
   const [modalVisible, setModalVisible] = useState(false);
   const [isEnabled, setIsEnabled] = useState(false);
+  const [userData, setUserData] = useState([]);
 
   const toggleSwitch = () => setIsEnabled(previousState => !previousState);
 
@@ -30,34 +29,28 @@ const RecipeTab = ({route, navigation}) => {
   const onChangeTotal = textValue => setTextTotal(textValue);
   const onChangeServings = textValue => setTextServings(textValue);
 
-  async function filterItems(arr, query) {
-    return arr.filter(function(el) {
-      if (el.id == query){
-        return el;
+
+  const getAllergiesFromUserDevice = async () => {
+    try {
+      const userName = await AsyncStorage.getItem('userName');
+      const Allergies = await AsyncStorage.getItem(userName+'\'s Allergies');
+      if(Allergies != null){
+        return (Allergies);
       }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    let isMounted = true;               // note mutable flag
+    getAllergiesFromUserDevice().then(data => {
+      if (isMounted) setUserData(JSON.parse(data));    // add conditional check
     })
-  }
+    return () => { isMounted = false }; // cleanup toggles value, if unmounted
+  }, [userData]); 
 
-  const retrieveData = async () => {
-      try {
-        const value = await AsyncStorage.getItem('userToken')
-        if (value !== null) {
-          const user_info = await filterItems(Users, value)
-          return await user_info[0];
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-  const [userData, setUserData] = useState('');
-
-  retrieveData().then((data) => {
-
-      setUserData(data)
-
-  });
-
+ 
   const filterRecipes = (textPrep, textTotal, textServings, isEnabled) => {
     const newPrepData = [];
     var prepTime = 0;
@@ -71,8 +64,8 @@ const RecipeTab = ({route, navigation}) => {
       var hasAllergies = false;
       if (isEnabled) {
         for(var j=0; j < allData[i]['ingredients'].length; j++) {
-          for(var k=0; k < userData.allergies.length; k++) {
-            if (allData[i]['ingredients'][j].search(userData.allergies[k]) != -1) {
+          for(var k=0; k < userData.length; k++) {
+            if (allData[i]['ingredients'][j].toLowerCase().search(userData[k].allergy.toLowerCase()) != -1) {
               hasAllergies = true;
               break;
             }
@@ -165,6 +158,10 @@ const RecipeTab = ({route, navigation}) => {
           style={styles.btn}
           onPress={() => {
             searchPantryIngredient();
+            setTextPrep('');
+            setTextTotal('');
+            setTextServings('');
+            setIsEnabled(false);
             }}>
           <Text style={styles.btnText}>
             <Icon name="search" size={20} /> Search By Ingredient
