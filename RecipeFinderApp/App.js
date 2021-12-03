@@ -15,7 +15,18 @@ const BottomTabs = createBottomTabNavigator();
 import IngredientsTab from './tabs/IngredientsTab';
 import ProfileTab from './tabs/ProfileTab';
 import RecipeTab from './tabs/RecipeTab';
+import EditProfile from './tabs/EditProfile.js';
 import RecipeDetails from './tabs/RecipeDetails';
+
+function ProfilePage() {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen name="Profile" component={ProfileTab} />
+      <Stack.Screen name="Edit Profile" component={EditProfile} />
+
+    </Stack.Navigator>
+  );
+}
 
 export default function App() {
   
@@ -137,7 +148,7 @@ export default function App() {
               >
             <BottomTabs.Screen name="Ingredients" component={IngredientsTab} />
             <BottomTabs.Screen name="Recipes" component={RecipeTab} />
-            <BottomTabs.Screen name="Profile" component={ProfileTab} />
+            <BottomTabs.Screen name="Prof" component={ProfilePage} options={{headerShown: false}} />
             <BottomTabs.Screen name="Recipe Details" component={RecipeDetails}   options={{
         tabBarButton: (props) => null, //this is additional if you want to hide the tab element from the bottom nav
       }}/>

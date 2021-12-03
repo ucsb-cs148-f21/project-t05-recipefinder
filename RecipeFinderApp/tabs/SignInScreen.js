@@ -20,11 +20,13 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { AuthContext } from '../component/context';
 import Users from '../Model/users';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const SignInScreen = ({navigation}) => {
     const {signIn} = React.useContext(AuthContext); 
 
     const login_api = async (username, password) => {
+        console.log(username, password)
         try {
           const response = await fetch(`https://n9nk4e4y95.execute-api.us-west-2.amazonaws.com/live/login/${username},${password}`);
           const json = await response.json();
@@ -86,9 +88,8 @@ const SignInScreen = ({navigation}) => {
             });
         }
     }
-
+console.log(data.username, data.password)
     const loginHandle = async(username, password) => {
-        console.log(username, password)
         if (username.length == 0 || password.length == 0){
             Alert.alert('Oops!', 'username or password field cannot be empty.', [
                 {text: 'Okay'}
@@ -104,8 +105,16 @@ const SignInScreen = ({navigation}) => {
             return;
         }
 
-        var user = founduser[0].user_username
-        var token = founduser[0].user_id.toString()
+        var user = founduser[0].user_username;
+        var token = founduser[0].user_id.toString();
+
+        //add this to help persist Ingredient List based on UserName
+        try {
+            await AsyncStorage.setItem('userName', user);
+            console.log('success');
+          } catch (error){
+            console.log(error);
+        }
 
         // let founduser = Users.filter(element => {
         //     return username == element.username && password== element.password

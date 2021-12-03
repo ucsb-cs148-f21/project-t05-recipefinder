@@ -1,11 +1,11 @@
-const Users = [ // Dummy User database 
+const Users = [
     {
         id: 1, 
         username: "Royce123",
         password: "passwordcs148",
         email: "royce123@gmail.com",
         userToken: "Royce",
-        allergies: ["peanuts"],
+        allergies: ["peanut", "tofu", "cake"],
     }, 
     {
         id: 2, 
@@ -13,7 +13,7 @@ const Users = [ // Dummy User database
         password: "passwordcs148",
         email: "Ana123@gmail.com",
         userToken: "Ana",
-        allergies: ["peanuts"],
+        allergies: ["peanut"],
     }, 
     {
         id: 3, 
@@ -21,7 +21,7 @@ const Users = [ // Dummy User database
         password: "passwordcs148",
         email: "Richard123@gmail.com",
         userToken: "Richard",
-        allergies: ["peanuts"],
+        allergies: ["peanut"],
     }, 
     {
         id: 4, 
@@ -29,7 +29,7 @@ const Users = [ // Dummy User database
         password: "passwordcs148",
         email: "Leon123@gmail.com",
         userToken: "Leon",
-        allergies: ["peanuts"],
+        allergies: ["peanut"],
     }, 
     {
         id: 5, 
@@ -37,7 +37,7 @@ const Users = [ // Dummy User database
         password: "passwordcs148",
         email: "Sara123@gmail.com",
         userToken: "Sara",
-        allergies: ["peanuts"],
+        allergies: ["peanut"],
     }, 
     {
         id: 6, 
@@ -45,7 +45,7 @@ const Users = [ // Dummy User database
         password: "passwordcs148",
         email: "Wyatt123@gmail.com",
         userToken: "Wyatt",
-        allergies: ["peanuts"],
+        allergies: ["peanut"],
     }
 ];
 

@@ -1,9 +1,12 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Alert, Modal, Pressable, SafeAreaView} from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Alert, Modal, Pressable, SafeAreaView, Switch} from 'react-native';
 import { FlatList, TextInput } from 'react-native-gesture-handler';
 import Icon  from 'react-native-vector-icons/MaterialIcons';
 import { Image } from 'react-native-elements/dist/image/Image';
 import { useState, useEffect } from 'react';
+import { CheckBox } from 'react-native-elements/dist/checkbox/CheckBox';
+import Users from '../Model/users';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 const RecipeTab = ({route, navigation}) => {
@@ -16,6 +19,9 @@ const RecipeTab = ({route, navigation}) => {
   const pantryIngredients = route.params;
 
   const [modalVisible, setModalVisible] = useState(false);
+  const [isEnabled, setIsEnabled] = useState(false);
+
+  const toggleSwitch = () => setIsEnabled(previousState => !previousState);
 
   const [textPrep, setTextPrep] = useState('');
   const [textTotal, setTextTotal] = useState('');
@@ -24,16 +30,81 @@ const RecipeTab = ({route, navigation}) => {
   const onChangeTotal = textValue => setTextTotal(textValue);
   const onChangeServings = textValue => setTextServings(textValue);
 
-  const filterRecipes = (textPrep, textTotal, textServings) => {
-    const newPrepData = []
-    if (textPrep == '') textPrep = 10000000
-    if (textTotal == '') textTotal = 10000000
+  async function filterItems(arr, query) {
+    return arr.filter(function(el) {
+      if (el.id == query){
+        return el;
+      }
+    })
+  }
+
+  const retrieveData = async () => {
+      try {
+        const value = await AsyncStorage.getItem('userToken')
+        if (value !== null) {
+          const user_info = await filterItems(Users, value)
+          return await user_info[0];
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+  const [userData, setUserData] = useState('');
+
+  retrieveData().then((data) => {
+
+      setUserData(data)
+
+  });
+
+  const filterRecipes = (textPrep, textTotal, textServings, isEnabled) => {
+    const newPrepData = [];
+    var prepTime = 0;
+    var totalTime = 0;
+    if (textPrep == '') textPrep = 10000000000
+    if (textTotal == '') textTotal = 10000000000
     if (textServings == '') textServings = 0
     for(var i=0; i < allData.length; i++){
+      var inPrep = false;
+      var inTotal = false;
+      var hasAllergies = false;
+      if (isEnabled) {
+        for(var j=0; j < allData[i]['ingredients'].length; j++) {
+          for(var k=0; k < userData.allergies.length; k++) {
+            if (allData[i]['ingredients'][j].search(userData.allergies[k]) != -1) {
+              hasAllergies = true;
+              break;
+            }
+          }
+        }
+      }
       if (allData[i]['prep'] == null){
-        newPrepData.push(allData[i])
-      } else if (Number(allData[i]['prep'].split(" ")[0]) <= Number(textPrep) && Number(allData[i]['total'].split(" ")[0]) <= Number(textTotal) && Number(allData[i]['servings']) >= Number(textServings)) {
-        newPrepData.push(allData[i])
+        inPrep = true;
+      }
+      else {
+        if (allData[i]['prep'].search("hr") != -1) {
+          prepTime = Number(allData[i]['prep'].split(" ")[0]) * 60 + Number(allData[i]['prep'].split(" ")[2]);
+        }
+        else {prepTime = Number(allData[i]['prep'].split(" ")[0])}
+        if (prepTime <= Number(textPrep)) {
+          inPrep = true;
+        }
+      }
+      if (allData[i]['total'] == null) {
+        inTotal = true;
+      } 
+      else {
+        if (allData[i]['total'].search("hr") != -1) {
+          totalTime = Number(allData[i]['total'].split(" ")[0]) * 60 + Number(allData[i]['total'].split(" ")[2]);
+        }
+        else {totalTime = Number(allData[i]['total'].split(" ")[0])}
+        if (totalTime <= Number(textTotal)) {
+          inTotal = true;
+        }
+      }
+      if (Number(allData[i]['servings']) >= Number(textServings) && inPrep && inTotal && !hasAllergies) {
+        newPrepData.push(allData[i]);
       }
     }
     setFilterData(newPrepData);
@@ -70,24 +141,24 @@ const RecipeTab = ({route, navigation}) => {
   }
 
   const fetchPost = (ingredientsQuery) =>{
-    apiURL = 'https://n9nk4e4y95.execute-api.us-west-2.amazonaws.com/live/recipe/' + ingredientsQuery;
-     //apiURL = 'https://jsonplaceholder.typicode.com/photos';
-     //apiURL = 'http://localhost:19002/api/login/?username=Royce&password=Pass'
-     //apiURL = 'http://localhost:19002/api/signup/?username=yee&password=Pass'
-     console.log(apiURL)
-     fetch(apiURL)
-     .then((response) => response.json())
-     .then((responseJson) => {
-         console.log(responseJson)
-       setAllData(responseJson);
-       setFilterData(responseJson);
-       console.log(responseJson);
-     }).catch((error) => {
-       console.error(error);
-     })
-   }
-      
-      return(
+  //  apiURL = 'http://localhost:19002/api/recipes/?ingredients=' + ingredientsQuery;
+    apiURL = `https://n9nk4e4y95.execute-api.us-west-2.amazonaws.com/live/recipe/${ingredientsQuery}`;
+    //apiURL = 'https://jsonplaceholder.typicode.com/photos';
+    //apiURL = 'http://localhost:19002/api/login/?username=Royce&password=Pass'
+    //apiURL = 'http://localhost:19002/api/signup/?username=yee&password=Pass'
+    console.log(apiURL)
+    fetch(apiURL)
+    .then((response) => response.json())
+    .then((responseJson) => {
+        console.log(responseJson);
+        setAllData(responseJson);
+        setFilterData(responseJson);
+        console.log(responseJson);
+    }).catch((error) => {
+      console.error(error);
+    })
+  }
+  return(
         <SafeAreaView style={{backgroundColor: '#ffffff', flex: 1}}>
            <View>
         <TouchableOpacity
@@ -112,14 +183,29 @@ const RecipeTab = ({route, navigation}) => {
               <View style={styles.centeredView}>
                 <View style={styles.modalView}>
                   <Text style={styles.modalText}>Filter Recipes</Text>
+                  <View style={styles.switchRow}>
+                    <View style={styles.inputWrap}>
+                      <Text style={styles.switchText}>Allergies</Text>
+                    </View>
+                    <View style={styles.switchWrap}>
+                      <Switch
+                        trackColor={{ false: "#767577", true: "#ffdab9" }}
+                        thumbColor={isEnabled ? "#F96300" : "#f4f3f4"}
+                        ios_backgroundColor="white"
+                        onValueChange={toggleSwitch}
+                        value={isEnabled}
+                        style={{ transform: [{ scaleX: .65 }, { scaleY: .65 }, { translateX: -100}]}}
+                      />
+                    </View>
+                  </View>
                   <View style={styles.row}>
                     <View style={styles.inputWrap}>
-                      <Text style={styles.btnText}>Prep Time: </Text>
+                      <Text style={styles.inputText}>Prep Time: </Text>
                     </View>
                     <View style={styles.inputWrap}>
                       <TextInput
                         placeholder="Prep Time"
-                        style={styles.btnText}
+                        style={styles.inputText}
                         onChangeText={onChangePrep}
                         value={textPrep}
                       />
@@ -127,12 +213,12 @@ const RecipeTab = ({route, navigation}) => {
                   </View>
                   <View style={styles.row}>
                     <View style={styles.inputWrap}>
-                      <Text style={styles.btnText}>Total Time: </Text>
+                      <Text style={styles.inputText}>Total Time: </Text>
                     </View>
                     <View style={styles.inputWrap}>
                       <TextInput
                         placeholder="Total Time"
-                        style={styles.btnText}
+                        style={styles.inputText}
                         onChangeText={onChangeTotal}
                         value={textTotal}
                       />
@@ -140,12 +226,12 @@ const RecipeTab = ({route, navigation}) => {
                   </View>
                   <View style={styles.row}>
                     <View style={styles.inputWrap}>
-                      <Text style={styles.btnText}>Servings: </Text>
+                      <Text style={styles.inputText}>Servings: </Text>
                     </View>
                     <View style={styles.inputWrap}>
                       <TextInput
                         placeholder="Servings"
-                        style={styles.btnText}
+                        style={styles.inputText}
                         onChangeText={onChangeServings}
                         value={textServings}
                       />
@@ -155,7 +241,7 @@ const RecipeTab = ({route, navigation}) => {
                     style={styles.btn}
                     onPress={() => {
                       setModalVisible(!modalVisible);
-                      filterRecipes(textPrep, textTotal, textServings);
+                      filterRecipes(textPrep, textTotal, textServings, isEnabled);
                     }}
                   >
                     <Text style={styles.textStyle}>Apply</Text>
@@ -180,7 +266,7 @@ const RecipeTab = ({route, navigation}) => {
                 flexDirection: 'row', 
                 padding:20, 
                 marginBottom: 20, 
-                backgroundColor:'#e6e6fa', 
+                backgroundColor:'#ffdab9', 
                 borderRadius: 30 ,
                 shadowColor: '#000',
                 shadowOpacity: 0.3,
@@ -253,6 +339,11 @@ btnText: {
   fontSize: 20,
   textAlign: 'center',
 },
+inputText:{
+  color: 'black',
+  fontSize: 20,
+  textAlign: 'center',
+},
 centeredView: {
   flex: 1,
   justifyContent: "center",
@@ -298,5 +389,19 @@ row: {
 inputWrap: {
   flex: 1,
   borderColor: "#cccccc"
+},
+switchRow: {
+  flex: 1,
+  flexDirection: "row",
+  marginBottom: 10,
+  alignItems: 'center'
+},
+switchWrap: {
+  borderColor: "#cccccc"
+},
+switchText: {
+  color: 'black',
+  fontSize: 20,
+  transform: [{translateX: 45}]
 }
 });
