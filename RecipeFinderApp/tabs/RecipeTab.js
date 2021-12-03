@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Alert, Modal, Pressable, SafeAreaView, Switch, Dimensions} from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Alert, Modal, Pressable, SafeAreaView, Switch, Dimensions, Platform} from 'react-native';
 import { FlatList, TextInput } from 'react-native-gesture-handler';
 import Icon  from 'react-native-vector-icons/MaterialIcons';
 import { Image } from 'react-native-elements/dist/image/Image';
@@ -401,6 +401,6 @@ switchWrap: {
 switchText: {
   color: 'black',
   fontSize: 20,
-  transform: [{translateX: 45}]
+  transform: Platform.OS == 'ios' ? [{translateX: 45}] : [{translateX: 25}]
 }
 });
