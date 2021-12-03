@@ -44,7 +44,13 @@ const RecipeTab = ({route, navigation}) => {
   useEffect(() => {
     let isMounted = true;               // note mutable flag
     getAllergiesFromUserDevice().then(data => {
-      if (isMounted) setUserData(JSON.parse(data));    // add conditional check
+      if (isMounted) {
+        allergyData = JSON.parse(data);
+        if (allergyData)
+          setUserData(allergyData);    // add conditional check
+        else
+          console.log("allergy data is undefined");
+      }
     })
     return () => { isMounted = false }; // cleanup toggles value, if unmounted
   }, [userData]); 
@@ -183,7 +189,7 @@ const RecipeTab = ({route, navigation}) => {
                     <View style={styles.inputWrap}>
                       <Text style={styles.switchText}>Allergies</Text>
                     </View>
-                    <View style={styles.switchWrap}>
+                    
                       <Switch
                         trackColor={{ false: "#767577", true: "#ffdab9" }}
                         thumbColor={isEnabled ? "#F96300" : "#f4f3f4"}
@@ -192,7 +198,6 @@ const RecipeTab = ({route, navigation}) => {
                         value={isEnabled}
                         style={{ transform: [{ scaleX: .65 }, { scaleY: .65 }, { translateX: -100}]}}
                       />
-                    </View>
                   </View>
                   <View style={styles.row}>
                     <View style={styles.inputWrap}>
