@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, useState } from 'react';
 import {
   Dimensions,
   StyleSheet,
@@ -11,8 +11,23 @@ import TagInput from 'react-native-tags-input';
 
 
 export default class Bar extends Component {
+
+
+    async retrieveAllergies(){
+      try{
+        const userName = await AsyncStorage.getItem('userName');
+        allergies = await AsyncStorage.getItem(userName+'\'s allergies');
+        return JSON.parse(allergies);
+
+      }catch (error){
+        console.log(error);
+      }
+    };
+
+  
     constructor(props) {
       super(props);
+      var allergyArr = this.retrieveAllergies();
       this.state = {
         tags: {
           tag: '',
@@ -27,8 +42,17 @@ export default class Bar extends Component {
         this.setState({
           tags: state
         })
+        console.log(state.tagsArray);
         // const userName = await AsyncStorage.getItem('userName');
-        // await AsyncStorage.setItem(userName +'\'s allergies', this.state.tagsArray);
+        // try{
+        // if(state.tagsArray){
+        //   await AsyncStorage.setItem(userName+'\'s allergies', state.tagsArray);
+        //   var text = AsyncStorage.getItem(userName+'\'s allergies');
+        //   console.log(text)
+        // }
+        // } catch(error) {
+        //   console.log(error);
+        // }
       };
    
     render() {
@@ -36,9 +60,9 @@ export default class Bar extends Component {
           <TagInput
             updateState={this.updateTagState}
             tags={this.state.tags}
-            placeholder="Tags..."                            
+            placeholder="Allergies..."                            
             label='Enter Allergies one by one'
-            labelStyle={{color: '#12212'}}
+            labelStyle={{color: '#122'}}
             leftElementContainerStyle={{marginLeft: 3}}
             containerStyle={{width: (Dimensions.get('window').width - 40)}}
             inputContainerStyle={[styles.textInput, {backgroundColor: this.state.tagsColor}]}

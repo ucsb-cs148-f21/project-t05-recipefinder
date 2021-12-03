@@ -107,10 +107,10 @@ console.log(data.username, data.password)
 
         var user = founduser[0].user_username;
         var token = founduser[0].user_id.toString();
-
         //add this to help persist Ingredient List based on UserName
         try {
             await AsyncStorage.setItem('userName', user);
+
             console.log('success');
           } catch (error){
             console.log(error);

@@ -21,7 +21,7 @@ import RecipeDetails from './tabs/RecipeDetails';
 function ProfilePage() {
   return (
     <Stack.Navigator>
-      <Stack.Screen name="Profile" component={ProfileTab} />
+      <Stack.Screen name="Profile " component={ProfileTab} />
       <Stack.Screen name="Edit Profile" component={EditProfile} />
 
     </Stack.Navigator>

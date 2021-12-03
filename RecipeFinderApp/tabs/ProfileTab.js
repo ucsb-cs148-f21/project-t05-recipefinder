@@ -18,35 +18,44 @@ import { AuthContext } from '../component/context';
 const ProfileTab = ({ navigation }) => {
     const {signOut} = React.useContext(AuthContext);
 
-    async function filterItems(arr, query) {
-        return arr.filter(function(el) {
-          if (el.username == query){
-            return el;
-          }
-        })
-      }
 
-    const retrieveData = async () => {
+    const retrieveUserName = async () => {
         try {
-          const value = await AsyncStorage.getItem('userName')
-          console.log(value);
-          if (value !== null) {
-            const user_info = await filterItems(Users, value)
-            return await user_info[0];
-          }
+            const value = await AsyncStorage.getItem('userName');
+            if (value !== null) {
+                return value;
+            }
         } catch (error) {
-          console.log(error);
+            console.log(error);
         }
-      };
+    };
+
+    const retrieveAllergies = async () => {
+        try {
+            const userName = await AsyncStorage.getItem('userName');
+            const allergies = await AsyncStorage.getItem(userName+'\'s allergies');
+            if(allergies != null){
+                console.log(allergies);
+                return (JSON.parse(allergies));
+            }
+        }catch (error) {
+            console.log(error)
+        }
+    }
 
     const [userName, setUserName] = useState('');
-    const [userEmail, setUserEmail] = useState('');
+    const [userAllergies,setUserAllergies] = useState([]);
  
-    retrieveData().then((data) => {
-        setUserName(data.username);
-        setUserEmail(data.email);
+    retrieveUserName().then((data) => {
+        setUserName(data);
     });
-    
+    // retrieveAllergies().then((data) => {
+    //     setUserAllergies(data);
+    // })
+    // var arr = ["peanuts","apples"];
+    // setUserAllergies(arr);
+
+
     
     return (
         <SafeAreaView style={styles.container}>
@@ -68,22 +77,22 @@ const ProfileTab = ({ navigation }) => {
                 </View>
                 <View style={styles.infoContainer}>
                     <Text style={[styles.text, { fontWeight: "200", fontSize: 36 }]}>{userName}</Text>
-                    <Text style={[styles.text, { color: "#AEB5BC", fontSize: 14 }]}>{userEmail}</Text>
                 </View>
 
                 
                 
                 <View style={{ alignItems: "center" , marginRight: 100}}>
                 <Text style={[styles.text]}>Allergies</Text>
-                <SafeAreaView style={{flex: 1}}>
-                {/* <FlatList
-                    data={allergies}
-                    keyExtractor={(item, index) => index.toString()}
-                    renderItem={({item}) => ( <Text style={styles.text}>{item}</Text>)}>
-                    </FlatList> */}
-                </SafeAreaView>
+                
                 </View>
             </ScrollView>
+            <SafeAreaView style={{flex: 1}}>
+                <FlatList
+                    data={userAllergies}
+                    keyExtractor={(item, index) => index.toString()}
+                    renderItem={({item}) => ( <Text style={styles.text}>{item}</Text>)}>
+                    </FlatList>
+                </SafeAreaView>
         </SafeAreaView>
     );
 }
