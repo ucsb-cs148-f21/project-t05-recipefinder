@@ -59,7 +59,16 @@ const IngredientsTab = ({navigation}) => {
         'No item entered',
         'Please enter an ingredient when adding to your pantry list',
       );
-    } else {
+    }
+    else {
+      for(var i = 0; i < pantryIngredients.length; i++) {
+        if (text == pantryIngredients[i].ingredient) {
+          Alert.alert(
+            'Item already added'
+          )
+        }
+        return;
+      }
       setPantryIngredients(prevPantryIngredients => {
         return [{id: Math.random(), ingredient: text}, ...prevPantryIngredients];
       });
