@@ -20,6 +20,7 @@ const RecipeTab = ({route, navigation}) => {
 
   const [modalVisible, setModalVisible] = useState(false);
   const [isEnabled, setIsEnabled] = useState(false);
+  const [userData, setUserData] = useState([]);
 
   const toggleSwitch = () => setIsEnabled(previousState => !previousState);
 
@@ -46,15 +47,8 @@ const RecipeTab = ({route, navigation}) => {
       console.log(error);
     }
   };
-  
-  const [userData, setUserData] = useState([]);
-  
-  
-
-  
 
  
-
   const filterRecipes = (textPrep, textTotal, textServings, isEnabled) => {
     const newPrepData = [];
     var prepTime = 0;
@@ -70,7 +64,6 @@ const RecipeTab = ({route, navigation}) => {
         for(var j=0; j < allData[i]['ingredients'].length; j++) {
           for(var k=0; k < userData.length; k++) {
             if (allData[i]['ingredients'][j].search(userData[k].allergy) != -1) {
-              console.log(userData[k].allergy)
               hasAllergies = true;
               break;
             }
@@ -163,6 +156,10 @@ const RecipeTab = ({route, navigation}) => {
           style={styles.btn}
           onPress={() => {
             searchPantryIngredient();
+            setTextPrep('');
+            setTextTotal('');
+            setTextServings('');
+            setIsEnabled(false);
             }}>
           <Text style={styles.btnText}>
             <Icon name="search" size={20} /> Search By Ingredient
@@ -239,10 +236,8 @@ const RecipeTab = ({route, navigation}) => {
                     style={styles.btn}
                     onPress={() => {
                       setModalVisible(!modalVisible);
+                      getAllergiesFromUserDevice()
                       filterRecipes(textPrep, textTotal, textServings, isEnabled);
-                      if(toggleSwitch){
-                        getAllergiesFromUserDevice()
-                      }
                     }}
                   >
                     <Text style={styles.textStyle}>Apply</Text>
