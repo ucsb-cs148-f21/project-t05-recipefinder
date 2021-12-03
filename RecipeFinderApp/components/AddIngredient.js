@@ -5,7 +5,6 @@ import {
   StyleSheet,
   TextInput,
   TouchableOpacity,
-  KeyboardAvoidingView
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
@@ -15,10 +14,7 @@ const AddIngredient = ({addPantryIngredient}) => {
   const onChange = textValue => setText(textValue);
 
   return (
-    <KeyboardAvoidingView 
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
-      style={styles.container}
-    >
+    <View>
       <TextInput
         placeholder="Add Ingredient to Pantry List..."
         style={styles.input}
@@ -35,7 +31,7 @@ const AddIngredient = ({addPantryIngredient}) => {
           <Icon name="add" size={20} /> Add Ingredient
         </Text>
       </TouchableOpacity>
-    </KeyboardAvoidingView>
+    </View>
   );
 };
 
