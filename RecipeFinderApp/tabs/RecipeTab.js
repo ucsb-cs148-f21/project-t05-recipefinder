@@ -4,8 +4,6 @@ import { FlatList, TextInput } from 'react-native-gesture-handler';
 import Icon  from 'react-native-vector-icons/MaterialIcons';
 import { Image } from 'react-native-elements/dist/image/Image';
 import { useState, useEffect } from 'react';
-import { CheckBox } from 'react-native-elements/dist/checkbox/CheckBox';
-import Users from '../Model/users';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
@@ -37,17 +35,20 @@ const RecipeTab = ({route, navigation}) => {
       const userName = await AsyncStorage.getItem('userName');
       const Allergies = await AsyncStorage.getItem(userName+'\'s Allergies');
       if(Allergies != null){
-        setUserData(JSON.parse(Allergies));
-        console.log(userData);
+        return (Allergies);
       }
     } catch (error) {
       console.log(error);
     }
   };
 
-  useEffect(() =>{
-    getAllergiesFromUserDevice();
-  }, []);
+  useEffect(() => {
+    let isMounted = true;               // note mutable flag
+    getAllergiesFromUserDevice().then(data => {
+      if (isMounted) setUserData(JSON.parse(data));    // add conditional check
+    })
+    return () => { isMounted = false }; // cleanup toggles value, if unmounted
+  }, [userData]); 
 
  
   const filterRecipes = (textPrep, textTotal, textServings, isEnabled) => {
