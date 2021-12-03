@@ -20,7 +20,7 @@ for filename in os.listdir(os.getcwd()):
     jsonStr = json.load(f)
     f.close()
     maxIngreList = max(maxIngreList, len(jsonStr["db"]))
-    sql.write("INSERT INTO `recipes` VALUES (" + jsonStr["id"] + ", \"" + str(jsonStr).replace("\"", "").replace("\'", "\"\"") + "\");\n")
+    sql.write("INSERT INTO `recipes` VALUES (" + jsonStr["id"] + ", \"" + str(jsonStr).replace("\"", "").replace("\'", "\"\"").replace('\\\"\"', "\'") + "\");\n")
     
 sql.close()
 

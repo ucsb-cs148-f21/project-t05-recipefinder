@@ -13,12 +13,12 @@ app.use(function(req, res, next) {
 var mysql = require('mysql');
 var util = require('util')
 var pool  = mysql.createPool(
-{
-    user: "sql3451481",
-    host: "sql3.freemysqlhosting.net",
-    password: "3LN7mANFNg",
-    database: "sql3451481"
-}
+    {
+        user: "sql3455787",
+        host: "sql3.freemysqlhosting.net",
+        password: "dVCJq9w5rw",
+        database: "sql3455787" 
+    }
 );
 
 exports.handler = async (event, context, callback) => 
@@ -26,19 +26,25 @@ exports.handler = async (event, context, callback) =>
     let result = {};
     try{
         let info = event.pathParameters.info;
-        let params_object = query_params.split(",");
+        let params_object = info.split(",");
         let username = params_object[0];
         let password = params_object[1];
         let qry = "SELECT `user_id`, `user_username`, `user_password` FROM `entity_users` WHERE `user_username`='" + username + "' AND `user_password`='" + password + "'";
-        result = await getRecipe(qry,0);
+        result = await getLogin(qry,0);
     }catch (err){
         throw new Error(err);
     }
     console.log("-----Result: ",result);
-    return {body: JSON.stringify(result),statusCode:200};
+    return {
+        body: JSON.stringify(result),
+        statusCode:200,
+        headers: { "Access-Control-Allow-Headers" : "Origin, X-Requested-With, Content-Type, Accept",
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Methods": "*" }
+    };
 }
 
-let getRecipe = async (sql, params) => {
+let getLogin = async (sql, params) => {
     return new Promise((resolve, reject) => {
         pool.getConnection((err, connection) => {
             connection.query(sql, params, (err, results) => {
