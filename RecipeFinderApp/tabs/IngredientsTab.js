@@ -66,8 +66,8 @@ const IngredientsTab = ({navigation}) => {
           Alert.alert(
             'Item already added'
           )
+          return;
         }
-        return;
       }
       setPantryIngredients(prevPantryIngredients => {
         return [{id: Math.random(), ingredient: text}, ...prevPantryIngredients];
