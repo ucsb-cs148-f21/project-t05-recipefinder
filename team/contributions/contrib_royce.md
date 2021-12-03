@@ -2,13 +2,13 @@
 
 **API**
 
-- Implemented [Login API](./../../../api/deploy/login.js)
-- Implemented [Signup API](./../../../api/deploy/signup.js)
-- Implemented [RecipeSearch API](./../../../api/deploy/recipe.js)
+- Implemented [Login API](./../../api/deploy/login.js)
+- Implemented [Signup API](./../../api/deploy/signup.js)
+- Implemented [RecipeSearch API](./../../api/deploy/recipe.js)
 
 **Database**
 
-- Implemented [relational tables](./../../../db/base\ tables.sql)
+- Implemented [relational tables](./../../../db/base_tables.sql)
 - Implemented converstion from [jsons to sql rows](.//../../../db/dbinit.py)
 - Implemented SQL query logic
 
