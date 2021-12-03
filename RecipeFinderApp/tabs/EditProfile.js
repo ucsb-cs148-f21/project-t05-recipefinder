@@ -6,7 +6,7 @@ import {
     SafeAreaView, 
     Image, 
     ScrollView,
-    LinearGradient,
+    Icon,
     FlatList,
     ListItem,
     TextInput,
