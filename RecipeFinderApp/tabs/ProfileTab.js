@@ -20,7 +20,7 @@ const ProfileTab = ({ navigation }) => {
 
     async function filterItems(arr, query) {
         return arr.filter(function(el) {
-          if (el.id== query){
+          if (el.id == query){
             return el;
           }
         })
@@ -38,14 +38,13 @@ const ProfileTab = ({ navigation }) => {
         }
       };
 
-    const [userData, setUserData] = useState('');
-
+    const [userName, setUserName] = useState('');
+    const [userEmail, setUserEmail] = useState('');
+ 
     retrieveData().then((data) => {
-        setUserData(data);
-
+        setUserName(data.username);
+        setUserEmail(data.email);
     });
-    var allergies = userData.allergies
-
     
     
     return (
@@ -67,8 +66,8 @@ const ProfileTab = ({ navigation }) => {
                     </View>
                 </View>
                 <View style={styles.infoContainer}>
-                    <Text style={[styles.text, { fontWeight: "200", fontSize: 36 }]}>{userData.username}</Text>
-                    <Text style={[styles.text, { color: "#AEB5BC", fontSize: 14 }]}>{userData.email}</Text>
+                    <Text style={[styles.text, { fontWeight: "200", fontSize: 36 }]}>{userName}</Text>
+                    <Text style={[styles.text, { color: "#AEB5BC", fontSize: 14 }]}>{userEmail}</Text>
                 </View>
 
                 
@@ -76,11 +75,11 @@ const ProfileTab = ({ navigation }) => {
                 <View style={{ alignItems: "center" , marginRight: 100}}>
                 <Text style={[styles.text]}>Allergies</Text>
                 <SafeAreaView style={{flex: 1}}>
-                <FlatList
+                {/* <FlatList
                     data={allergies}
                     keyExtractor={(item, index) => index.toString()}
                     renderItem={({item}) => ( <Text style={styles.text}>{item}</Text>)}>
-                    </FlatList>
+                    </FlatList> */}
                 </SafeAreaView>
                 </View>
             </ScrollView>
