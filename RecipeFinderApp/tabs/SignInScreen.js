@@ -88,7 +88,7 @@ const SignInScreen = ({navigation}) => {
             });
         }
     }
-console.log(data.username, data.password)
+
     const loginHandle = async(username, password) => {
         if (username.length == 0 || password.length == 0){
             Alert.alert('Oops!', 'username or password field cannot be empty.', [
