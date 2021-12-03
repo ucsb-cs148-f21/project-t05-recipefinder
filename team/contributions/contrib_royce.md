@@ -14,7 +14,7 @@
 
 **Recipes**
 
-- [Scraped relevant recipe information]((./../../recipe_scraper/scrape.py) (picture, ingredients, steps, prep time, servings, nutritional facts, etc) in json format.
+- [Scraped relevant recipe information](./../../recipe_scraper/scrape.py) (picture, ingredients, steps, prep time, servings, nutritional facts, etc) in json format.
 
 **Deployment**
 
