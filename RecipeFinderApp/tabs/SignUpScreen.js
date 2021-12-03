@@ -277,11 +277,11 @@ const SignUpScreen = ({navigation}) => {
                         onPress = {()=>signupHandle(data.username, data.password, data.confirm_password)}
                     >
                         <LinearGradient
-                        colors = {['#f0f8ff', '#f0ffff']}
+                        colors = {['#F96300', '#F5c900']}
                         style={styles.signIn}
                     >
                         <Text style = {[styles.textSign, {
-                            color:'#F96300'}]}>Sign Up</Text>
+                            color:'#fff'}]}>Sign Up</Text>
                         </LinearGradient>
                     </TouchableOpacity>
                 </View> 
@@ -290,11 +290,11 @@ const SignUpScreen = ({navigation}) => {
                         onPress ={()=>navigation.goBack()}
                     >
                         <LinearGradient
-                        colors = {['#F96300', '#F5c900']}
+                        colors = {['#f0f8ff', '#f0ffff']}
                         style={styles.signIn}
                     >
                         <Text style = {[styles.textSign, {
-                            color:'#fff'}]}>Sign In</Text>
+                            color:'#F96300'}]}>Sign In</Text>
                         </LinearGradient>
                     </TouchableOpacity>
                 </View> 
