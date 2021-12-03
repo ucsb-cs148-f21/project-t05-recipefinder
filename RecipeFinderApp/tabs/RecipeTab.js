@@ -38,6 +38,9 @@ const RecipeTab = ({route, navigation}) => {
       if(Allergies != null){
         setUserData(JSON.parse(Allergies));
         console.log(userData);
+        if(userData[0] != null){
+          console.log(userData[0].ingredient);
+        }
       }
     } catch (error) {
       console.log(error);
