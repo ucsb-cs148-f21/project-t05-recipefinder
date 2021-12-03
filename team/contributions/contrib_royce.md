@@ -2,9 +2,9 @@
 
 **API**
 
-- Implemented [Login API](/../../api/deploy/login.js)
-- Implemented [Signup API](/../../api/deploy/signup.js)
-- Implemented [RecipeSearch API](/../../api/deploy/recipe.js)
+- Implemented [Login API](/../../../api/deploy/login.js)
+- Implemented [Signup API](/../../../api/deploy/signup.js)
+- Implemented [RecipeSearch API](/../../../api/deploy/recipe.js)
 
 **Database**
 
