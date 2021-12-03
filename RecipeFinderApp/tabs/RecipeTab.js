@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Alert, Modal, Pressable, SafeAreaView, Switch} from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Alert, Modal, Pressable, SafeAreaView, Switch, Dimensions} from 'react-native';
 import { FlatList, TextInput } from 'react-native-gesture-handler';
 import Icon  from 'react-native-vector-icons/MaterialIcons';
 import { Image } from 'react-native-elements/dist/image/Image';
@@ -28,7 +28,6 @@ const RecipeTab = ({route, navigation}) => {
   const onChangePrep = textValue => setTextPrep(textValue);
   const onChangeTotal = textValue => setTextTotal(textValue);
   const onChangeServings = textValue => setTextServings(textValue);
-
 
   const getAllergiesFromUserDevice = async () => {
     try {
@@ -302,6 +301,9 @@ const RecipeTab = ({route, navigation}) => {
  
     
 export default RecipeTab;
+
+const {height} = Dimensions.get("screen")
+const {width} = Dimensions.get("screen")
     
 const styles = StyleSheet.create({
 container: {
@@ -349,8 +351,8 @@ centeredView: {
 },
 modalView: {
   margin: 40,
-  height: 250,
-  width: 300,
+  height: height * 0.33,
+  width: width * 0.7,
   backgroundColor: "white",
   borderRadius: 20,
   padding: 35,
