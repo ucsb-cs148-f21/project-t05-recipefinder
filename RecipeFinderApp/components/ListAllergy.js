@@ -16,10 +16,10 @@ const ListAllergy = ({item, deleteItem}) => {
            name="cancel" 
            size={20} 
            color="#F96300"
-           onPress={() => deleteItem(item.id)}
+           onPress={() => deleteItem(item.allergy)}
            style={styles.iconView}></Icon>
            </View>
-           <Text style={styles.listItemText}>{item.ingredient}</Text>
+           <Text style={styles.listItemText}>{item.allergy}</Text>
        </View>
    </TouchableOpacity>
   );

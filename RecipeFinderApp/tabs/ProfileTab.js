@@ -31,9 +31,9 @@ const ProfileTab = ({ navigation }) => {
 
 
   //Deletes Allergy Item from List
-  const deleteItem = id => {
+  const deleteItem = allergy => {
     setAllergies(prevAllergies => {
-      return prevAllergies.filter(item => item.id !== id);
+      return prevAllergies.filter(item => item.allergy !== allergy);
     });
   };
 
@@ -106,7 +106,7 @@ const ProfileTab = ({ navigation }) => {
       );
     } else {
       setAllergies(prevAllergies => {
-        return [{id: Math.random(), ingredient: text}, ...prevAllergies];
+        return [{allergy:text}, ...prevAllergies];
       });
     }
   };

@@ -30,33 +30,27 @@ const RecipeTab = ({route, navigation}) => {
   const onChangeTotal = textValue => setTextTotal(textValue);
   const onChangeServings = textValue => setTextServings(textValue);
 
-  async function filterItems(arr, query) {
-    return arr.filter(function(el) {
-      if (el.id == query){
-        return el;
+
+  const getAllergiesFromUserDevice = async () => {
+    try {
+      const userName = await AsyncStorage.getItem('userName');
+      const Allergies = await AsyncStorage.getItem(userName+'\'s Allergies');
+      if(Allergies != null){
+        setUserData(JSON.parse(Allergies));
+        console.log(userData);
       }
-    })
-  }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  
+  const [userData, setUserData] = useState([]);
+  
+  
 
-  const retrieveData = async () => {
-      try {
-        const value = await AsyncStorage.getItem('userToken')
-        if (value !== null) {
-          const user_info = await filterItems(Users, value)
-          return await user_info[0];
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    };
+  
 
-  const [userData, setUserData] = useState('');
-
-  retrieveData().then((data) => {
-
-      setUserData(data)
-
-  });
+ 
 
   const filterRecipes = (textPrep, textTotal, textServings, isEnabled) => {
     const newPrepData = [];
@@ -71,8 +65,9 @@ const RecipeTab = ({route, navigation}) => {
       var hasAllergies = false;
       if (isEnabled) {
         for(var j=0; j < allData[i]['ingredients'].length; j++) {
-          for(var k=0; k < userData.allergies.length; k++) {
-            if (allData[i]['ingredients'][j].search(userData.allergies[k]) != -1) {
+          for(var k=0; k < userData.length; k++) {
+            if (allData[i]['ingredients'][j].search(userData[k].allergy) != -1) {
+              console.log(userData[k].allergy)
               hasAllergies = true;
               break;
             }
@@ -242,6 +237,9 @@ const RecipeTab = ({route, navigation}) => {
                     onPress={() => {
                       setModalVisible(!modalVisible);
                       filterRecipes(textPrep, textTotal, textServings, isEnabled);
+                      if(toggleSwitch){
+                        getAllergiesFromUserDevice()
+                      }
                     }}
                   >
                     <Text style={styles.textStyle}>Apply</Text>
