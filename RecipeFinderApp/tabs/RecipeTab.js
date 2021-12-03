@@ -351,8 +351,8 @@ centeredView: {
 },
 modalView: {
   margin: 40,
-  height: height * 0.33,
-  width: width * 0.7,
+  height: height * 0.5,
+  width: width * 0.8,
   backgroundColor: "white",
   borderRadius: 20,
   padding: 35,
