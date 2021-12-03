@@ -17,6 +17,7 @@ import ProfileTab from './tabs/ProfileTab';
 import RecipeTab from './tabs/RecipeTab';
 import RecipeDetails from './tabs/RecipeDetails';
 
+
 export default function App() {
   
   const initialLoginState = {
@@ -81,9 +82,17 @@ export default function App() {
       }
       dispatch({type: 'LOGOUT'});
     }, 
-    signUp: ()=>{
-      setUserToken('fgkj'); 
-      setIsLoading(false); 
+    signUp: async(user, token)=>{
+      const userToken = token 
+      const userName = user 
+      // setUserToken(token); 
+      // setIsLoading(false); 
+      try {
+
+      } catch (e){
+        console.log(e)
+      }
+      dispatch({type: 'REGISTER', id: userName,  token: userToken})
     }
   }), []);
 

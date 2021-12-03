@@ -1,115 +1,264 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useEffect } from "react";
 import { 
     StyleSheet, 
     Text, 
     View, 
     SafeAreaView, 
     Image, 
-    ScrollView,
-    LinearGradient,
-    TouchableOpacity
+    FlatList,
+    TouchableOpacity,
+    Modal,
+    Pressable,
+    KeyboardAvoidingView,
+    Alert
  } from "react-native";
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Ionicons, MaterialIcons } from "@expo/vector-icons";
-import Users from '../Model/users';
+import { Ionicons} from "@expo/vector-icons";
 import { AuthContext } from '../component/context';
 
-export default function ProfileTab() {
-    const {signOut} = React.useContext(AuthContext);
+import ListAllergy from '../components/ListAllergy';
+import AddAllergy from '../components/AddAllergy';
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
-    async function filterItems(arr, query) {
-        return arr.filter(function(el) {
-          if (el.userToken == query){
-            return el;
-          }
-        })
+const ProfileTab = ({ navigation }) => {
+   
+  //Array use to store Allergies
+  const [Allergies, setAllergies] = useState([]);
+
+  const [modalVisible, setModalVisible] = useState(false);
+
+  const [profilePicutre, setProfilePicture] = useState('https://t4.ftcdn.net/jpg/00/64/67/63/360_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg');
+
+
+
+  //Deletes Allergy Item from List
+  const deleteItem = allergy => {
+    setAllergies(prevAllergies => {
+      return prevAllergies.filter(item => item.allergy !== allergy);
+    });
+  };
+
+  //Stores and Retrieves Allergies data to Local Storage
+  useEffect(() =>{
+    getAllergiesFromUserDevice();
+  }, []);
+
+  useEffect(() => {
+      getProfilePictureFromUserDevice();
+  }, []);
+
+
+  useEffect(() => {
+    saveAllergiesToUserDevice(Allergies);
+  }, [Allergies]);
+
+
+  const saveAllergiesToUserDevice = async () => {
+    try {
+      const stringifyAllergies = JSON.stringify(Allergies);
+      const userName = await AsyncStorage.getItem('userName');
+      await AsyncStorage.setItem(userName +'\'s Allergies', stringifyAllergies);
+    } catch (error){
+      console.log(error);
+    }
+  };
+
+  const saveProfilePictureToUserDevice = async () => {
+    try {
+      if(profilePicutre != null){
+        const userName = await AsyncStorage.getItem('userName');
+        await AsyncStorage.setItem(userName +'\'s Profile Image', profilePicutre);
       }
+    } catch (error){
+      console.log(error);
+    }
+  };
+
+  const getProfilePictureFromUserDevice = async () => {
+    try {
+      const userName = await AsyncStorage.getItem('userName');
+      const profileImageLink = await AsyncStorage.getItem(userName+'\'s Profile Image');
+      if(profileImageLink != null){
+        setProfilePicture(profileImageLink);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const getAllergiesFromUserDevice = async () => {
+    try {
+      const userName = await AsyncStorage.getItem('userName');
+      const Allergies = await AsyncStorage.getItem(userName+'\'s Allergies');
+      if(Allergies != null){
+        setAllergies(JSON.parse(Allergies))
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+//Adds Ingredient to Pantry List
+  const addAllergy = text => {
+    if (text == '') {
+      Alert.alert(
+        'No item entered',
+        'Please enter an ingredient when adding to your pantry list',
+      );
+    } else {
+      setAllergies(prevAllergies => {
+        return [{allergy:text}, ...prevAllergies];
+      });
+    }
+  };
+
+  
+
+
+
+
+
+    const {signOut} = React.useContext(AuthContext);
 
     const retrieveData = async () => {
         try {
-          const value = await AsyncStorage.getItem('userToken')
-          if (value !== null) {
-            const user_info = await filterItems(Users, value)
-            return await user_info[0];
+          const userName = await AsyncStorage.getItem('userName')
+          if (userName !== null) {
+            return userName;
           }
         } catch (error) {
           console.log(error);
         }
       };
 
-    const [userName, setUserName] = useState('');
-    const [userEmail, setUserEmail] = useState('');
- 
+    const [userData, setUserData] = useState('');
+
     retrieveData().then((data) => {
-        setUserName(data.username);
-        setUserEmail(data.email);
+        setUserData(data);
 
     });
 
-    
+   
 
+    
+    
     return (
         <SafeAreaView style={styles.container}>
-            <ScrollView showsVerticalScrollIndicator={false}>
-                <View style={styles.logout}>
-                    <TouchableOpacity style={styles.button} onPress= {()=>signOut()}>
-                            <Text style = {[styles.text, {color: "#AEB5BC", fontSize: 10}]}>Logout</Text>
-
-                    </TouchableOpacity>
-                </View>
+        <KeyboardAwareScrollView>
                 <View style={{ alignSelf: "center" }}>
                     <View style={styles.profileImage}>
-                        <Image source={require("../assets/profpic.png")} style={styles.image} resizeMode="center"></Image>
+                        <Image 
+                            source={{uri: profilePicutre}} 
+                            style={{ height: 150, width: 150 ,}}>
+                        </Image>
                     </View>
+
+                    <Modal
+                        animationType="slide"
+                        transparent={true}
+                        visible={modalVisible}
+                        onRequestClose={() => {setModalVisible(!modalVisible);}}
+                    >
+                        <View style={styles.centeredView}>
+                            <View style={styles.modalView}>
+                                <Text style={styles.modalText}>Select Profile Picture</Text>
+                                <View style={styles.row}>
+                                    <TouchableOpacity style={styles.inputWrap}  onPress={() => {setProfilePicture('https://cdn.pixabay.com/photo/2015/04/19/08/32/marguerite-729510__480.jpg')}}>
+                                        <Image 
+                                            source={{uri: 'https://cdn.pixabay.com/photo/2015/04/19/08/32/marguerite-729510__480.jpg'}} 
+                                            style={{ width: 100,
+                                                height: 100,
+                                                borderRadius: 100,
+                                                overflow: "hidden",
+                                                marginTop: 5,}}>
+                                        </Image>
+                                    </TouchableOpacity>
+                                </View>
+                  
+                                <View style={styles.row}>
+                                    <TouchableOpacity style={styles.inputWrap} onPress={() => {setProfilePicture('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRsMrej5CJ9ieAshqft8Be6ZZ-IM5kINFCLxA&usqp=CAU')}}>
+                                        <Image 
+                                            source={{uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRsMrej5CJ9ieAshqft8Be6ZZ-IM5kINFCLxA&usqp=CAU'}} 
+                                            style={{ width: 100,
+                                                height: 100,
+                                                borderRadius: 100,
+                                                overflow: "hidden",
+                                                marginTop: 10,}}>
+                                        </Image>
+                                    </TouchableOpacity>
+                                </View>
+                  
+                                <View style={styles.row}>
+                                    <TouchableOpacity style={styles.inputWrap} onPress={() => {setProfilePicture('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ22RH0VPMkUT_dbVaemZvDb4-yWBltik048A&usqp=CAU')}}>
+                                        <Image 
+                                            source={{uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ22RH0VPMkUT_dbVaemZvDb4-yWBltik048A&usqp=CAU'}} 
+                                            style={{ width: 100,
+                                                height: 100,
+                                                borderRadius: 100,
+                                                overflow: "hidden",
+                                                marginTop: 15,}}>
+                                        </Image>
+                                    </TouchableOpacity>
+                                </View>
+
+                                <View style={styles.row}>
+                                    <TouchableOpacity style={styles.inputWrap} onPress={() => {setProfilePicture('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ5NOo5arvyDcVOvh6tkb6gUK_eyQwdn2ta2A&usqp=CAU')}}>
+                                        <Image 
+                                            source={{uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ5NOo5arvyDcVOvh6tkb6gUK_eyQwdn2ta2A&usqp=CAU'}} 
+                                            style={{ width: 100,
+                                                height: 100,
+                                                borderRadius: 100,
+                                                overflow: "hidden",
+                                                marginTop: 20,}}>
+                                        </Image>
+                                    </TouchableOpacity>
+                                </View>
+                                
+                                <Pressable
+                                    style={styles.Modalbtn}
+                                    onPress={() => {setModalVisible(!modalVisible); saveProfilePictureToUserDevice();
+                                    }}
+                                >
+                                    <Text style={styles.textStyle}>Done</Text>
+                                </Pressable>
+                            </View>
+                        </View>
+                    </Modal>
+
                     <View style={styles.add}>
-                        <Ionicons name="ios-create" size={15} color="#DFD8C8" style={{ marginTop: 0, marginLeft: 3 }}></Ionicons>
+                        <TouchableOpacity onPress={() => {setModalVisible(true); getProfilePictureFromUserDevice();}}>
+                            <Ionicons name="ios-create" size={15} color="#DFD8C8" style={{ marginTop: 0, marginLeft: 3 }}></Ionicons>
+                        </TouchableOpacity>
                     </View>
                 </View>
+
+
                 <View style={styles.infoContainer}>
-                    <Text style={[styles.text, { fontWeight: "200", fontSize: 36 }]}>{userName}</Text>
-                    <Text style={[styles.text, { color: "#AEB5BC", fontSize: 14 }]}>{userEmail}</Text>
+                    <Text style={[styles.text, { fontWeight: "200", fontSize: 36 }]}>{userData}</Text>
+                    <Text style={[styles.text, { color: "#AEB5BC", fontSize: 14 }]}>{userData}</Text>
                 </View>
 
-                <View style={styles.statsContainer}>
-                    <View style={styles.statsBox}>
-                        <Text style={[styles.text, { fontSize: 24 }]}>783</Text>
-                        <Text style={[styles.text, styles.subText]}>Recipes Used</Text>
-                    </View>
-                    <View style={[styles.statsBox, { borderColor: "#DFD8C8", borderLeftWidth: 1, borderRightWidth: 1 }]}>
-                        <Text style={[styles.text, { fontSize: 24 }]}>4,844</Text>
-                        <Text style={[styles.text, styles.subText]}>Ingredients Used</Text>
-                    </View>
+
+                <View style={styles.logout}>
+                    <TouchableOpacity style={styles.button} onPress= {()=>signOut()}>
+                        <Text style = {styles.btnText}>Logout</Text>
+                    </TouchableOpacity>
                 </View>
 
-                <View style={{ marginTop: 32 }}>
-                  <Text style = {[styles.favoriteText, {fontSize: 16}]}>Favorites</Text>
-                    <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-                        <View style={styles.mediaImageContainer}>
-                            <Image source={require("../assets/pasta.png")} style={styles.image} resizeMode="cover"></Image>
-                        </View>
-                        <View style={styles.mediaImageContainer}>
-                            <Image source={require("../assets/bread.png")} style={styles.image} resizeMode="cover"></Image>
-                        </View>
-                        <View style={styles.mediaImageContainer}>
-                            <Image source={require("../assets/icon.png")} style={styles.image} resizeMode="cover"></Image>
-                        </View>
-                    </ScrollView>
-                </View>
-                <Text style={[styles.subText, styles.recent]}>Allergies</Text>
-                <View style={{ alignItems: "center" }}>
-                    <View style={styles.recentItem}>
-                        <View style={{ width: 250 }}>
-                            <Text style={[styles.text, { color: "#41444B", fontWeight: "300" }]}>Peanuts</Text>
-                        </View>
-                    </View>
-
-                    <View style={styles.recentItem}>
-                        <View style={{ width: 250 }}>
-                            <Text style={[styles.text, { color: "#41444B", fontWeight: "300" }]}>Grass</Text>
-                        </View>
+                
+                <View style={{ alignItems: "center" , marginTop: 10, marginRight: 250}}>
+                    <Text style={styles.text}>Allergies: </Text>
+                    <View style={styles.container2} behavior='height'>
+                        <AddAllergy addAllergy={addAllergy} />
+                        <FlatList
+                            data={Allergies}
+                            renderItem={({item, index}) => <ListAllergy item={item} deleteItem={deleteItem}/>}
+                            keyExtractor={(item, index) => index.toString()}
+                        />
                     </View>
                 </View>
-            </ScrollView>
+               
+            </KeyboardAwareScrollView>
         </SafeAreaView>
     );
 }
@@ -119,53 +268,51 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: "#FFF"
     },
+    container2: {
+        width: 280,
+        marginLeft: 240,
+        backgroundColor: 'white',
+        alignContent: 'center',
+      },
+      btn: {
+        backgroundColor: '#F96300',
+        padding: 9,
+        margin: 10,
+        borderRadius: 5,
+      },
+      Modalbtn: {
+        backgroundColor: '#F96300',
+        padding: 9,
+        marginTop: 60,
+        borderRadius: 5,
+      },
+      btnText: {
+        color: 'white',
+        fontSize: 20,
+        textAlign: 'center',
+      },
     button: {
+        backgroundColor: '#F96300',
+        padding: 9,
+        margin: 5,
         borderRadius: 10,
 
     },
     text: {
-        fontFamily: "HelveticaNeue",
-        color: "#52575D"
+        fontSize: 20,
+        color: "black"
     },
     image: {
         flex: 1,
-        height: undefined,
-        width: undefined
-    },
-    titleBar: {
-        flexDirection: "row",
-        justifyContent: "space-between",
-        marginTop: 24,
-        marginHorizontal: 16
-    },
-    favoriteText: {
-       flexDirection: "row",
-       justifyContent: "space-between",
-       marginTop: 12,
-       marginBottom: 6,
-       textAlign: 'center'
-    },
-    subText: {
-        fontSize: 12,
-        color: "#AEB5BC",
-        textTransform: "uppercase",
-        fontWeight: "500"
+        height: 150,
+        width: 150,
     },
     profileImage: {
-        width: 175,
-        height: 175,
+        width: 150,
+        height: 150,
         borderRadius: 100,
-        overflow: "hidden"
-    },
-    dm: {
-        backgroundColor: "#41444B",
-        position: "absolute",
-        top: 20,
-        width: 38,
-        height: 38,
-        borderRadius: 19,
-        alignItems: "center",
-        justifyContent: "center"
+        overflow: "hidden",
+        marginTop: 5,
     },
     active: {
         backgroundColor: "#34FFB9",
@@ -193,42 +340,63 @@ const styles = StyleSheet.create({
         alignItems: "center",
         marginTop: 16
     },
-    signIn: {
-        width: 80,
-        height: 40,
-        borderRadius: 10, 
-    },
-    statsContainer: {
-        flexDirection: "row",
-        alignSelf: "center",
-        marginTop: 32
-    },
-    statsBox: {
-        alignItems: "center",
-        flex: 1
-    },
-    mediaImageContainer: {
-        width: 180,
-        height: 200,
-        borderRadius: 12,
-        overflow: "hidden",
-        marginHorizontal: 10
-    },
-    recent: {
-        marginLeft: 78,
-        marginTop: 32,
-        marginBottom: 6,
-        fontSize: 10
-    },
-    recentItem: {
-        flexDirection: "row",
-        alignItems: "flex-start",
-        marginBottom: 16
-    },
     logout: {
-        alignSelf: 'flex-end',
-        backgroundColor: '#ee6e73',
-        top: 20,
-        right: 5,
-    }
+        alignSelf: 'center',
+        marginTop: 5,
+        alignContent: 'center',
+        alignItems: 'center'
+    },
+    modalView: {
+        margin: 40,
+        height: 600,
+        width: 500,
+        backgroundColor: "white",
+        borderRadius: 20,
+        padding: 35,
+        alignItems: "center",
+        shadowColor: "#000",
+        shadowOffset: {
+          width: 0,
+          height: 2
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 4,
+        elevation: 5,
+        fontSize: 14,
+        textAlign: 'center',
+        fontWeight: 'bold'
+      },
+      textStyle: {
+        color: "white",
+        fontWeight: "bold",
+        textAlign: "center"
+      },
+      modalText: {
+        marginBottom: 15,
+        textAlign: "center",
+        fontSize: 20,
+        textAlign: 'center',
+        fontWeight: 'bold',
+      },
+      row: {
+        flex: 1,
+        flexDirection: "row"
+      },
+      inputWrap: {
+        flexDirection: 'row',
+        borderColor: "#cccccc"
+      },
+      inputText:{
+        color: 'black',
+        fontSize: 20,
+        textAlign: 'center',
+      },
+      centeredView: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        marginTop: 22
+      },
 });
+
+export default ProfileTab;
