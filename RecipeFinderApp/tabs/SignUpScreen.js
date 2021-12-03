@@ -122,7 +122,7 @@ const SignUpScreen = ({navigation}) => {
             return;
         }
 
-        if (data.password.length < 8 || data.confirm_password.length < 8){
+        if (password.length < 8 || confirm_password.length < 8){
             Alert.alert('Oops', 'The passoword has to be least 8 characters. Please pick a longer password.', [
                 {text: 'try again'}
             ]);
@@ -131,14 +131,14 @@ const SignUpScreen = ({navigation}) => {
 
         var founduser = await signUp_api(username, password)
         console.log(founduser)
-        if  (founduser.length == 0){
+        if  (founduser.user_id == -1){
             Alert.alert('Oops!', 'Username is already taken. Please pick another name.', [
                 {text: 'Okay'}
             ]);
             return;
         }
 
-        var user = founduser[0].user_username; //uncomment when SignUp api returns username
+        var user = founduser.user_username; //uncomment when SignUp api returns username
         
         try {
             await AsyncStorage.setItem('userName', user);
@@ -146,7 +146,9 @@ const SignUpScreen = ({navigation}) => {
           } catch (error){
             console.log(error);
         } 
-        var token = founduser[0].user_id.toString();
+
+        var token = founduser.user_id.toString();
+        console.log(token, "151")
 
 
 
