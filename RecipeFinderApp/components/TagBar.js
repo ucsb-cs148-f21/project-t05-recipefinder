@@ -37,8 +37,8 @@ export default class Bar extends Component {
             updateState={this.updateTagState}
             tags={this.state.tags}
             placeholder="Tags..."                            
-            label='Press comma & space to add a tag'
-            labelStyle={{color: '#fff'}}
+            label='Enter Allergies one by one'
+            labelStyle={{color: '#12212'}}
             leftElementContainerStyle={{marginLeft: 3}}
             containerStyle={{width: (Dimensions.get('window').width - 40)}}
             inputContainerStyle={[styles.textInput, {backgroundColor: this.state.tagsColor}]}

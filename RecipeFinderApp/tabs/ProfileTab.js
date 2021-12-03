@@ -20,7 +20,7 @@ const ProfileTab = ({ navigation }) => {
 
     async function filterItems(arr, query) {
         return arr.filter(function(el) {
-          if (el.id == query){
+          if (el.username == query){
             return el;
           }
         })
@@ -28,7 +28,8 @@ const ProfileTab = ({ navigation }) => {
 
     const retrieveData = async () => {
         try {
-          const value = await AsyncStorage.getItem('userToken')
+          const value = await AsyncStorage.getItem('userName')
+          console.log(value);
           if (value !== null) {
             const user_info = await filterItems(Users, value)
             return await user_info[0];
