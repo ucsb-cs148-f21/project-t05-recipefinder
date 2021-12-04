@@ -9,6 +9,7 @@ import {
     TouchableOpacity,
     Modal,
     Pressable,
+    LogBox,
     Alert
  } from "react-native";
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -18,6 +19,9 @@ import { AuthContext } from '../component/context';
 import ListAllergy from '../components/ListAllergy';
 import AddAllergy from '../components/AddAllergy';
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+
+
+
 
 const ProfileTab = ({ navigation }) => {
    
@@ -43,6 +47,10 @@ const ProfileTab = ({ navigation }) => {
   useEffect(() => {
       getProfilePictureFromUserDevice();
   }, []);
+
+  useEffect(() => {
+    LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
+}, [])
 
 
   useEffect(() => {
