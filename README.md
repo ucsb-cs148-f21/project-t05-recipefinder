@@ -76,3 +76,8 @@ can give you recipes that you have ingredients for, but not all
     Commit your changes: git commit -am 'Add some feature'
     Push to the branch: git push origin my-new-feature
     Submit a pull request :D
+
+# Deployment
+	https://appetize.io/app/u31db5p872uhzc9nekxdqfr0ur
+	or install the apk from the tagged releases on github.
+	or use expo start in the /RecipeFinderApp/ directory.
