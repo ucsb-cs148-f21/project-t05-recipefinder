@@ -108,7 +108,7 @@ const ProfileTab = ({ navigation }) => {
     if (text == '') {
       Alert.alert(
         'No item entered',
-        'Please enter an ingredient when adding to your pantry list',
+        'Please enter an Allergy',
       );
     } else {
       setAllergies(prevAllergies => {
