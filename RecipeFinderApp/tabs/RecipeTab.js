@@ -87,6 +87,7 @@ const RecipeTab = ({route, navigation}) => {
               break;
             }
           }
+          if (hasAllergies) break;
         }
       }
 	  if (!hasAllergies)
