@@ -45,11 +45,17 @@ const RecipeTab = ({route, navigation}) => {
     let isMounted = true;               // note mutable flag
     getAllergiesFromUserDevice().then(data => {
       if (isMounted) {
-        allergyData = JSON.parse(data);
-        if (allergyData)
-          setUserData(allergyData);    // add conditional check
-        else
-          console.log("allergy data is undefined");
+		  try{
+			  let allergyData = JSON.parse(data);
+			  if (allergyData)
+				setUserData(allergyData);    // add conditional check
+			  else
+				console.log("allergy data is undefined");
+		  }
+        catch{
+			console.log("no data");
+		}
+        
       }
     })
     return () => { isMounted = false }; // cleanup toggles value, if unmounted
@@ -67,16 +73,26 @@ const RecipeTab = ({route, navigation}) => {
       var inPrep = false;
       var inTotal = false;
       var hasAllergies = false;
+	  console.log("enable:", isEnabled);
       if (isEnabled) {
+		  console.log(allData[i]['ingredients']);
         for(var j=0; j < allData[i]['ingredients'].length; j++) {
+			console.log("userdata:", userData);
           for(var k=0; k < userData.length; k++) {
+			  console.log(userData[k].allergy);
             if (allData[i]['ingredients'][j].toLowerCase().search(userData[k].allergy.toLowerCase()) != -1) {
               hasAllergies = true;
+			  
+			  console.log("Yes");
               break;
             }
           }
         }
       }
+	  if (!hasAllergies)
+	  {
+		  console.log("No");
+	  }
       if (allData[i]['prep'] == null){
         inPrep = true;
       }
