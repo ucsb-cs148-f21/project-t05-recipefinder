@@ -13,6 +13,6 @@
 - Helped solve conflict issues with React Native Dependencies and Navigation
 
 **Documentation**
-- [Wrote Design Document] (./../../docs/DESIGN.md)
+- [Wrote Design Document](./../../docs/DESIGN.md)
 
 
