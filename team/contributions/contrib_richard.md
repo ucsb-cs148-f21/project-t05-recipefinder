@@ -1,15 +1,16 @@
 # Richard Rao @Richard-Rao Contributions
 
-**APP**
+**App**
 
 - Implemented the [Navigation](./../../RecipeFinderApp/App.js) within the app using bottom tabs
-- Implemented the [Profile Tab](./../../RecipeFinderApp/tabs/ProfileTab.js) and added logout functionality.
+- Implemented the [Profile Tab](./../../RecipeFinderApp/tabs/ProfileTab.js) with logout functionality.
+- Contributed to [component for adding allergies](./../../RecipeFinderApp/components/AddAllergy.js).
 
-**
+**Debugging**
 
-- Installed new React Native Libraries and Dependencies when needed
-- Helped solve conflict issues with React Native Dependencies and Navigation
-
+- Removed warnings from application
+- Installation and implemenetation of various react-native libraries and dependencies
+- Communicated thoroughly with teammates on project detail specifications
 
 **Logistics**
 - Led [Retro 3](./../../team/retrospectives/RETRO_3.md)
