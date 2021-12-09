@@ -4,8 +4,6 @@
 
 - Implemented the [Navigation](./../../RecipeFinderApp/App.js) within the app using bottom tabs
 - Implemented the [Profile Tab](./../../RecipeFinderApp/tabs/ProfileTab.js) and added logout functionality.
-- Implemented Recipe Detail Display in [Recipe Details](./../../RecipeFinderApp/tabs/RecipeDetails.js)
-- Implemented Simple Image picker in [ProfileTab](./../../RecipeFinderApp/tabs/ProfileTab.js)
 
 ##
 
