@@ -13,7 +13,7 @@
 - Communicated thoroughly with teammates on project detail specifications
 
 **Logistics**
-- Led [Retro 3](./../../team/retrospectives/RETRO_3.md)
+- Led [Retro 3](./../../team/retrospectives/RETRO_03.md)
 
 **Documentation**
 - Created [User Manual](./../../docs/MANUAL.md)
